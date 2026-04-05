@@ -14,7 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Initialise environment variables
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-6ln)2a(5hg^v(z#q1&cv%x*galz=o()$-h_=)#-6tobx$x7zlm"
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-change-this-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -112,11 +112,11 @@ WSGI_APPLICATION = "campaign.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'campaign_db',
-        'USER': 'campaign_user',
-        'PASSWORD': 'campaign_pass',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.getenv('DB_NAME', 'campaign_db'),
+        'USER': os.getenv('DB_USER', 'campaign_user'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'campaign_pass'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
 
@@ -222,15 +222,15 @@ STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET')
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 # FERNET_KEYS = ['Ne4X04Y-TP0vpMNhCN6IzRQU0XFRec9SQ9tuuQ_ayPM=']
-FIELD_ENCRYPTION_KEY = "lBdR_7ZLoli_sWEsxwaIVGO9knFjzTT9uN9TCJlE3ho="
+FIELD_ENCRYPTION_KEY = os.getenv('FIELD_ENCRYPTION_KEY', 'change-this-key')
 
 PEXELS_API_KEY = os.getenv('pexels')
 UNSPLASH_ACCESS_KEY = os.getenv('UNSPLASH_ACCESS_KEY')
 PIXABAY_API_KEY = os.getenv('PIXABAY_API_KEY')
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
-X_CLIENT_ID = 'T3dLRkJTQnc0bmdUZkt5TWNiTDI6MTpjaQ'
-X_CLIENT_SECRET = '_yRF9gRrUKFkiYIhxUcazwuOzCf4CS6tPzrNNV67AIwfHrHrHS'
+X_CLIENT_ID = os.getenv('X_CLIENT_ID')
+X_CLIENT_SECRET = os.getenv('X_CLIENT_SECRET')
 
 # CSP_STYLE_SRC = (
 #     "'self'",

@@ -11,7 +11,7 @@ sudo -u postgres psql
 
 # Create a database user:
 
-CREATE USER campaign_user WITH PASSWORD 'campaign_pass';
+CREATE USER campaign_user WITH PASSWORD 'your_secure_password';
 
 # Create a database owned by this user:
 

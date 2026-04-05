@@ -1,0 +1,674 @@
+{% load static %} 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <base href="./">
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Publisha Admin Panel</title>
+  <meta name="description" content="Publisha Admin Panel – Posts, Editor, Media Library, Subscribers, Coupons, User Management"/>
+
+  <link rel="icon" href="{% static 'images/favicon.ico' %}"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/entypo-font@1.0.0/css/entypo.css">
+
+  <style>
+    :root{
+      --bg:#f7f7ff; --panel:#fff; --border:#ece9f7;
+      --ink-900:#0f172a; --ink-800:#1f1e2e; --ink-700:#3e3d52; --ink-600:#53526a; --ink-500:#6b6a88; --ink-400:#8a88a6;
+      --brand:#5b35f2; --brand-10:rgba(91,53,242,.10);
+      --ok:#1a8c6b; --ok-bg:#eafaf6;
+      --warn:#a6651a; --warn-bg:#fff4e8;
+      --bad:#b81a1a; --bad-bg:#ffecee;
+      --sidebar-t:#4a3a93; --sidebar-b:#2f2858; --sidebar-h:rgba(255,255,255,.08); --sidebar-a:rgba(255,255,255,.12);
+      --shadow:0 24px 60px rgba(15,23,42,.08);
+    }
+    *{box-sizing:border-box;-webkit-font-smoothing:antialiased}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink-700)}
+    img{max-width:100%;display:block}
+
+    .layout{display:flex;min-height:100vh}
+    .sidebar{width:240px;flex-shrink:0;color:#eae8ff;background:linear-gradient(180deg,var(--sidebar-t),var(--sidebar-b));display:flex;flex-direction:column;box-shadow:4px 0 20px rgba(0,0,0,.2);position:relative;z-index:20}
+    .sb-head{padding:18px 22px;border-bottom:1px solid var(--sidebar-a);display:flex;align-items:center;justify-content:space-between}
+    .sb-logo{display:flex;align-items:center;gap:8px;color:#fff;text-decoration:none}
+    .sb-logo .mark{width:120px;height:32px;border-radius:8px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-weight:700}
+    .sb-burger{display:none;color:#fff;font-size:20px;cursor:pointer}
+    .sb-nav{flex:1;overflow:auto}
+    .sb-list{list-style:none;margin:0;padding:12px 0 24px}
+    .sb-item{margin:2px 0}
+    .sb-link{display:flex;align-items:center;gap:10px;padding:14px 20px 14px 22px;text-decoration:none;color:#e6e3ff;border-left:3px solid transparent;font-size:14px;font-weight:600}
+    .sb-link i{color:#cfcdf5}
+    .sb-link:hover{background:var(--sidebar-h);color:#fff}
+    .sb-item.active .sb-link{background:rgba(255,255,255,.10);border-left-color:#a99bf7;color:#fff}
+    .sb-foot{padding:14px 20px;border-top:1px solid var(--sidebar-a);font-size:12px;color:#cfcdf5}
+    @media(max-width:768px){.sidebar{position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%);transition:transform .25s;width:240px}.sidebar.open{transform:translateX(0)}.sb-burger{display:block}}
+
+    .main{flex:1;display:flex;flex-direction:column;min-width:0}
+    .topbar{background:#fff;border-bottom:1px solid var(--border);padding:14px 16px}
+    .toprow{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .burger{display:none;background:var(--brand-10);color:var(--brand);padding:8px 10px;border-radius:10px;cursor:pointer;font-weight:600;font-size:14px}
+    @media(max-width:768px){.burger{display:inline-flex}}
+    .chip{display:flex;align-items:center;background:#f4f4fa;border:1px solid var(--border);border-radius:10px;padding:6px 10px 6px 6px;gap:8px}
+    .chip img{width:32px;height:32px;border-radius:8px;object-fit:cover}
+    .mini{display:flex;gap:8px;flex-wrap:wrap}
+    .mini a{background:#f5f4ff;border:1px solid var(--border);padding:6px 8px;border-radius:10px;text-decoration:none;color:var(--ink-700);font-size:12px;font-weight:500}
+    .topright{display:flex;align-items:center;gap:12px;font-size:13px}
+    .dot{width:4px;height:4px;border-radius:50%;background:var(--border)}
+
+    .phead{background:#fff;border-bottom:1px solid var(--border);padding:12px 16px 18px}
+    .crumb{list-style:none;margin:0 0 10px;padding:0;display:flex;gap:6px;color:var(--ink-500);font-size:13px;flex-wrap:wrap}
+    .crumb a{text-decoration:none;color:var(--ink-500);font-weight:500}
+    .title h1{margin:0;font-size:clamp(22px,1.1vw + 20px,28px);color:var(--ink-800);font-weight:800}
+    .title .sub{font-size:13px;color:var(--ink-400)}
+
+    .content{padding:16px}
+    .card{background:var(--panel);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:16px;margin-bottom:16px}
+    .row{display:grid;grid-template-columns:1fr;gap:16px}
+    .row-2{grid-template-columns:2.2fr 1fr}
+    @media(max-width:1024px){.row-2{grid-template-columns:1fr}}
+
+    .section-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
+    .section-left h3{margin:0 0 4px;font-size:16px;font-weight:700;color:var(--ink-600)}
+    .section-left .note{font-size:12px;color:var(--ink-400)}
+
+    .btn{display:inline-flex;align-items:center;gap:6px;border-radius:10px;border:1px solid var(--border);padding:8px 10px;background:#fff;color:var(--brand);font-weight:600;font-size:13px;text-decoration:none;cursor:pointer}
+    .btn:hover{background:var(--brand-10)} .btn.purple{background:var(--brand);border-color:var(--brand);color:#fff}
+    .btn.danger{border-color:#ffd4d4;color:#b81a1a}.btn.block{width:100%;justify-content:center}
+
+    .scroll{overflow:auto;border-radius:10px;border:1px solid var(--border)}
+    table{width:100%;min-width:680px;border-collapse:collapse;font-size:14px}
+    th{background:#fafaff;color:var(--ink-600);padding:10px 8px;text-align:left;border-bottom:1px solid var(--border);font-weight:600;white-space:nowrap}
+    td{padding:10px 8px;border-bottom:1px solid #f0eefc;vertical-align:top;color:var(--ink-700)} tr:last-child td{border-bottom:0}
+    .badge{border-radius:999px;padding:4px 8px;font-weight:600;font-size:12px}.draft{background:var(--warn-bg);color:var(--warn)}.published{background:var(--ok-bg);color:var(--ok)}
+    label{display:block;font-size:13px;font-weight:600;color:var(--ink-700);margin-bottom:6px}
+    input[type=text],input[type=password],input[type=datetime-local],textarea,select{width:100%;border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:14px;background:#fff;color:var(--ink-700);outline:none}
+    textarea{min-height:160px;resize:vertical} input:focus,textarea:focus,select:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(91,53,242,.18)}
+    .help{font-size:12px;color:var(--ink-400);margin-top:4px;line-height:1.4}
+
+    .toolbar{display:flex;flex-wrap:wrap;gap:8px;background:#fafaff;border:1px solid var(--border);border-radius:10px;padding:8px;position:sticky;top:0;z-index:5}
+    .tool{border:1px solid var(--border);background:#fff;border-radius:8px;padding:6px 8px;cursor:pointer;font-size:13px}
+    .format-select{border:1px solid var(--border);border-radius:8px;padding:6px 8px;font-size:13px;background:#fff}
+    .editor{border:1px solid var(--border);border-radius:12px;padding:14px;background:#fff;min-height:260px}
+    .editor[contenteditable=true]:empty:before{content:attr(data-ph);color:#a0a0b8}
+
+    .wp-panels{display:grid;grid-template-columns:1fr;gap:16px}
+    .panel{border:1px solid var(--border);border-radius:12px;padding:12px;background:#fff}
+    .panel h4{margin:0 0 10px;font-size:14px;font-weight:800;color:var(--ink-700)}
+
+    .feat-wrap{display:grid;grid-template-columns:74px 1fr;gap:10px;align-items:center}
+    .feat-thumb{width:74px;height:74px;border:1px solid var(--border);border-radius:8px;background:#fafafa;object-fit:cover}
+
+    .dz{border:1px dashed #cfc9ff;background:#fcfbff;border-radius:10px;padding:10px;display:flex;gap:10px;align-items:center}
+    .dz.hover{background:#f4f1ff}
+    .dz-col{display:flex;flex-direction:column;gap:8px}
+    .dz-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .tiny-label{font-size:11px;font-weight:600;color:var(--ink-500);background:#f4f4ff;border:1px solid var(--border);border-radius:999px;padding:3px 8px;line-height:1.2}
+
+    .tokens{display:flex;flex-wrap:wrap;gap:6px}.token{background:#f1f0ff;border:1px solid var(--border);padding:4px 8px;border-radius:999px;font-size:12px;display:flex;align-items:center;gap:6px}.token .x{cursor:pointer}
+    .meta-bar{display:flex;gap:12px;flex-wrap:wrap;justify-content:space-between;margin-top:10px}
+    .inline-end{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+
+    .pill-ok{background:var(--ok-bg);color:var(--ok)}
+    .pill-bad{background:var(--bad-bg);color:var(--bad)}
+    .pill-warn{background:var(--warn-bg);color:var(--warn)}
+    .pill{display:inline-block;font-size:11px;font-weight:600;padding:4px 8px;border-radius:999px;line-height:1.2}
+
+    .media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(180px,100%),1fr));gap:16px}
+    .media-card{background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;min-width:0}
+    .media-thumb{background:#fafafa;border-bottom:1px solid var(--border);width:100%;aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;overflow:hidden}
+    .media-thumb img{max-width:100%;max-height:100%;object-fit:cover}
+    .media-body{padding:12px;font-size:12px;line-height:1.4;color:var(--ink-700);display:flex;flex-direction:column;gap:8px}
+    .media-actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between}
+    .toggle{display:inline-flex;align-items:center;gap:10px}
+    .toggle input{width:44px;height:24px;appearance:none;background:#e9e7ff;border-radius:999px;position:relative;outline:none;cursor:pointer;border:1px solid var(--border)}
+    .toggle input:checked{background:#cfc9ff}
+    .toggle input:before{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;background:#fff;border-radius:50%;transition:.2s}
+    .toggle input:checked:before{left:23px}
+  </style>
+</head>
+<body>
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-head">
+      <a class="sb-logo spa" data-target="posts">
+        <div class="mark">Publisha</div>
+        <div style="display:flex;flex-direction:column;line-height:1.1">
+          <strong style="font-size:13px">Admin</strong>
+          <span style="font-size:11px;color:#d9d6ff">CMS v1</span>
+        </div>
+      </a>
+      <div class="sb-burger" id="sbClose">✕</div>
+    </div>
+
+    <nav class="sb-nav">
+      <ul class="sb-list" id="nav">
+        <li class="sb-item active" data-menu="posts"><a class="sb-link spa" data-target="posts"><i class="entypo-newspaper"></i>Posts</a></li>
+        <li class="sb-item" data-menu="editor"><a class="sb-link spa" data-target="editor"><i class="entypo-pencil"></i>New Post</a></li>
+        <li class="sb-item" data-menu="media"><a class="sb-link spa" data-target="media"><i class="entypo-picture"></i>Media</a></li>
+        <li class="sb-item" data-menu="subs"><a class="sb-link spa" data-target="subs"><i class="entypo-users"></i>Subscribers & Coupons</a></li>
+        <li class="sb-item" data-menu="settings"><a class="sb-link spa" data-target="settings"><i class="entypo-cog"></i>Settings</a></li>
+      </ul>
+    </nav>
+
+    <div class="sb-foot">© 2025 <strong>Publisha</strong><br/>Internal CMS</div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <header class="topbar">
+      <div class="toprow">
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+          <div class="burger" id="sbOpen">☰</div>
+        <div class="chip">
+            <!-- The `u` parameter makes the avatar unique for each user email -->
+            <img src="https://i.pravatar.cc/100?u={{ request.user.email }}" alt="User Avatar">
+            <div>
+            <div id="topEmail" style="font-weight:700;color:var(--ink-800)">
+                <!-- This line dynamically inserts the logged-in user's email -->
+                {{ request.user.email }}
+            </div>
+            <div style="font-size:11px;color:var(--ink-400)">
+                <!-- You can show their username or another field here -->
+                {{ request.user.username }}
+            </div>
+            </div>
+        </div>
+          <div class="mini">
+            <a href="#"><i class="entypo-attention"></i> 6</a>
+            <a href="#"><i class="entypo-mail"></i> 10</a>
+            <a href="#"><i class="entypo-list"></i> 1</a>
+          </div>
+        </div>
+        <div class="topright">
+          <span>EN</span>
+          <span class="dot"></span>
+          <form method="post" action="{% url 'logout' %}" style="display: inline;">
+    {% csrf_token %}
+
+    <!-- This button is styled to look exactly like your <a> tag -->
+    <!-- It uses a transparent background and no border. -->
+    <button type="submit" style="background: none; border: none; padding: 0; color: var(--ink-700); font-weight: 500; cursor: pointer; font-family: inherit; font-size: inherit; vertical-align: baseline;">
+        <i class="entypo-logout"></i> Logout
+    </button>
+</form>
+          
+        </div>
+      </div>
+    </header>
+
+    <section class="phead">
+      <ol class="crumb">
+        <li><a class="spa" data-target="posts"><i class="entypo-home"></i> Home</a></li>
+        <li id="crumbSection"><a class="spa" data-target="posts">Posts</a></li>
+        <li class="active" id="crumbActive">All Posts</li>
+      </ol>
+      <div class="title">
+        <h1 id="pageTitle">Blog Posts</h1>
+        <div class="sub" id="pageSub">Create, edit and publish content that appears on your marketing site.</div>
+      </div>
+    </section>
+
+    <section class="content">
+
+      <!-- POSTS -->
+      <section id="v-posts" class="view">
+        <div class="card">
+          <div class="section-head">
+            <div class="section-left">
+              <h3>All Posts</h3>
+              <div class="note">Drafts are private. Published posts are live on site.</div>
+            </div>
+            <div class="inline-end"><button class="btn purple spa" data-target="editor"><i class="entypo-plus"></i>New Post</button></div>
+          </div>
+          <div class="scroll">
+            <table>
+              <thead><tr><th style="min-width:220px">Title</th><th>Slug</th><th>Status</th><th>Updated</th><th style="min-width:140px">Actions</th></tr></thead>
+              <tbody id="postsBody"></tbody>
+            </table>
+          </div>
+          <div id="postsEmpty" class="foot" style="display:none">No posts yet. Click “New Post”.</div>
+        </div>
+        <div class="foot">© 2025 <strong>Publisha</strong> – Posts</div>
+      </section>
+
+      <!-- EDITOR -->
+      <section id="v-editor" class="view" style="display:none">
+        <div class="row row-2">
+          <div>
+            <div class="card">
+              <label for="title">Title</label>
+              <input id="title" type="text" placeholder="Add an engaging title...">
+              <div class="help">Clear, specific and benefit-oriented titles perform best.</div>
+              <div class="subrow-2" style="margin-top:12px">
+                <div><label for="slug">Slug</label><input id="slug" type="text" placeholder="auto-generated-from-title"><div class="help">Lowercase, numbers and dashes only</div></div>
+                <div><label for="seoTitle">SEO Title</label><input id="seoTitle" type="text" placeholder="Optional: custom meta title"></div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="toolbar" id="toolbar">
+                <select id="format" class="format-select"><option value="P">Paragraph</option><option value="H1">Heading 1</option><option value="H2">Heading 2</option><option value="H3">Heading 3</option></select>
+                <button class="tool" data-cmd="bold"><b>B</b></button><button class="tool" data-cmd="italic"><i>I</i></button><button class="tool" data-cmd="underline"><u>U</u></button>
+                <button class="tool" data-cmd="insertUnorderedList">• List</button><button class="tool" data-cmd="insertOrderedList">1. List</button><button class="tool" data-cmd="formatBlock" data-val="BLOCKQUOTE">❝ Quote</button>
+                <button class="tool" id="btnCode">Code</button>
+                <button class="tool" data-cmd="justifyLeft">⟸</button><button class="tool" data-cmd="justifyCenter">≡</button><button class="tool" data-cmd="justifyRight">⟹</button>
+                <button class="tool" id="btnLink">🔗 Link</button><button class="tool" id="btnUnlink">Unlink</button><button class="tool" id="btnImage">🖼️ Image</button>
+                <button class="tool" data-cmd="insertHorizontalRule">— HR</button><button class="tool" data-cmd="removeFormat">Clear</button><button class="tool" data-cmd="undo">↶ Undo</button><button class="tool" data-cmd="redo">↷ Redo</button>
+              </div>
+              <div id="canvas" class="editor" contenteditable="true" data-ph="Start writing… (paste HTML or just type)"></div>
+              <div class="meta-bar">
+                <div id="counts" class="help">0 words · 0 min read</div>
+                <div class="inline-end"><button class="btn ghost" id="previewBtn"><i class="entypo-eye"></i>Preview</button><button class="btn purple" id="saveBtn"><i class="entypo-check"></i>Save Post</button></div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="subrow-2">
+                <div><label for="excerpt">Excerpt</label><textarea id="excerpt" placeholder="Short summary for cards and meta description"></textarea></div>
+                <div><label for="seoDesc">SEO Description</label><textarea id="seoDesc" placeholder="If empty, excerpt will be used."></textarea></div>
+              </div>
+              <div style="margin-top:12px">
+                <div class="panel">
+                  <h4>SEO Preview</h4>
+                  <div style="font-size:15px;color:#1a73e8;font-weight:600" id="seoPrevTitle">Your title will appear here</div>
+                  <div style="font-size:12px;color:#006621" id="seoPrevUrl">https://yourdomain.com/blog/<span id="seoPrevSlug">your-slug</span></div>
+                  <div style="font-size:13px;color:#4d5156" id="seoPrevDesc">Your meta description preview.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT -->
+          <div>
+            <div class="wp-panels">
+              <div class="panel">
+                <h4>Publish</h4>
+                <label for="status">Status</label><select id="status"><option value="draft">Draft</option><option value="published">Published</option></select>
+                <label for="visibility" style="margin-top:10px">Visibility</label><select id="visibility"><option value="public">Public</option><option value="private">Private</option></select>
+                <label for="schedule" style="margin-top:10px">Publish on (optional)</label><input id="schedule" type="datetime-local">
+                <div class="inline-end" style="margin-top:12px"><button class="btn danger" id="deleteBtn"><i class="entypo-trash"></i>Delete</button><button class="btn purple" id="saveTopBtn"><i class="entypo-save"></i>Save</button></div>
+              </div>
+
+              <div class="panel">
+                <h4>Categories</h4>
+                <div id="catsBox"></div>
+                <div class="subrow-2" style="margin-top:10px"><div><input id="newCat" type="text" placeholder="Add new category"></div><div><button class="btn block" id="addCatBtn">Add</button></div></div>
+                <div class="help">Checked categories will be saved on the post.</div>
+              </div>
+
+              <div class="panel">
+                <h4>Tags</h4>
+                <div class="tokens" id="tagsTokens"></div>
+                <div class="subrow-2" style="margin-top:10px"><div><input id="tagInput" type="text" placeholder="Type and press Enter"></div><div><button class="btn block" id="addTagBtn">Add</button></div></div>
+              </div>
+
+              <div class="panel">
+                <h4>Featured Image</h4>
+                <div id="dropZone" class="dz">
+                  <img id="featThumb" class="feat-thumb" alt="">
+                  <div class="dz-col" style="flex:1">
+                    <div style="font-weight:700;color:var(--ink-700)">Upload or drop an image</div>
+                    <div class="dz-actions">
+                      <input id="coverFile" type="file" accept="image/*" hidden>
+                      <button class="btn" id="btnPickFile"><i class="entypo-upload"></i>Upload</button>
+                      <button class="btn danger" id="btnClearImage"><i class="entypo-cancel"></i>Clear</button>
+                      <span class="tiny-label" id="imgInfo">No file</span>
+                    </div>
+                    <div class="help">We compress client-side (max 1600px) for preview speed.</div>
+                  </div>
+                </div>
+                <div class="feat-wrap" style="margin-top:10px">
+                  <div class="tiny-label">or URL</div>
+                  <div>
+                    <input id="cover" type="text" placeholder="https://cdn.site.com/image.jpg">
+                    <div class="help">If both are set, uploaded image wins in preview.</div>
+                  </div>
+                </div>
+                <div style="margin-top:10px"><label for="coverAlt">Alt text (optional)</label><input id="coverAlt" type="text" placeholder="Describe the image for accessibility & SEO"></div>
+              </div>
+
+              <div class="panel">
+                <h4>SEO & Focus Keyword</h4>
+                <label for="focusKeyword">Focus Keyword</label>
+                <input id="focusKeyword" type="text" placeholder="e.g. social media automation">
+                <div class="help">We'll check if it's mentioned in title, description and content.</div>
+                <div style="margin-top:10px">
+                  <div style="font-size:12px;font-weight:600;color:var(--ink-600);margin-bottom:6px;">Keyword Check</div>
+                  <div style="display:flex;flex-direction:column;gap:6px;font-size:12px;line-height:1.4">
+                    <div>In Title: <span id="kwTitle" class="pill pill-bad">No</span></div>
+                    <div>In Meta Description: <span id="kwDesc" class="pill pill-bad">No</span></div>
+                    <div>In Content: <span id="kwBody" class="pill pill-bad">No</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel"><h4>Stats</h4><div id="statsBox" class="help">0 chars · 0 words · 0 headings · 0 images</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="foot">© 2025 <strong>Publisha</strong> – Editor</div>
+      </section>
+
+      <!-- MEDIA -->
+      <section id="v-media" class="view" style="display:none">
+        <div class="card">
+          <div class="section-head">
+            <div class="section-left"><h3>Media Library</h3><div class="note">All uploaded images (featured images, inline content, etc.).</div></div>
+            <div class="inline-end"><input id="mediaFile" type="file" accept="image/*" hidden><button class="btn" id="mediaUploadBtn"><i class="entypo-upload"></i>Upload New</button></div>
+          </div>
+          <div class="dz" id="mediaDrop" style="margin-bottom:16px"><div class="dz-col" style="flex:1;text-align:center"><div style="font-weight:700;color:var(--ink-700)">Drag & Drop here to add to library</div><div class="help">Images will be locally compressed and saved.</div></div></div>
+          <div id="mediaEmpty" class="help" style="text-align:center;margin-bottom:16px;display:none">No media yet. Upload something 👆</div>
+          <div id="mediaGrid" class="media-grid"></div>
+        </div>
+        <div class="foot">© 2025 <strong>Publisha</strong> – Media</div>
+      </section>
+
+      <!-- SUBSCRIBERS & COUPONS -->
+      <section id="v-subs" class="view" style="display:none">
+        <div class="card">
+          <div class="section-head"><div class="section-left"><h3>Subscribers</h3><div class="note">Collect newsletter / waitlist emails.</div></div></div>
+          <div class="subrow-2">
+            <div><label for="subEmail">Add subscriber</label><input id="subEmail" type="text" placeholder="name@example.com"><div class="help">Stored locally for demo.</div></div>
+            <div style="display:flex;align-items:flex-end"><button id="subAdd" class="btn purple block"><i class="entypo-plus"></i>Add</button></div>
+          </div>
+          <div style="margin-top:16px">
+            <div class="section-left"><h3 style="font-size:14px">Export List</h3><div class="note">CSV / Excel for your ESP.</div></div>
+            <div class="subrow-2" style="margin-top:10px"><button class="btn block" id="exportCSV"><i class="entypo-download"></i>Export CSV</button><button class="btn block" id="exportXLSX"><i class="entypo-download"></i>Export Excel</button></div>
+            <div class="help" style="margin-top:8px">Excel export is CSV renamed to .xlsx (demo shortcut).</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-head"><div class="section-left"><h3>Subscriber List</h3><div class="note">Check emails to attach to a coupon.</div></div><div class="tiny-label" id="selCountTop">0 selected</div></div>
+          <div class="scroll">
+            <table>
+              <thead><tr><th class="check-col"><input type="checkbox" id="checkAllSubs"></th><th style="min-width:220px">Email</th><th>Source</th><th>Joined</th><th style="min-width:110px">Actions</th></tr></thead>
+              <tbody id="subsBody"></tbody>
+            </table>
+          </div>
+          <div id="subsEmpty" class="foot" style="display:none">No subscribers yet.</div>
+        </div>
+
+        <div class="card">
+          <div class="section-head"><div class="section-left"><h3>Create Coupon / Offer</h3><div class="note">Define discount, assign to emails, limit outputs.</div></div><div class="tiny-label" id="couponSelInfo">0 selected</div></div>
+          <div class="subrow-2">
+            <div><label for="couponCode">Coupon Code</label><input id="couponCode" type="text" placeholder="WELCOME-30"><div class="help"><a id="genCoupon" style="cursor:pointer;color:var(--brand);text-decoration:underline">Generate random</a></div></div>
+            <div><label for="couponPlan">Target Plan</label><select id="couponPlan"><option value="free">Free Trial</option><option value="starter">Starter</option><option value="pro">Pro</option><option value="business">Business</option><option value="enterprise">Enterprise</option></select></div>
+          </div>
+          <div class="subrow-2" style="margin-top:12px">
+            <div><label>Discount Type</label><select id="couponType"><option value="percent">Percent Off</option><option value="freeplan">Free / 100% Off</option></select></div>
+            <div><label for="couponPercent">% Off</label><input id="couponPercent" type="text" placeholder="30"><div class="help">Used only if type = Percent</div></div>
+          </div>
+          <div class="subrow-2" style="margin-top:12px">
+            <div><label for="couponOutputs">Monthly output limit</label><input id="couponOutputs" type="text" placeholder="e.g. 50"></div>
+            <div><label for="extraEmails">Extra emails (comma-separated)</label><textarea id="extraEmails" style="min-height:80px" placeholder="lead@example.com, test@domain.com"></textarea></div>
+          </div>
+          <div class="inline-end" style="margin-top:14px"><button class="btn purple" id="createCouponBtn"><i class="entypo-ticket"></i>Create Coupon</button></div>
+        </div>
+
+        <div class="card">
+          <div class="section-head"><div class="section-left"><h3>Coupons</h3><div class="note">Your generated vouchers.</div></div></div>
+          <div class="scroll">
+            <table>
+              <thead><tr><th style="min-width:120px">Code</th><th>Plan</th><th>Discount</th><th>Outputs/mo</th><th style="min-width:200px">Assigned Emails</th><th>Created</th><th style="min-width:90px">Actions</th></tr></thead>
+              <tbody id="couponBody"></tbody>
+            </table>
+          </div>
+          <div id="couponEmpty" class="foot" style="display:none">No coupons yet.</div>
+        </div>
+        <div class="foot">© 2025 <strong>Publisha</strong> – Subscribers & Coupons</div>
+      </section>
+
+      <!-- SETTINGS (SUPER ADMIN) -->
+      <section id="v-settings" class="view" style="display:none">
+        <div class="card">
+          <div class="section-head">
+            <div class="section-left">
+              <h3>User Management</h3>
+              <div class="note">Invite teammates and manage roles (Admin, Editor, Viewer).</div>
+            </div>
+          </div>
+
+          <div class="subrow-2">
+            <div>
+              <label for="inviteEmail">Invite user by email</label>
+              <input id="inviteEmail" type="text" placeholder="newuser@company.com">
+            </div>
+            <div>
+              <label for="inviteRole">Role</label>
+              <select id="inviteRole">
+                <option value="admin">Admin</option>
+                <option value="editor">Editor</option>
+                <option value="viewer">Viewer</option>
+              </select>
+            </div>
+          </div>
+          <div class="inline-end" style="margin-top:10px">
+            <button class="btn purple" id="inviteBtn"><i class="entypo-paper-plane"></i>Send Invite</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-head">
+            <div class="section-left">
+              <h3>Team</h3>
+              <div class="note">Change role, disable/enable or remove users.</div>
+            </div>
+          </div>
+          <div class="scroll">
+            <table>
+              <thead>
+              <tr>
+                <th style="min-width:240px">User</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Joined</th>
+                <th style="min-width:220px">Actions</th>
+              </tr>
+              </thead>
+              <tbody id="usersBody"></tbody>
+            </table>
+          </div>
+          <div id="usersEmpty" class="foot" style="display:none">No users yet.</div>
+        </div>
+
+        <div class="row">
+          <div class="card">
+            <div class="section-head">
+              <div class="section-left">
+                <h3>Account Security</h3>
+                <div class="note">Change your email or password, manage 2FA and sessions.</div>
+              </div>
+            </div>
+
+            <div class="subrow-2">
+              <div>
+                <label for="newEmail">Change Email</label>
+                <input id="newEmail" type="text" placeholder="your.new@email.com">
+                <div class="help">We’ll update the login email for the current user.</div>
+              </div>
+              <div style="display:flex;align-items:flex-end">
+                <button class="btn" id="changeEmailBtn">Update Email</button>
+              </div>
+            </div>
+
+            <div class="subrow-2" style="margin-top:12px">
+              <div>
+                <label for="currPass">Current Password</label>
+                <input id="currPass" type="password" placeholder="••••••••">
+              </div>
+              <div>
+                <label for="newPass">New Password</label>
+                <input id="newPass" type="password" placeholder="min 8 chars">
+              </div>
+            </div>
+            <div class="subrow-2" style="margin-top:12px">
+              <div>
+                <label for="confPass">Confirm New Password</label>
+                <input id="confPass" type="password" placeholder="repeat new password">
+              </div>
+              <div style="display:flex;align-items:flex-end">
+                <button class="btn" id="changePassBtn">Change Password</button>
+              </div>
+            </div>
+
+            <div style="margin-top:12px;display:flex;justify-content:space-between;align-items:center">
+              <div class="toggle"><label for="twofa" style="font-weight:700;color:var(--ink-700)">Two-Factor Authentication</label><input id="twofa" type="checkbox"></div>
+              <button class="btn danger" id="signoutAllBtn"><i class="entypo-logout"></i>Sign out all sessions</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-head"><div class="section-left"><h3>Audit Log</h3><div class="note">Lightweight history of admin actions.</div></div><div class="inline-end"><button class="btn" id="auditExport"><i class="entypo-download"></i>Export CSV</button></div></div>
+            <div class="scroll">
+              <table>
+                <thead><tr><th>Time</th><th>Actor</th><th>Action</th><th>Target</th><th>Details</th></tr></thead>
+                <tbody id="auditBody"></tbody>
+              </table>
+            </div>
+            <div id="auditEmpty" class="foot" style="display:none">No audit entries yet.</div>
+          </div>
+        </div>
+
+        <div class="foot">© 2025 <strong>Publisha</strong> – Super Admin Settings</div>
+      </section>
+
+    </section>
+  </main>
+</div>
+
+<div id="toast" class="toast">Saved</div>
+
+<script>
+/* ========= KEYS ========= */
+const LS_POSTS='publisha_posts';
+const LS_SUBS='publisha_subscribers';
+const LS_CATS='publisha_categories';
+const LS_COUPONS='publisha_coupons';
+const LS_MEDIA='publisha_media';
+const LS_USERS='publisha_users';
+const LS_PROFILE='publisha_profile'; // current signed-in user info
+const LS_AUDIT='publisha_audit';
+
+/* ========= SHORTCUTS ========= */
+const $=s=>document.querySelector(s); const $$=s=>Array.from(document.querySelectorAll(s));
+const read=(k,f)=>{try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(f))}catch(e){return f}};
+const write=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1500)}
+function now(){return new Date().toISOString()}
+
+/* ========= PROFILE / USERS INIT ========= */
+{% comment %} function ensureProfile(){
+  let p=read(LS_PROFILE,null);
+  if(!p){p={email:'superadmin@publisha.com',password:'admin1234',twofa:false};write(LS_PROFILE,p)}
+  return p;
+} {% endcomment %}
+function ensureUsers(){
+  let u=read(LS_USERS,null);
+  if(!u){
+    const p=ensureProfile();
+    u=[{email:p.email,role:'owner',status:'active',joinedAt:now()}];
+    write(LS_USERS,u);
+  }
+  return u;
+}
+function ensureAudit(){return read(LS_AUDIT,[])}
+
+/* ========= SIDEBAR MOBILE ========= */
+const sidebar=$('#sidebar'); $('#sbOpen')?.addEventListener('click',()=>sidebar.classList.add('open')); $('#sbClose')?.addEventListener('click',()=>sidebar.classList.remove('open'));
+document.addEventListener('click',e=>{if(innerWidth>768||!sidebar.classList.contains('open'))return;if(!e.target.closest('#sidebar')&&!e.target.closest('#sbOpen'))sidebar.classList.remove('open')});
+
+/* ========= HEADER / VIEWS ========= */
+const views={posts:'#v-posts',editor:'#v-editor',media:'#v-media',subs:'#v-subs',settings:'#v-settings'};
+function setHeader(section,active,sub){$('#crumbSection').innerHTML=`<a class="spa" data-target="${section.toLowerCase()}">${section}</a>`;$('#crumbActive').textContent=active;$('#pageTitle').textContent=(section==='Posts'&&active==='New / Edit')?'Editor':(section==='Subscribers'?'Subscribers & Coupons':section);$('#pageSub').textContent=sub}
+function showView(t){Object.values(views).forEach(s=>$(s).style.display='none');$(views[t]||views.posts).style.display='block';$$('.sb-item').forEach(li=>li.classList.remove('active'));$(`.sb-item[data-menu="${t}"]`)?.classList.add('active');if(t==='posts'){renderPosts();setHeader('Posts','All Posts','Create, edit and publish content that appears on your marketing site.')}if(t==='editor'){updateKeywordBadges();setHeader('Posts','New / Edit','Write, optimize and publish.')}if(t==='media'){renderMedia();setHeader('Media','Library','View and manage all uploaded images.')}if(t==='subs'){renderSubs();renderCoupons();updateSelectedInfo();setHeader('Subscribers','Email List & Coupons','Capture emails, create coupons, assign discounts.')}if(t==='settings'){renderUsers();renderAudit();renderProfileUI();setHeader('Settings','Super Admin','Users, roles & security.')}sidebar.classList.remove('open')}
+document.addEventListener('click',e=>{const a=e.target.closest('.spa');if(!a)return;e.preventDefault();if(a.dataset.target==='editor')newEditor();showView(a.dataset.target)});
+
+/* ========= POSTS ========= */
+function posts(){return read(LS_POSTS,[])} function savePosts(v){write(LS_POSTS,v)}
+function renderPosts(){const body=$('#postsBody');body.innerHTML='';const arr=posts();$('#postsEmpty').style.display=arr.length?'none':'block';arr.forEach((p,i)=>{const badge=p.status==='published'?`<span class="badge published">Published</span>`:`<span class="badge draft">Draft</span>`;const tr=document.createElement('tr');tr.innerHTML=`<td><strong>${p.title||'(untitled)'}</strong><div class="help">${p.excerpt||''}</div></td><td>/${p.slug||''}</td><td>${badge}</td><td>${p.updatedAt?new Date(p.updatedAt).toLocaleString():'-'}</td><td><button class="btn" data-edit="${i}"><i class="entypo-pencil"></i>Edit</button><button class="btn danger" data-del="${i}"><i class="entypo-trash"></i>Del</button></td>`;body.appendChild(tr)});body.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>{loadForEdit(parseInt(b.dataset.edit));showView('editor')});body.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{const i=parseInt(b.dataset.del);const arr2=posts();if(confirm(`Delete "${arr2[i]?.title||'this post'}"?`)){arr2.splice(i,1);savePosts(arr2);renderPosts();toast('Post deleted')}})}
+
+/* ========= EDITOR ========= */
+let current={idx:null,title:'',slug:'',excerpt:'',content:'',cover:'',coverData:'',coverAlt:'',status:'draft',visibility:'public',schedule:'',tags:[],categories:[],seoTitle:'',seoDesc:'',focusKeyword:''};
+const el={title:$('#title'),slug:$('#slug'),excerpt:$('#excerpt'),canvas:$('#canvas'),cover:$('#cover'),coverAlt:$('#coverAlt'),status:$('#status'),visibility:$('#visibility'),schedule:$('#schedule'),seoTitle:$('#seoTitle'),seoDesc:$('#seoDesc'),featThumb:$('#featThumb'),focusKeyword:$('#focusKeyword')};
+const slugify=s=>(s||'').toLowerCase().trim().replace(/[^\w\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-');
+el.title.addEventListener('input',()=>{if(!el.slug.dataset.touched){el.slug.value=slugify(el.title.value);updateSeo()}updateCounts();updateKeywordBadges()}); el.slug.addEventListener('input',()=>{el.slug.dataset.touched='1';updateSeo()}); el.seoTitle.addEventListener('input',()=>{updateSeo();updateKeywordBadges()}); el.seoDesc.addEventListener('input',()=>{updateSeo();updateKeywordBadges()}); el.excerpt.addEventListener('input',()=>{updateSeo();updateKeywordBadges()});
+function updateSeo(){$('#seoPrevTitle').textContent=el.seoTitle.value.trim()||el.title.value.trim()||'Your title will appear here';$('#seoPrevSlug').textContent=el.slug.value.trim()||'your-slug';$('#seoPrevDesc').textContent=el.seoDesc.value.trim()||el.excerpt.value.trim()||'Your meta description preview.'}
+el.cover.addEventListener('input',()=>{if(!current.coverData)el.featThumb.src=el.cover.value||''});
+function exec(cmd,val=null){document.execCommand(cmd,false,val);el.canvas.focus();updateCounts();updateKeywordBadges()}
+$('#format').addEventListener('change',e=>exec('formatBlock',e.target.value));
+$('#toolbar').addEventListener('click',e=>{const b=e.target.closest('.tool');if(!b)return;const cmd=b.dataset.cmd;cmd&&exec(cmd,b.dataset.val||null)});
+$('#btnLink').onclick=()=>{const url=prompt('URL?','https://');if(url)exec('createLink',url)}; $('#btnUnlink').onclick=()=>exec('unlink'); $('#btnImage').onclick=()=>{const url=prompt('Image URL?','https://');if(url)exec('insertImage',url)};
+$('#btnCode').onclick=()=>{const sel=document.getSelection();if(!sel||sel.toString()===''){exec('formatBlock','PRE')}else{exec('insertHTML',`<code>${sel.toString().replace(/[<>&]/g,m=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[m]))}</code>`)}};
+function wordStats(html){const d=document.createElement('div');d.innerHTML=html;const text=d.textContent||d.innerText||'';const words=(text.trim().match(/\S+/g)||[]).length;const chars=text.replace(/\s+/g,'').length;const heads=d.querySelectorAll('h1,h2,h3,h4,h5,h6').length;const imgs=d.querySelectorAll('img').length;return{words,chars,heads,imgs}}
+function updateCounts(){const h=el.canvas.innerHTML;const {words,chars,heads,imgs}=wordStats(h);const mins=Math.max(1,Math.round(words/200));$('#counts').textContent=`${words} words · ${mins} min read`;$('#statsBox').textContent=`${chars} chars · ${words} words · ${heads} headings · ${imgs} images`}
+$('#canvas').addEventListener('input',()=>{updateCounts();updateKeywordBadges()});['keyup','blur','paste'].forEach(ev=>$('#canvas').addEventListener(ev,()=>{updateCounts();updateKeywordBadges()}));
+$('#previewBtn').onclick=()=>{const w=open('','_blank');const title=el.seoTitle.value||el.title.value||'(untitled)';const img=current.coverData||el.cover.value;const alt=el.coverAlt.value||'';w.document.write(`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${title}</title><style>body{font-family:Inter,system-ui,Arial,sans-serif;max-width:820px;margin:30px auto;padding:0 16px;line-height:1.6;color:#1f1e2e}h1,h2,h3{line-height:1.2}img{max-width:100%;height:auto;border-radius:10px;margin:16px 0}pre,code{background:#f5f4ff;padding:2px 6px;border-radius:6px;font-family:ui-monospace,Menlo,Consolas,monospace}hr{border:0;border-top:1px solid #ddd;margin:24px 0}blockquote{border-left:4px solid #ccc;padding-left:12px;color:#555;font-style:italic;margin:16px 0}</style></head><body><h1>${el.title.value||'(untitled)'}</h1>${img?`<img src="${img}" alt="${alt}">`:''}${el.canvas.innerHTML||'<p><em>No content</em></p>'}</body></html>`);w.document.close()}
+function badge(id,st){const b=$(id);if(!b)return;if(st==='yes'){b.textContent='Yes';b.className='pill pill-ok'}else if(st==='maybe'){b.textContent='Partial';b.className='pill pill-warn'}else{b.textContent='No';b.className='pill pill-bad'}}
+function updateKeywordBadges(){const kw=(el.focusKeyword.value||'').trim().toLowerCase();if(!kw){badge('#kwTitle','no');badge('#kwDesc','no');badge('#kwBody','no');return}const t=(el.seoTitle.value||el.title.value||'').toLowerCase();const d=(el.seoDesc.value||el.excerpt.value||'').toLowerCase();const tmp=document.createElement('div');tmp.innerHTML=el.canvas.innerHTML;const body=(tmp.textContent||tmp.innerText||'').toLowerCase();const chk=str=>{if(!str)return'no';if(str.includes(kw))return'yes';const fw=kw.split(/\s+/)[0];return fw&&str.includes(fw)?'maybe':'no'};badge('#kwTitle',chk(t));badge('#kwDesc',chk(d));badge('#kwBody',chk(body))}
+el.focusKeyword.addEventListener('input',updateKeywordBadges);
+
+/* Categories & Tags */
+function cats(){return read(LS_CATS,['General','Announcements','Tips','Product'])} function saveCats(a){write(LS_CATS,a);renderCats(current.categories)}
+function renderCats(sel=[]){const box=$('#catsBox');if(!box)return;box.innerHTML='';cats().forEach(n=>{const div=document.createElement('div');div.innerHTML=`<label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" value="${n}"> ${n}</label>`;div.querySelector('input').checked=sel.includes(n);box.appendChild(div)})}
+$('#addCatBtn').onclick=()=>{const v=$('#newCat').value.trim();if(!v)return;const arr=cats();if(!arr.includes(v)){arr.push(v);saveCats(arr);toast('Category added')}$('#newCat').value=''}
+function renderTags(tokens){const w=$('#tagsTokens');w.innerHTML='';tokens.forEach((t,i)=>{const d=document.createElement('div');d.className='token';d.innerHTML=`<span>#${t}</span><span class="x" data-x="${i}">✕</span>`;w.appendChild(d)});w.querySelectorAll('[data-x]').forEach(x=>x.onclick=()=>{current.tags.splice(parseInt(x.dataset.x),1);renderTags(current.tags)})}
+$('#addTagBtn').onclick=()=>{const v=$('#tagInput').value.trim().toLowerCase();if(!v)return;if(!current.tags.includes(v)){current.tags.push(v);renderTags(current.tags)}$('#tagInput').value=''}; $('#tagInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('#addTagBtn').click()}})
+
+/* Featured image upload + add to Media */
+const dz=$('#dropZone'), fileInput=$('#coverFile'), btnPick=$('#btnPickFile'), btnClear=$('#btnClearImage'), imgInfo=$('#imgInfo');
+btnPick.onclick=()=>fileInput.click(); btnClear.onclick=()=>{current.coverData='';imgInfo.textContent='No file';$('#featThumb').src=el.cover.value||'';toast('Image cleared')}
+;['dragenter','dragover'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();e.stopPropagation();dz.classList.add('hover')}));['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();e.stopPropagation();dz.classList.remove('hover')})); dz.addEventListener('drop',e=>{const f=e.dataTransfer.files&&e.dataTransfer.files[0];f&&handleImageFile(f,true)}); fileInput.addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];f&&handleImageFile(f,true)});
+function handleImageFile(file, pushToMedia){if(!file.type.startsWith('image/')){alert('Please select an image file');return}const reader=new FileReader();reader.onload=()=>{const url=reader.result;compressImage(url,1600,0.82).then(out=>{current.coverData=out;$('#featThumb').src=out;imgInfo.textContent=file.name+' • '+Math.round(out.length/1024)+'KB (approx)';toast('Image uploaded');if(pushToMedia)addToMedia({name:file.name,data:out,alt:el.coverAlt.value||''})}).catch(()=>{current.coverData=url;$('#featThumb').src=url;imgInfo.textContent=file.name;toast('Image uploaded');if(pushToMedia)addToMedia({name:file.name,data:url,alt:el.coverAlt.value||''})})};reader.readAsDataURL(file)}
+function compressImage(dataUrl,maxSide=1600,quality=0.82){return new Promise((res,rej)=>{const img=new Image();img.onload=()=>{let w=img.width,h=img.height;if(Math.max(w,h)>maxSide){if(w>h){h=Math.round(h*maxSide/w);w=maxSide}else{w=Math.round(w*maxSide/h);h=maxSide}}const c=document.createElement('canvas');c.width=w;c.height=h;const ctx=c.getContext('2d');ctx.drawImage(img,0,0,w,h);res(c.toDataURL('image/jpeg',quality))};img.onerror=rej;img.src=dataUrl})}
+function collectCats(){return Array.from($('#catsBox').querySelectorAll('input[type="checkbox"]')).filter(i=>i.checked).map(i=>i.value)}
+function loadForEdit(idx){const arr=posts();const p=arr[idx];if(!p)return;current={idx,...p,tags:(p.tags||[]),categories:(p.categories||[])};el.title.value=p.title||'';el.slug.value=p.slug||'';el.seoTitle.value=p.seoTitle||'';el.seoDesc.value=p.seoDesc||'';el.excerpt.value=p.excerpt||'';el.canvas.innerHTML=p.content||'';el.cover.value=p.cover||'';el.coverAlt.value=p.coverAlt||'';current.coverData=p.coverData||'';el.status.value=p.status||'draft';el.visibility.value=p.visibility||'public';el.schedule.value=p.schedule||'';el.focusKeyword.value=p.focusKeyword||'';el.featThumb.src=current.coverData||el.cover.value||'';renderCats(current.categories);renderTags(current.tags);updateSeo();updateCounts();updateKeywordBadges()}
+function newEditor(){current={idx:null,title:'',slug:'',excerpt:'',content:'',cover:'',coverData:'',coverAlt:'',status:'draft',visibility:'public',schedule:'',tags:[],categories:[],seoTitle:'',seoDesc:'',focusKeyword:''};el.title.value='';el.slug.value='';el.slug.removeAttribute('data-touched');el.seoTitle.value='';el.seoDesc.value='';el.excerpt.value='';el.canvas.innerHTML='';el.cover.value='';el.coverAlt.value='';el.status.value='draft';el.visibility.value='public';el.schedule.value='';el.focusKeyword.value='';el.featThumb.src='';imgInfo.textContent='No file';renderCats([]);renderTags([]);updateSeo();updateCounts();updateKeywordBadges()}
+function savePost(){const data={title:el.title.value.trim(),slug:el.slug.value.trim()||slugify(el.title.value),excerpt:el.excerpt.value.trim(),content:el.canvas.innerHTML,cover:el.cover.value.trim(),coverData:current.coverData||'',coverAlt:el.coverAlt.value.trim(),status:el.status.value,visibility:el.visibility.value,schedule:el.schedule.value,tags:current.tags.slice(),categories:collectCats(),seoTitle:el.seoTitle.value.trim(),seoDesc:el.seoDesc.value.trim(),focusKeyword:el.focusKeyword.value.trim(),updatedAt:now()};const arr=posts();if(current.idx!==null&&arr[current.idx])arr[current.idx]=data;else arr.unshift(data);savePosts(arr);toast('Post saved');showView('posts')}
+$('#saveBtn').onclick=savePost; $('#saveTopBtn').onclick=savePost; $('#deleteBtn').onclick=()=>{if(current.idx===null){newEditor();return}const arr=posts();if(confirm('Delete this post?')){arr.splice(current.idx,1);savePosts(arr);toast('Deleted');showView('posts')}}
+
+/* ========= MEDIA ========= */
+function medias(){return read(LS_MEDIA,[])} function saveMedias(a){write(LS_MEDIA,a)}
+function addToMedia(obj){const list=medias();if(!list.some(i=>i.data===obj.data)){list.unshift({...obj,createdAt:now()});saveMedias(list)}}
+function renderMedia(){const grid=$('#mediaGrid');grid.innerHTML='';const list=medias();$('#mediaEmpty').style.display=list.length?'none':'block';list.forEach((m,i)=>{const sizeKB=Math.round((m.data.length||0)/1024);const card=document.createElement('div');card.className='media-card';card.innerHTML=`<div class="media-thumb"><img src="${m.data}" alt="${m.alt||''}"></div><div class="media-body"><div style="font-weight:600;font-size:12px;color:var(--ink-800);word-break:break-all">${m.name||'untitled'}</div><div class="help" style="margin-top:0">${sizeKB} KB approx</div><div class="help" style="margin-top:0">Added: ${new Date(m.createdAt).toLocaleString()}</div><div class="media-actions"><button class="btn" data-copy="${i}" style="font-size:11px;padding:6px 8px"><i class="entypo-docs"></i>Copy URL</button><button class="btn danger" data-delmedia="${i}" style="font-size:11px;padding:6px 8px"><i class="entypo-trash"></i>Delete</button></div></div>`;grid.appendChild(card)});grid.querySelectorAll('[data-copy]').forEach(b=>b.onclick=()=>{const i=parseInt(b.dataset.copy);const item=medias()[i];navigator.clipboard.writeText(item.data).then(()=>toast('Image data copied')).catch(()=>toast('Could not copy'))});grid.querySelectorAll('[data-delmedia]').forEach(b=>b.onclick=()=>{const i=parseInt(b.dataset.delmedia);const list=medias();if(confirm(`Delete "${list[i]?.name||'image'}" from library?`)){list.splice(i,1);saveMedias(list);renderMedia();toast('Image removed')}})}
+const mediaInput=$('#mediaFile'), mediaBtn=$('#mediaUploadBtn'), mediaDrop=$('#mediaDrop'); mediaBtn.onclick=()=>mediaInput.click(); mediaInput.addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];f&&handleStandaloneMedia(f)}); ['dragenter','dragover'].forEach(ev=>mediaDrop.addEventListener(ev,e=>{e.preventDefault();e.stopPropagation();mediaDrop.classList.add('hover')})); ['dragleave','drop'].forEach(ev=>mediaDrop.addEventListener(ev,e=>{e.preventDefault();e.stopPropagation();mediaDrop.classList.remove('hover')})); mediaDrop.addEventListener('drop',e=>{const f=e.dataTransfer.files&&e.dataTransfer.files[0];f&&handleStandaloneMedia(f)}); function handleStandaloneMedia(file){if(!file.type.startsWith('image/')){alert('Please select an image file');return}const reader=new FileReader();reader.onload=()=>{const url=reader.result;compressImage(url,1600,0.82).then(out=>{addToMedia({name:file.name,data:out,alt:''});toast('Image uploaded to media');renderMedia()}).catch(()=>{addToMedia({name:file.name,data:url,alt:''});toast('Image uploaded to media');renderMedia()})};reader.readAsDataURL(file)}
+
+/* ========= SUBSCRIBERS & COUPONS ========= */
+function subs(){return read(LS_SUBS,[])} function saveSubs(a){write(LS_SUBS,a)}
+function coupons(){return read(LS_COUPONS,[])} function saveCoupons(a){write(LS_COUPONS,a)}
+function renderSubs(){const body=$('#subsBody');body.innerHTML='';const arr=subs();$('#subsEmpty').style.display=arr.length?'none':'block';arr.forEach((s,i)=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="check-col"><input class="sub-check" data-idx="${i}" type="checkbox"></td><td style="font-weight:600">${s.email}</td><td>${s.source||'-'}</td><td>${new Date(s.joinedAt).toLocaleString()}</td><td><button class="btn danger" data-rm="${i}"><i class="entypo-trash"></i>Remove</button></td>`;body.appendChild(tr)});$('#checkAllSubs').checked=false;$('#checkAllSubs').onchange=()=>{$$('.sub-check').forEach(cb=>cb.checked=$('#checkAllSubs').checked);updateSelectedInfo()};$$('.sub-check').forEach(cb=>cb.onchange=updateSelectedInfo);body.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{const arr2=subs();const idx=parseInt(b.dataset.rm);if(confirm(`Remove "${arr2[idx]?.email}"?`)){arr2.splice(idx,1);saveSubs(arr2);renderSubs();updateSelectedInfo();toast('Subscriber removed')}});updateSelectedInfo()}
+function getSelectedEmails(){const arr=subs();return $$('.sub-check').filter(cb=>cb.checked).map(cb=>arr[parseInt(cb.dataset.idx)]?.email).filter(Boolean)}
+function updateSelectedInfo(){const sel=getSelectedEmails();$('#selCountTop').textContent=sel.length+' selected';$('#couponSelInfo').textContent=sel.length+' selected'}
+$('#subAdd').onclick=()=>{const email=$('#subEmail').value.trim();if(!/^\S+@\S+\.\S+$/.test(email)){alert('Please enter a valid email');return}const arr=subs();if(arr.some(s=>s.email===email)){alert('Already exists');return}arr.unshift({email,source:'manual',joinedAt:now()});saveSubs(arr);$('#subEmail').value='';renderSubs();toast('Subscriber added')}
+function csv(rows){const header=['email','source','joinedAt'];const lines=[header.join(',')];rows.forEach(r=>{const line=[r.email,r.source||'',r.joinedAt||''].map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',');lines.push(line)});return lines.join('\n')}
+function dl(text,filename,mime){const blob=new Blob([text],{type:mime});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url)}
+$('#exportCSV').onclick=()=>{const data=subs();if(!data.length){alert('No subscribers');return}dl(csv(data),'subscribers.csv','text/csv;charset=utf-8')}
+$('#exportXLSX').onclick=()=>{const data=subs();if(!data.length){alert('No subscribers');return}dl(csv(data),'subscribers.xlsx','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')}
+function renderCoupons(){const body=$('#couponBody');body.innerHTML='';const arr=coupons();$('#couponEmpty').style.display=arr.length?'none':'block';arr.forEach((c,i)=>{const tr=document.createElement('tr');const disc=c.type==='freeplan'?'FREE / 100% off':(c.percent+'% off');const lim=c.outputsLimit?c.outputsLimit:'plan default';const emails=c.assignedEmails?.length?c.assignedEmails.join(', '):'-';tr.innerHTML=`<td style="font-weight:600">${c.code}</td><td>${c.plan}</td><td>${disc}</td><td>${lim}</td><td style="font-size:12px;line-height:1.4">${emails}</td><td>${new Date(c.createdAt).toLocaleString()}</td><td><button class="btn danger" data-delcoupon="${i}"><i class="entypo-trash"></i>Del</button></td>`;body.appendChild(tr)});body.querySelectorAll('[data-delcoupon]').forEach(b=>b.onclick=()=>{const arr2=coupons();const idx=parseInt(b.dataset.delcoupon);if(confirm('Delete this coupon?')){arr2.splice(idx,1);saveCoupons(arr2);renderCoupons();toast('Coupon deleted')}})}
+function randCoupon(){const base='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let out='';for(let i=0;i<6;i++)out+=base[Math.floor(Math.random()*base.length)];return 'PROMO-'+out}
+$('#genCoupon').onclick=()=>{$('#couponCode').value=randCoupon()}
+$('#createCouponBtn').onclick=()=>{const code=$('#couponCode').value.trim()||randCoupon();const plan=$('#couponPlan').value;const type=$('#couponType').value;const percent=$('#couponPercent').value.trim();const outputs=$('#couponOutputs').value.trim();const selected=getSelectedEmails();const extraRaw=$('#extraEmails').value.trim();const extra=extraRaw?extraRaw.split(',').map(e=>e.trim()).filter(Boolean):[];const all=[...new Set([...selected,...extra])];if(type==='percent'){const n=Number(percent);if(!n||n<=0||n>100){alert('Please enter valid % (1-100)');return}}const obj={code,plan,type,percent:type==='percent'?Number(percent):100,outputsLimit:outputs?Number(outputs):null,assignedEmails:all,createdAt:now()};const arr=coupons();arr.unshift(obj);saveCoupons(arr);$('#couponCode').value='';$('#couponPercent').value='';$('#couponOutputs').value='';$('#extraEmails').value='';renderCoupons();toast('Coupon created')}
+
+/* ========= SETTINGS: USERS, ACCOUNT, AUDIT ========= */
+function users(){return ensureUsers()}
+function saveUsers(list){write(LS_USERS,list)}
+function audit(){return ensureAudit()}
+function pushAudit(action,target,details){const p=ensureProfile();const list=audit();list.unshift({time:now(),actor:p.email,action,target,details});write(LS_AUDIT,list)}
+function renderUsers(){const body=$('#usersBody');body.innerHTML='';const list=users();$('#usersEmpty').style.display=list.length?'none':'block';list.forEach((u,i)=>{const tr=document.createElement('tr');const roleSel=(u.role==='owner')?'<span class="tiny-label">Owner</span>':`<select data-role="${i}"><option value="admin"${u.role==='admin'?' selected':''}>Admin</option><option value="editor"${u.role==='editor'?' selected':''}>Editor</option><option value="viewer"${u.role==='viewer'?' selected':''}>Viewer</option></select>`;tr.innerHTML=`<td><strong>${u.email}</strong>${u.role==='owner'?' <span class="help">(primary owner)</span>':''}</td><td>${roleSel}</td><td>${u.status}</td><td>${new Date(u.joinedAt).toLocaleString()}</td><td>${u.role==='owner'?'—':`<button class="btn" data-toggle="${i}">${u.status==='disabled'?'Enable':'Disable'}</button> <button class="btn danger" data-deluser="${i}"><i class="entypo-trash"></i>Remove</button> <button class="btn" data-reset="${i}">Reset Pwd</button>`}</td>`;body.appendChild(tr)});body.querySelectorAll('[data-role]').forEach(sel=>sel.onchange=()=>{const idx=parseInt(sel.dataset.role);const list=users();list[idx].role=sel.value;saveUsers(list);pushAudit('change_role',list[idx].email,sel.value);renderUsers();toast('Role changed')});body.querySelectorAll('[data-toggle]').forEach(b=>b.onclick=()=>{const idx=parseInt(b.dataset.toggle);const list=users();list[idx].status=list[idx].status==='disabled'?'active':'disabled';saveUsers(list);pushAudit('toggle_user',list[idx].email,list[idx].status);renderUsers();toast('Status updated')});body.querySelectorAll('[data-deluser]').forEach(b=>b.onclick=()=>{const idx=parseInt(b.dataset.deluser);const list=users();if(confirm(`Remove ${list[idx].email}?`)){pushAudit('remove_user',list[idx].email,'');list.splice(idx,1);saveUsers(list);renderUsers();toast('User removed')}});body.querySelectorAll('[data-reset]').forEach(b=>b.onclick=()=>{const idx=parseInt(b.dataset.reset);pushAudit('reset_password',users()[idx].email,'');toast('Password reset link would be sent (demo)')})}
+$('#inviteBtn').onclick=()=>{const email=$('#inviteEmail').value.trim();const role=$('#inviteRole').value;if(!/^\S+@\S+\.\S+$/.test(email)){alert('Enter a valid email');return}const list=users();if(list.some(u=>u.email===email)){alert('User already exists');return}list.push({email,role,status:'invited',joinedAt:now()});saveUsers(list);pushAudit('invite_user',email,role);$('#inviteEmail').value='';renderUsers();toast('Invite recorded (demo)')}
+function renderProfileUI(){const p=ensureProfile();$('#topEmail').textContent=p.email;$('#twofa').checked=!!p.twofa}
+$('#changeEmailBtn').onclick=()=>{const p=ensureProfile();const v=$('#newEmail').value.trim();if(!/^\S+@\S+\.\S+$/.test(v)){alert('Enter a valid email');return}p.email=v;write(LS_PROFILE,p);const list=users();const owner=list.find(u=>u.role==='owner');if(owner){owner.email=v;saveUsers(list)}pushAudit('change_email',v,'');$('#newEmail').value='';renderProfileUI();renderUsers();toast('Email updated')}
+$('#changePassBtn').onclick=()=>{const p=ensureProfile();const cur=$('#currPass').value;const np=$('#newPass').value;const cp=$('#confPass').value;if(cur!==p.password){alert('Current password is wrong');return}if(np.length<8){alert('Password must be at least 8 chars');return}if(np!==cp){alert('Passwords do not match');return}p.password=np;write(LS_PROFILE,p);$('#currPass').value=$('#newPass').value=$('#confPass').value='';pushAudit('change_password',p.email,'');toast('Password changed')}
+$('#twofa').addEventListener('change',e=>{const p=ensureProfile();p.twofa=e.target.checked;write(LS_PROFILE,p);pushAudit('toggle_2fa',p.email,String(p.twofa));toast('2FA setting saved')})
+$('#signoutAllBtn').onclick=()=>{pushAudit('signout_all',ensureProfile().email,'');toast('All sessions revoked (demo)')}
+function renderAudit(){const body=$('#auditBody');body.innerHTML='';const list=audit();$('#auditEmpty').style.display=list.length?'none':'block';list.forEach(a=>{const tr=document.createElement('tr');tr.innerHTML=`<td>${new Date(a.time).toLocaleString()}</td><td>${a.actor}</td><td>${a.action}</td><td>${a.target||'-'}</td><td>${a.details||'-'}</td>`;body.appendChild(tr)})}
+$('#auditExport').onclick=()=>{const list=audit();if(!list.length){alert('No audit entries');return}const header='time,actor,action,target,details';const lines=list.map(a=>[a.time,a.actor,a.action,a.target||'',a.details||''].map(v=>`"${String(v).replace(/"/g,'""')}"`).join(','));dl([header,...lines].join('\n'),'audit-log.csv','text/csv;charset=utf-8')}
+
+/* ========= BOOT ========= */
+function boot(){ensureProfile();ensureUsers();renderPosts();renderSubs();renderCoupons();renderMedia();renderUsers();renderAudit();renderProfileUI();newEditor();showView('posts')}
+boot();
+</script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+/* ====================================================================
+   create-campaign.prompt.css — UI revamp V13 (Bulk-Apply hover fix)
+   ▸ ≥ 576 px : “New Prompt” & dropdown yan yana
+   ▸ ≤ 575 px : buton üstte – dikey yığın
+   ▸ “Apply” + “Bulk Actions” aynı satır
+   ==================================================================== */
+
+
+/* ───────── 1) Değişkenler ───────── */
+:root{
+  --primary-500:#7B4FFF;
+  --primary-600:#693DF0;
+  --gray-100 :#F7F8FC;
+  --gray-300 :#E4E7EE;
+  --gray-400 :#CDD1DF;
+  --gray-900 :#1F2333;
+}
+
+/* ───────── 2) Ortak stiller (özet) ───────── */
+body{background:#F5F6FA;font-family:'Inter',sans-serif;}
+label{font-weight:600;color:var(--gray-900);}
+.form-control-lg{
+  height:56px;font-size:16px;border-radius:12px;
+  border:1px solid var(--gray-300);background:var(--gray-100);
+}
+.form-control-lg::placeholder{color:var(--gray-400);}
+#cardExisting,#cardNew{display:none!important;}
+.toggle-sys-btn{font-weight:600;color:var(--primary-500);display:inline-block;margin:12px 0;}
+#newControls{margin:12px 0;} #newControls input{max-width:320px;}
+
+/* ───────── 3) “New Prompt” satırı ───────── */
+#existingControls{
+  display:flex;
+  flex-wrap:nowrap;         
+  overflow-x:visible;    
+  gap:16px;
+}
+#existingControls select{min-width:220px;flex:0 0 auto;}
+
+/* Mor CTA (New Prompt / Manage) */
+.btn.btn-purple,
+#manageTemplatesBtn,
+.btn-manage{
+  background:var(--primary-500)!important;
+  color:#fff!important;
+  border:none;border-radius:12px;
+  height:46px;padding:0 24px;
+  font-size:14px;font-weight:600;
+  display:flex;align-items:center;gap:8px;
+  flex:0 0 auto;white-space:nowrap;
+  transition:all .15s ease;
+}
+.btn.btn-purple:disabled,
+.btn-manage:disabled,
+#manageTemplatesBtn:disabled{
+  background:rgba(123,79,255,.15)!important;
+  color:rgba(123,79,255,.40)!important;
+  cursor:not-allowed;transform:none;filter:none;
+}
+
+/* Hover / focus – halo kaldırıldı */
+.btn.btn-purple:not(:disabled):hover,
+.btn.btn-purple:not(:disabled):focus,
+#manageTemplatesBtn:not(:disabled):hover,
+#manageTemplatesBtn:not(:disabled):focus,
+.btn-manage:not(:disabled):hover,
+.btn-manage:not(:disabled):focus{
+  filter:brightness(1.08);
+  transform:scale(1.015);
+  color:#fff!important;
+  outline:none!important;
+  box-shadow:none!important;
+}
+.btn.btn-purple:focus-visible,
+#manageTemplatesBtn:focus-visible,
+.btn-manage:focus-visible{
+  outline:none!important;
+  box-shadow:none!important;
+}
+
+/* Masaüstü hizalama */
+@media (min-width:576px){#existingControls{align-items:flex-end;}}
+/* Mobil hizalama */
+@media (max-width:575.98px){
+  #existingControls{flex-direction:column;align-items:stretch;gap:12px;}
+  #existingControls .btn{width:100%;order:-1;}
+  #existingControls select{width:100%;}
+}
+
+/* ───────── 4) Bulk Actions + Apply hizalaması ───────── */
+.bulk-actions{                         /* tablo üst barındaki kapsayıcı */
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:12px;
+  overflow:visible;                    /* ölçeklenince buton taşsın     */
+  position:relative;                   /* z-index referansı             */
+}
+
+/* ▼ Select ve Apply butonu aynı yükseklik */
+.bulk-actions select,
+.bulk-actions .btn{
+  height:40px;
+  font-size:14px;
+  border-radius:22px;                  /* yarım-pill                    */
+  padding:0 24px;
+}
+
+/* Apply butonu solda görünmeli — markup sağda kalıyorsa order kullan */
+.bulk-actions .btn{order:-1;}          /* “Apply” en sola taşınır       */
+
+/* Ho-fo durumunda hâlâ halo yok & parlak efekt */
+.bulk-actions .btn:not(:disabled):hover,
+.bulk-actions .btn:not(:disabled):focus{
+  filter:brightness(1.08);
+  transform:scale(1.015);
+  box-shadow:none!important;
+  outline:none!important;
+}
+
+/* Mobilde alt alta */
+@media (max-width:575.98px){
+  .bulk-actions{flex-direction:column;align-items:stretch;}
+  .bulk-actions select,
+  .bulk-actions .btn{width:100%;}
+}
+
+/* ───────── 4.1)  ptBulkApply  – gri mini-buton revizyonu ─────────
+       Hover’da alt çizginin altına girmeyecek şekilde z-index yüksek */
+#ptBulkApply{
+  background:var(--gray-100)!important;   /* açık gri zemin              */
+  color:var(--gray-900)!important;        /* koyu metin                  */
+  border:1px solid transparent!important; /* varsayılan kenarlık yok     */
+  border-radius:12px!important;           /* köşe kıvrımı                */
+  min-width:auto!important;               /* yazı kadar genişlik         */
+  padding:0 20px!important;               /* metne hafif nefes           */
+  transition:all .15s ease;
+  position:relative;                      /* katman kontrolü             */
+  z-index:10;                             /* hr çizgisinin üstünde kalsın*/
+}
+
+/* Hover / focus – mor çerçeve + hafif zoom */
+#ptBulkApply:not(:disabled):hover,
+#ptBulkApply:not(:disabled):focus{
+  background:var(--gray-100)!important;
+  border:1px solid var(--primary-500)!important; /* mor kenarlık          */
+  color:var(--primary-500)!important;            /* uyumlu metin rengi    */
+  transform:scale(1.05);                         /* zoom efekti           */
+  filter:none;
+  box-shadow:none!important;
+  outline:none!important;
+  z-index:11;                                    /* hover’da da üstte kalsın */
+}
+
+#ptBulkApply:focus-visible{
+  outline:none!important;
+  box-shadow:none!important;
+}
+
+/* —— Prompt-Templates DataTable başlık metni fix —— */
+#ptTable thead th{
+  font-size:13px !important;      /* istediğiniz boy » temaya göre düzenleyin */
+  color:var(--gray-900) !important;
+  text-indent:0;                  /* DataTables ok simgesi boşluklarını sıfırla */
+}
+
+/* ────────────────────────────────────────────────────────────
+   Prompt-Templates DataTable – Başlık metni ZORLA görünür kıl
+   (Neon-theme / DataTables skin’indeki sorting kuralını ezer)
+   ──────────────────────────────────────────────────────────── */
+#ptTable.dataTable.display thead th,
+#ptTable.dataTable.display thead th.sorting,
+#ptTable.dataTable.display thead th.sorting_asc,
+#ptTable.dataTable.display thead th.sorting_desc{
+    font-size: 13px !important;      /* geri getir */
+    color: var(--gray-900) !important;
+    text-indent: 0 !important;       /* -9999px’i sıfırla */
+    line-height: 1.35 !important;
+    white-space: nowrap;             /* uzun başlıklar taşmasın */
+    overflow: visible !important;    /* güvenlik: kırpma iptal   */
+    padding: 10px 18px !important;   /* üst-alt nefes */
+}
+
+}
+
+
+/*  — dosya sonu —  */

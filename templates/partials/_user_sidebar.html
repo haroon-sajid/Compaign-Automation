@@ -1,0 +1,738 @@
+<!-- templates/partials/_user_sidebar.html -->
+{% load static %}
+
+<style>
+  :root {
+    --g1: #3f2f85;
+    --g2: #2b2551;
+    --ink: #ecebff;
+    --ink-dim: #d4d2ff;
+    --hover: rgba(255, 255, 255, .07);
+    --active: rgba(255, 255, 255, .12);
+    --border: #a99bf7;
+    --divider: rgba(255, 255, 255, .14);
+    --sheen: linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, 0) 32%);
+    --brand-pad-x: 20px;
+    --sidebar-w: 282px;
+    --sidebar-w-c: 72px;
+    --flyout-w: 240px;
+    --toggle-w: 28px;
+    --toggle-h: 64px;
+    --anim: 170ms ease;
+  }
+
+  .sidebar-menu {
+    overflow-x: hidden !important;
+  }
+
+  .sidebar-menu,
+  .sidebar-menu .sidebar-menu-inner {
+    background: transparent !important;
+  }
+
+  .sidebar-menu {
+    width: var(--sidebar-w);
+    color: var(--ink);
+    background: var(--sheen), linear-gradient(180deg, var(--g1), var(--g2)) !important;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow-y: auto;
+    transition: width var(--anim);
+    contain: layout;
+  }
+
+  .sidebar-menu::after {
+    content: "";
+    position: absolute;
+    right: -1px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, .28), rgba(255, 255, 255, 0) 45%, rgba(255, 255, 255, .2)) !important;
+    opacity: .35;
+    pointer-events: none;
+    display: none !important;
+  }
+
+  .logo-env {
+    position: relative;
+    min-height: 88px;
+    padding: 22px var(--brand-pad-x);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid var(--divider);
+    transition: padding var(--anim), min-height var(--anim);
+  }
+
+  .logo-full img,
+  .logo-mini img {
+    display: block;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .logo-full img {
+    width: 120px;
+    max-width: 120px;
+  }
+
+  .logo-mini {
+    display: none;
+  }
+
+  .logo-mini img {
+    width: 40px;
+    max-width: calc(var(--sidebar-w-c) - 20px);
+  }
+
+  .section-label {
+    color: #dcd8ff;
+    opacity: .95;
+    font-weight: 700;
+    font-size: 11.5px;
+    letter-spacing: .2px;
+    padding: 12px 18px 8px;
+    transition: opacity var(--anim), height var(--anim), margin var(--anim);
+  }
+
+  .team-select {
+    margin: 10px !important;
+    height: fit-content !important;
+    padding: 9px 12px !important;
+    background: rgba(255, 255, 255, .06) !important;
+    border: 1px solid rgba(255, 255, 255, .22) !important;
+    border-radius: 10px !important;
+    color: #f7f6ff !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    transition: opacity var(--anim), height var(--anim), margin var(--anim), padding var(--anim) !important;
+    overflow: hidden !important;
+    cursor: pointer !important;
+    width: calc(100% - 28px) !important;
+  }
+
+  .team-select option {
+    color: black;
+  }
+
+  .team-select .label {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .team-select .chev {
+    color: #fff;
+    opacity: .9;
+  }
+
+  .main-menu {
+    list-style: none;
+    margin: 6px 0 0;
+    padding: 0;
+  }
+
+  .main-menu ul {
+    list-style: none !important;
+    margin: 0;
+    padding: 0;
+    background: var(--sheen), linear-gradient(180deg, var(--g1), var(--g2)) !important;
+  }
+
+
+  .main-menu a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 18px !important;
+    color: var(--ink);
+    text-decoration: none !important;
+    border-left: 3px solid transparent;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: .03px;
+    transition: background .15s, color .15s, padding var(--anim) !important;
+    position: relative;
+  }
+
+  .main-menu a i {
+    width: 20px;
+    text-align: center;
+    font-size: 15px;
+    color: var(--ink-dim);
+    flex: 0 0 20px;
+  }
+
+  .main-menu a .title {
+    flex: 1 1 auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .main-menu a:hover {
+    background: var(--hover);
+    color: #fff;
+  }
+
+  .page-container .sidebar-menu #main-menu li ul>li>a {
+    background-color: transparent !important;
+  }
+
+  .main-menu li.active>a {
+    background: transparent !important;
+    color: #fff;
+    font-weight: 600;
+    /* border-left-color: var(--border); */
+  }
+
+  .main-menu .has-sub>a .caret {
+    margin-left: auto;
+    transition: transform var(--anim);
+  }
+
+  .main-menu .has-sub.opened>a .caret {
+    transform: rotate(180deg);
+  }
+
+  .main-menu .has-sub ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    /* display: none !important; */
+  }
+
+  .main-menu .has-sub ul.visible {
+    display: block !important;
+  }
+
+  .main-menu .has-sub.opened ul {
+    display: block !important;
+  }
+
+  .main-menu .has-sub ul a {
+    padding: 9px 18px 9px 44px;
+    color: #ddd8ff;
+    font-weight: 600;
+    font-size: 12.5px;
+  }
+
+  .main-menu .has-sub ul a:hover {
+    background: var(--hover);
+    color: #fff;
+  }
+
+  .main-menu .has-sub ul li.active>a {
+    background: var(--active);
+    color: #fff;
+    position: relative;
+  }
+
+  .main-menu .has-sub ul li.active>a::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--border);
+  }
+
+  /* COLLAPSED STATE */
+  .sidebar-menu.collapsed {
+    width: var(--sidebar-w-c) !important;
+  }
+
+  .sidebar-menu.collapsed .logo-env {
+    min-height: 72px;
+    padding: 12px 8px;
+  }
+
+  .sidebar-menu.collapsed .logo-full {
+    display: none;
+  }
+
+  .sidebar-menu.collapsed .logo-mini {
+    display: block;
+  }
+
+  .sidebar-menu.collapsed .section-label,
+  .sidebar-menu.collapsed .team-select {
+    height: 0;
+    margin: 0;
+    padding: 0 12px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .sidebar-menu.collapsed .main-menu a {
+    padding: 11px 14px;
+    justify-content: center;
+  }
+
+  .sidebar-menu.collapsed .main-menu a .title,
+  .sidebar-menu.collapsed .main-menu a .caret {
+    display: none;
+  }
+
+  .sidebar-menu.collapsed .main-menu a i {
+    width: auto;
+    flex: 0 0 auto;
+  }
+
+
+
+  /* Flyout submenu when collapsed - disabled to prevent opening */
+
+  /* EDGE TOGGLE (little arrow pill) */
+  .collapse-toggle {
+    position: absolute !important;
+    /* top: 50% !important; */
+    right: calc(-1 * (var(--toggle-w) / 2)) !important;
+    transform: translateY(-50%) !important;
+    width: var(--toggle-w) !important;
+    height: var(--toggle-h) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: linear-gradient(180deg, rgba(255, 255, 255, .14), rgba(255, 255, 255, .06)) !important;
+    border: 1px solid rgba(255, 255, 255, .28) !important;
+    border-left-color: rgba(255, 255, 255, .18) !important;
+    backdrop-filter: blur(2px) !important;
+    color: #fff !important;
+    text-decoration: none !important;
+    border-radius: 12px !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .25) !important;
+    cursor: pointer !important;
+    transition: background var(--anim), right var(--anim), opacity var(--anim) !important;
+    z-index: 1000 !important;
+  }
+
+  .collapse-toggle i {
+    font-size: 18px !important;
+    line-height: 1 !important;
+  }
+
+  .sidebar-menu.collapsed .collapse-toggle i::before {
+    content: "\e765" !important;
+    font-family: 'entypo' !important;
+  }
+
+  .collapse-toggle i::before {
+    /* content: "\e764"; */
+    font-family: 'entypo' !important;
+  }
+
+  .mobile-sidebar-toggle {
+    display: none !important;
+  }
+    .mobile-only-logout {
+    display: none !important;
+  }
+
+  @media (max-width: 768px) {
+    .mobile-sidebar-toggle {
+      display: block !important;
+    }
+    .mobile-only-logout {
+      display: block !important;
+    }
+
+    .sidebar-menu {
+      width: 100%;
+      min-height: 100vh;
+      border-right: none;
+      border-bottom: 1px solid rgba(0, 0, 0, .06);
+      border-radius: 0 0 10px 10px;
+      padding-top: 11vh !important;
+    }
+
+    .logo-env {
+      min-height: 96px;
+      padding: 24px var(--brand-pad-x);
+    }
+
+    .logo-full img {
+      width: 124px;
+    }
+
+    .team-select {
+      margin: 8px 12px;
+      padding: 10px 12px;
+      font-size: 13.5px;
+    }
+
+    .section-label {
+      padding: 12px 12px 8px;
+    }
+
+    .main-menu a {
+      padding: 13px 16px;
+      font-size: 13.5px;
+    }
+
+    .main-menu .has-sub ul a {
+      padding: 11px 16px 11px 44px;
+      font-size: 13px;
+    }
+
+    .sidebar-menu.collapsed {
+      width: 100%;
+    }
+
+    .sidebar-menu.collapsed .section-label,
+    .sidebar-menu.collapsed .team-select {
+      height: auto;
+      margin: 0 12px 8px;
+      padding: 10px 12px;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .sidebar-menu.collapsed .main-menu a .title {
+      display: inline;
+    }
+
+    .collapse-toggle {
+      display: none !important;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    .sidebar-menu .main-menu li {
+      border-bottom: none !important;
+    }
+
+    .sidebar-menu.collapsed .main-menu a i.entypo-direction {
+      display: none !important;
+    }
+
+    .sidebar-menu .has-sub ul {
+      display: none !important;
+      height: auto !important;
+      overflow: visible !important;
+    }
+
+    .sidebar-menu .has-sub.opened>ul {
+      display: block !important;
+    }
+
+    .sidebar-menu #main-menu li.has-sub.opened>a:before {
+      transform: rotate(90deg);
+    }
+
+
+  }
+
+  /* Hide submenu arrow indicator when sidebar is collapsed */
+  .sidebar-menu.collapsed #main-menu li.has-sub>a:before {
+    display: none !important;
+    content: none !important;
+  }
+
+  @media (max-width: 768px) {
+    #sidebar-menu {
+      position: fixed;
+      left: -100%;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      transition: left 0.3s ease;
+      z-index: 2000;
+    }
+
+    #sidebar-menu.mobile-open {
+      left: 0;
+    }
+
+    .sidebar-menu #main-menu {
+      display: block !important;
+      margin-bottom: 0;
+    }
+
+    .mobile-sidebar-toggle {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      z-index: 2100;
+      background: linear-gradient(180deg, var(--g1), var(--g2));
+      border: 1px solid rgba(255, 255, 255, .25);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 20px;
+      padding: 8px 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, .25);
+    }
+  }
+    /* Minimal override: hide the logo that's inside the sidebar on small screens
+     and allow the duplicated logo in _base.html to serve as the top header. */
+  @media (max-width: 786px) {
+    .logo-env {
+      display: none !important;
+    }
+
+    /* Ensure the mobile toggle appears on the right (matches _base.html) */
+    .mobile-sidebar-toggle {
+      left: auto !important;
+      right: 16px !important;
+      top: 18px !important;
+      z-index: 10003 !important;
+    }
+
+    /* If sidebar content needs spacing when the duplicated header is fixed, allow override */
+    .sidebar-menu .sidebar-menu-inner {
+      padding-top: 0 !important;
+    }
+  }
+</style>
+
+<div class="sidebar-menu" id="sidebar-menu" style="background:linear-gradient(180deg,
+        var(--sidebar-top) 0%,
+        var(--sidebar-bot) 100%) !important">
+  <div class="sidebar-menu-inner" style="background: transparent !important;">
+    <header class="logo-env">
+      <a href="{% url 'dashboard:dashboard' %}" class="logo-full" aria-label="Publisha">
+        <img src="{% static 'assets/images/publisha-logo-dashboard.png' %}" alt="Publisha" />
+      </a>
+      <a href="{% url 'dashboard:dashboard' %}" class="logo-mini" aria-label="Publisha (mini)">
+        <img src="{% static 'assets/images/publisha-logo-dashboard.png' %}" alt="Publisha" />
+      </a>
+    </header>
+
+    {% if my_organizations %}
+    <div class="section-label">ACTIVE TEAM</div>
+    <div class="team-select-wrapper" style="width:90%">
+      <select id="organization-switcher" class="form-control team-select"
+        data-switch-url-base="{% url 'dashboard:switch_organization' 0 %}">
+        {% for org in my_organizations %}
+        <option value="{{ org.id }}" {% if org == active_organization %}selected{% endif %}>
+          {{ org.name }} {% if org.owner == request.user %}(Default){% endif %}
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+    {% endif %}
+
+    <ul id="main-menu" class="main-menu" style="border-bottom: none !important;">
+      <!-- Dashboard -->
+      <li class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
+        style="border-bottom: none !important;">
+        <a href="{% url 'dashboard:dashboard' %}">
+          <i class="entypo-gauge"></i><span class="title">Dashboard</span>
+        </a>
+      </li>
+
+      <!-- Campaigns Dropdown -->
+      <li class="has-sub 
+        {% if request.resolver_match.url_name in 'create_campaign,campaign_list,delete_campaign,approve_campaign,create_social_campaign' %}
+          opened active
+        {% endif %}" style="border-bottom: none !important;">
+        <a href="#" role="button" aria-haspopup="true">
+          <i class="entypo-direction" id="entypo-direction"></i>
+          <span class="title">Campaigns</span>
+        </a>
+        <ul>
+          <li class="{% if request.resolver_match.url_name == 'create_campaign' %}active{% endif %}"
+            style="border-bottom: none !important;">
+            <a style="background-color: none;" href="{% url 'campaignhub:create_campaign' %}">Create Campaign</a>
+          </li>
+          <li class="{% if request.resolver_match.url_name == 'campaign_list' %}active{% endif %}"
+            style="border-bottom: none !important;">
+            <a href="{% url 'campaignhub:campaign_list' %}">All Campaigns</a>
+          </li>
+        </ul>
+      </li>
+
+      <!-- Other Links -->
+      <li class="{% if request.resolver_match.url_name == 'post_list' %}active{% endif %}"
+        style="border-bottom: none !important;">
+        <a href="{% url 'campaignhub:post_list' %}">
+          <i class="entypo-newspaper"></i><span class="title">Posts</span>
+        </a>
+      </li>
+      <li class="{% if request.resolver_match.url_name == 'analytics' %}active{% endif %}"
+        style="border-bottom: none !important;">
+        <a href="{% url 'campaignhub:analytics' %}">
+          <i class="entypo-chart-bar"></i><span class="title">Analytics</span>
+        </a>
+      </li>
+      <li class="{% if request.resolver_match.url_name == 'organization_settings' %}active{% endif %}"
+        style="border-bottom: none !important;">
+        <a href="{% url 'organizations:organization_settings' %}">
+          <i class="entypo-cog"></i><span class="title">Settings</span>
+        </a>
+      </li>
+
+      <!-- Manage Members (Only for Admins) -->
+      {% if active_organization and active_member_role == 'ADMIN' %}
+      <li class="{% if request.resolver_match.url_name == 'manage_members' %}active{% endif %}"
+        style="border-bottom: none !important;">
+        <a href="{% url 'organizations:manage_members' %}">
+          <i class="entypo-users"></i><span class="title">Manage Members</span>
+        </a>
+      </li>
+      {% endif %}
+
+      {% if request.user.is_authenticated and active_member_role == 'ADMIN' %}
+      <li class="{% if request.resolver_match.url_name == 'security_settings' %}active{% endif %}"
+        style="border-bottom: none !important;">
+        <a href="{% url 'security_settings' %}">
+          <i class="entypo-user"></i><span class="title">Profile</span>
+        </a>
+      </li>
+      {% endif %}
+
+  <li class="mobile-only-logout" style="border-bottom: none !important;">
+    <form id="mobileLogoutForm" method="post" action="{% url 'account_logout' %}" style="display: none;">
+      {% csrf_token %}
+    </form>
+    <a href="#" onclick="document.getElementById('mobileLogoutForm').submit(); return false;">
+      <i class="entypo-logout"></i><span class="title">Log Out</span>
+    </a>
+  </li>
+
+    </ul>
+
+    <div style="height: 8px;"></div>
+  </div>
+
+  <!-- Collapse Toggle -->
+  <button class="collapse-toggle" aria-label="Toggle sidebar" aria-expanded="true">
+    <i aria-hidden="false"></i>
+  </button>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const sidebar = document.getElementById('sidebar-menu');
+    const toggleBtn = sidebar.querySelector('.collapse-toggle');
+    const LS_KEY = 'publisha:sidebar:collapsed';
+
+      const orgSwitcher = document.getElementById('organization-switcher');
+  if (orgSwitcher) {
+    orgSwitcher.addEventListener('change', function() {
+      const selectedOrgId = this.value;
+      const baseUrl = this.dataset.switchUrlBase; // e.g. /dashboard/switch-organization/0/
+      const switchUrl = baseUrl.replace('0', selectedOrgId);
+
+      // Perform the switch
+      fetch(switchUrl)
+        .then(() => {
+          // Always reload current page after backend updates the session
+          window.location.reload();
+        })
+        .catch(err => console.error('Switch org error:', err));
+    });
+  } 
+
+    // Restore collapse state
+    try {
+      const isCollapsed = localStorage.getItem(LS_KEY) === '1';
+      sidebar.classList.toggle('collapsed', isCollapsed);
+      toggleBtn.setAttribute('aria-expanded', !isCollapsed);
+      const arrow = document.getElementById('entypo-direction')
+
+      // 🔒 Ensure no dropdown is open when collapsed
+      if (isCollapsed) {
+        sidebar.querySelectorAll('.has-sub').forEach(li => {
+          li.classList.remove('opened', 'active');
+          const submenu = li.querySelector('ul');
+          if (submenu) {
+            submenu.classList.remove('visible');
+            submenu.style.display = 'none !important';
+          }
+        });
+      }
+    } catch (e) { }
+
+    // ✅ Collapse toggle button
+    toggleBtn?.addEventListener('click', function (e) {
+      e.preventDefault();
+      const willCollapse = !sidebar.classList.contains('collapsed');
+      sidebar.classList.toggle('collapsed', willCollapse);
+      toggleBtn.setAttribute('aria-expanded', !willCollapse);
+
+      try {
+        localStorage.setItem(LS_KEY, willCollapse ? '1' : '0');
+      } catch (e) { }
+
+      // 🔒 Always close dropdowns when collapsing
+      if (willCollapse) {
+        sidebar.querySelectorAll('.has-sub.opened').forEach(li => {
+          li.classList.remove('opened', 'active');
+          const submenu = li.querySelector('ul');
+          if (submenu) {
+            submenu.classList.remove('visible');
+            submenu.style.display = 'none';
+          }
+        });
+      }
+    });
+
+    // ✅ Submenu toggles
+    sidebar.querySelectorAll('.has-sub > a').forEach(link => {
+      link.addEventListener('click', function (e) {
+        // 🔒 Disable submenu toggle when sidebar is collapsed
+        if (sidebar.classList.contains('collapsed')) {
+          arrow.style.display = 'none'
+          e.preventDefault();
+          return false;
+        }
+
+        e.preventDefault();
+        const parent = this.parentElement;
+
+        // Close all others first
+        sidebar.querySelectorAll('.has-sub.opened').forEach(li => {
+          if (li !== parent) {
+            li.classList.remove('opened', 'active');
+            const sub = li.querySelector('ul');
+            if (sub) {
+              sub.classList.remove('visible');
+              sub.style.display = 'none';
+            }
+          }
+        });
+
+        // Toggle this one
+        parent.classList.toggle('opened');
+        parent.classList.toggle('active');
+        const submenu = parent.querySelector('ul');
+        if (submenu) {
+          const visible = submenu.classList.toggle('visible');
+          submenu.style.display = visible ? 'block' : 'none';
+        }
+      });
+    });
+
+    // ✅ Mobile sidebar toggle
+    const mobileToggle = document.createElement('button');
+    mobileToggle.className = 'mobile-sidebar-toggle';
+    mobileToggle.innerHTML = '<i class="entypo-menu"></i>';
+    document.body.appendChild(mobileToggle);
+
+    mobileToggle.addEventListener('click', function () {
+      sidebar.classList.toggle('mobile-open');
+    });
+
+    document.addEventListener('click', function (e) {
+      if (
+        sidebar.classList.contains('mobile-open') &&
+        !sidebar.contains(e.target) &&
+        !mobileToggle.contains(e.target)
+      ) {
+        sidebar.classList.remove('mobile-open');
+      }
+    });
+  });
+</script>

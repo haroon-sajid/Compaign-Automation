@@ -1,0 +1,11 @@
+/* hizalamalar */
+#ptTable thead th,
+#ptTable tbody td { vertical-align: middle; padding: 8px 16px; }
+
+#ptTable .select-col,
+#ptTable .no-col,
+#ptTable .actions-col{
+  text-align:center;
+  width:1%;
+  white-space:nowrap;
+}

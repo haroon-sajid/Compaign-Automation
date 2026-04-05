@@ -1,0 +1,288 @@
+{% extends "user_layout.html" %}
+{% load static %}
+<style>
+  /* ============= MOBILE (320px – 767px) ============= */
+  @media (max-width: 767px) {
+
+    /* Breadcrumb */
+    .breadcrumb.bc-3 {
+      padding: 8px 10px;
+      font-size: 13px;
+    }
+
+    /* Page title */
+    .page-title h1 {
+      font-size: 22px;
+    }
+
+    .note {
+      font-size: 12px;
+    }
+
+    /* Stack the two main cards vertically */
+    .grid-1-1 {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 16px !important;
+      grid-template-columns: 1fr !important;
+    }
+
+    /* Full-width invite button */
+    .btn-block,
+    .form-control {
+      width: 100% !important;
+      box-sizing: border-box;
+    }
+
+    /* Compact tables */
+    .table {
+      font-size: 13px;
+    }
+
+    .table thead th,
+    .table tbody td {
+      padding: 8px 6px;
+    }
+
+    /* Ensure role dropdown and actions fit */
+    .table select.form-control.input-sm {
+      min-width: 100px;
+      font-size: 12px;
+      padding: 4px 6px;
+    }
+
+    .table .btn-sm {
+      padding: 4px 8px;
+      font-size: 12px;
+    }
+
+    /* Badges */
+    .badge {
+      font-size: 11px;
+      padding: 4px 6px;
+    }
+
+    /* Footer */
+    footer.main {
+      font-size: 13px;
+      text-align: center;
+    }
+  }
+
+  /* ============= TABLET (768px – 991px) ============= */
+  @media (min-width: 768px) and (max-width: 991px) {
+    .grid-1-1 {
+      display: grid !important;
+      grid-template-columns: 1fr 1.8fr !important;
+      gap: 16px !important;
+    }
+
+    .table thead th,
+    .table tbody td {
+      padding: 10px 8px;
+    }
+
+    .table select.form-control.input-sm {
+      min-width: 110px;
+      font-size: 13px;
+    }
+  }
+
+  /* ============= NARROW DESKTOP (992px – 1024px) ============= */
+  @media (min-width: 992px) and (max-width: 1024px) {
+    .grid-1-1 {
+      display: contents !important;
+      grid-template-columns: 1fr 1.9fr !important;
+      gap: 16px !important;
+    }
+
+    .table thead th,
+    .table tbody td {
+      padding: 10px 8px;
+    }
+
+    .table select.form-control.input-sm {
+      min-width: 120px;
+      font-size: 13px;
+    }
+  }
+
+  /* ============= DESKTOP (1025px+) ============= */
+  @media (min-width: 1025px) {
+
+    /* Your original desktop layout is preserved */
+    .grid-1-1 {
+      display: grid !important;
+      grid-template-columns: 1fr 2fr !important;
+      gap: 16px !important;
+    }
+
+    .table thead th,
+    .table tbody td {
+      padding: 12px 10px;
+    }
+
+    .table select.form-control.input-sm {
+      min-width: 130px;
+      font-size: 14px;
+    }
+  }
+</style>
+{% block content %}
+<!-- Breadcrumb -->
+<ol class="breadcrumb bc-3">
+  <li>
+    <a href="{% url 'dashboard:dashboard' %}"><i class="fa-home"></i>Home</a>
+  </li>
+  <li class="active"><strong>Manage Members</strong></li>
+</ol>
+
+<!-- Page Title -->
+<div class="page-title">
+  <h1>Manage Members for "{{ active_organization.name }}"</h1>
+  <span class="note">Invite, remove, and manage roles for your team members.</span>
+</div>
+
+<!-- System Messages (e.g., "Invitation sent successfully.") -->
+{% if messages %}
+{% for message in messages %}
+{% if "manage_members" in message.tags %}
+<div style="color:green" class="alert alert-{{ message.tags }}">{{ message }}</div> 
+{% endif %}
+{% endfor %}
+{% endif %}
+
+<!-- Layout using Cards -->
+<div class="" style="padding: 29px; display: flex; flex-direction: column; gap: 16px;">
+
+  <!-- Card for Inviting New Members -->
+  <div class="card">
+    <h3 class="card-title">Invite New Member</h3>
+    <div class="panel-body">
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="invite_member">
+
+        <div class="form-group">
+          <label for="{{ invite_form.email.id_for_label }}">Email Address</label>
+          {{ invite_form.email.errors }}
+          <input type="email" name="{{ invite_form.email.name }}" id="{{ invite_form.email.id_for_label }}"
+            class="form-control" placeholder="e.g., colleague@example.com" required>
+        </div>
+
+        <button type="submit" class="btn btn-purple btn-block"     style="background-color:#5b35f2 ! important; color:#fff; border-color:#5b35f2 ! important; transition: transform 0.25s ease, background-color 0.2s ease;"
+    onmouseover="this.style.transform='scale(1.02)'; this.style.backgroundColor='#5b35f2 ! important';"
+    onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#5b35f2 ! important';">
+          <i class="entypo-paper-plane"></i> Send Invitation
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Card for Current Members -->
+  <div class="card">
+    <h3 class="card-title">Current Members</h3>
+    <div class="panel-body" style="padding: 0; overflow-x: auto;">
+      <table class="table display" style="width: 100%">
+        <thead>
+          <tr>
+            <th>User Email</th>
+            <th>Role</th>
+            <th style="width: 120px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for member in members %}
+          <tr>
+            <td>
+              <strong>{{ member.user.email }}</strong>
+              {% if member.user == request.user %}
+              <span class="badge badge-info" style="margin-left: 5px;">You</span>
+              {% endif %}
+              {% if member.user == active_organization.owner %}
+              <span class="badge badge-success" style="margin-left: 5px;">Owner</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if member.user == active_organization.owner %}
+              <span>{{ member.get_role_display }}</span>
+              {% else %}
+              <form method="post" style="display: inline;">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="change_role">
+                <input type="hidden" name="member_id" value="{{ member.id }}">
+                <select name="role" onchange="this.form.submit()" class="form-control input-sm"
+                  style="width: auto; display: inline-block;">
+                  {% for value, name in role_change_form.role.field.choices %}
+                  <option value="{{ value }}" {% if member.role == value %}selected{% endif %}>{{ name }}</option>
+                  {% endfor %}
+                </select>
+              </form>
+              {% endif %}
+            </td>
+            <td>
+              {% if member.user != active_organization.owner %}
+              <form method="post" style="display: inline;"
+                onsubmit="return confirm('Are you sure you want to remove this member?');">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="remove_member">
+                <input type="hidden" name="member_id" value="{{ member.id }}">
+                <button type="submit" class="btn btn-danger btn-sm">
+                  <i class="entypo-trash"></i> Remove
+                </button>
+              </form>
+              {% else %}
+              —
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Card for Pending Invitations (only shows if there are any) -->
+{% if pending_invitations %}
+<div class="card" style="margin-top: 16px; overflow-x: auto; ">
+  <h3 class="card-title">Pending Invitations</h3>
+  <div class="panel-body" style="padding: 0;">
+    <table class="table display" style="width: 100%">
+      <thead>
+        <tr>
+          <th>Email Invited</th>
+          <th>Invited On</th>
+          <th style="width: 180px;">Status / Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for invitation in pending_invitations %}
+        <tr>
+          <td>{{ invitation.email }}</td>
+          <td>{{ invitation.created_at|date:"F j, Y" }}</td>
+          <td>
+            <span class="badge-pill bg-sch" style="opacity: 0.8;">{{ invitation.status|title }}</span>
+            <!-- Optional: Add a cancel button -->
+            <form method="post" style="display: inline; margin-left: 10px;">
+              {% csrf_token %}
+              <input type="hidden" name="action" value="cancel_invitation">
+              <input type="hidden" name="invitation_id" value="{{ invitation.id }}">
+              <button type="submit" class="btn btn-default btn-sm">Cancel</button>
+            </form>
+
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endif %}
+
+<footer class="main">
+  © 2025 <strong>Publisha</strong> Admin Panel – Manage Members
+</footer>
+
+
+{% endblock %}

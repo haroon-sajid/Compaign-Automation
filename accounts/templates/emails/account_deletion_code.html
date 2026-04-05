@@ -1,0 +1,17 @@
+<!-- templates/emails/account_deletion_code.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Account Deletion Confirmation</title>
+</head>
+<body style="font-family: Arial, sans-serif; color: #333;">
+    <h2>Confirm Your Account Deletion</h2>
+    <p>Hi {{ user.first_name|default:user.username }},</p>
+    <p>You recently requested to delete your account on <strong>{{ brandName }}</strong>. To confirm this action, please use the following verification code:</p>
+    <p style="font-size: 36px; font-weight: bold; letter-spacing: 5px; color: #5b35f2;">{{ code }}</p>
+    <p>This code will expire in 10 minutes. If you did not request this, you can safely ignore this email and your account will remain safe.</p>
+    <hr>
+    <p>Thanks,<br>The {{ brandName }} Team</p>
+</body>
+</html>

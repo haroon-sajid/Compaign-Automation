@@ -1,0 +1,218 @@
+{% extends "user_layout.html" %} {% load static %} {% block content %}
+
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Publisha – All Campaigns</title>
+
+    <!-- Icons & Fonts -->
+    <link rel="stylesheet" href="{% static "/assets/css/font-icons/entypo/css/entypo.css" %} " />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="{% static "/assets/css/neon-core.css" %} " />
+    <link rel="stylesheet" href="{% static "/assets/css/neon-theme.css" %}" />
+    <link rel="stylesheet" href="{% static "/assets/css/custom.css" %} " />
+
+    <style>
+        :root {
+            --brand: #5b35f2;
+            --brand-600: #5030ef;
+            --surface: #fff;
+            --surface-2: #faf9ff;
+            --stroke: #ece9f7;
+            --stroke-2: #f1eefb;
+            --muted: #8a88a6;
+            --radius: 14px;
+            --shadow: 0 2px 12px rgba(33, 17, 97, .06);
+        }
+        body { font-family: Inter, sans-serif; background: #fbfaff; }
+        .content { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+        .content-inner { padding: 18px 22px; max-width: 1240px; width: 100%; margin: 0 auto; }
+        .breadcrumb { background: transparent; padding: 0; margin-bottom: 8px; }
+        .page-title { margin: 6px 0 14px; }
+        .page-title h1 { margin: 0; font-weight: 700; font-size: 28px; }
+        .note { color: #8a88a6; }
+        .btn-primary-modern { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(180deg, var(--brand), var(--brand-600)); border: 1px solid rgba(80, 48, 239, .8); color: #fff; font-weight: 700; border-radius: 12px; padding: 10px 16px; text-decoration: none; box-shadow: 0 6px 14px rgba(91, 53, 242, .18); transition: all .16s ease; }
+        .btn-primary-modern:hover { color: #fff; transform: scale(1.03); box-shadow: 0 10px 18px rgba(91, 53, 242, .24); text-decoration: none; }
+        .card { background: var(--surface); border: 1px solid var(--stroke); border-radius: var(--radius); box-shadow: var(--shadow); }
+        .card-body { padding: 14px; }
+        .table-toolbar { display: flex; gap: 10px; align-items: center; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; }
+        .search { position: relative; flex: 1 1 260px; max-width: 420px; }
+        .search input { width: 100%; border: 1px solid var(--stroke); border-radius: 12px; padding: 10px 12px 10px 34px; outline: none; transition: all 170ms; }
+        .search i { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #9aa3b2; }
+        .search input:focus { border-color: #d6d1fb; box-shadow: 0 0 0 3px rgba(91, 53, 242, .08); }
+        .table-responsive { overflow-x: auto; }
+        .table-modern { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 760px; }
+        .table-modern thead th { position: sticky; top: 0; z-index: 1; background: var(--surface-2); border-bottom: 1px solid var(--stroke); color: #5a5777; font-weight: 700; font-size: 12.5px; padding: 12px; white-space: nowrap; text-align: left; }
+        .table-modern thead th a { color: inherit; text-decoration: none; display: flex; align-items: center; gap: 6px; }
+        .table-modern thead th a:after { content: ' '; border: 4px solid transparent; }
+        .table-modern thead th.sorted-asc a:after { border-bottom-color: #5a5777; margin-top: -4px; }
+        .table-modern thead th.sorted-desc a:after { border-top-color: #5a5777; margin-top: 4px; }
+        .table-modern tbody td { padding: 12px; border-bottom: 1px solid var(--stroke-2); vertical-align: middle; }
+        .table-modern tbody tr:last-child td { border-bottom: 0; }
+        .td-actions { text-align: right; white-space: nowrap; }
+        .badge-status { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; text-transform: capitalize; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .st-completed { background: #e8faef; color: #137a4a; } .st-completed .dot { background: #18c06e; }
+        .st-in_progress { background: #fff8e1; color: #8d6e0a; } .st-in_progress .dot { background: #ffc107; }
+        .st-draft { background: #eef1ff; color: #3846b0; } .st-draft .dot { background: #6b7cff; }
+        .st-failed { background: #ffecec; color: #9a1b1f; } .st-failed .dot { background: #e94b54; }
+        .btn-danger-soft, .btn-success-soft { background: #fff; border-radius: 8px; padding: 6px 10px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid; }
+        .btn-danger-soft { color: #d22630; border-color: #ffd0d3; } .btn-danger-soft:hover { background: #fff0f1; }
+        .btn-success-soft { color: #14804d; border-color: #c8f0de; } .btn-success-soft:hover { background: #f0fff8; }
+        .pagination { display: flex; gap: 6px; align-items: center; justify-content: flex-end; padding: 10px 0; flex-wrap: wrap; }
+        .pagination .page-link { border: 1px solid var(--stroke); background: #fff; border-radius: 10px; padding: 6px 12px; text-decoration: none; color: #333; }
+        .pagination .page-link.disabled { opacity: .5; cursor: not-allowed; pointer-events: none; }
+        .rows-info { color: var(--muted); font-size: 12.5px; margin-right: auto; }
+        .empty { padding: 40px 26px; text-align: center; color: var(--muted); }
+        @media (max-width:768px) {
+    .content-inner { padding: 14px; }
+    /* keep full table layout on mobile */
+    .table-modern thead {
+        display: table-header-group;
+    }
+    .table-modern tbody tr {
+        display: table-row;
+        border: none;
+        border-radius: 0;
+        margin-bottom: 0;
+        box-shadow: none;
+    }
+    .table-modern tbody td {
+        display: table-cell;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 0;
+        border-bottom: 1px solid var(--stroke-2);
+        padding: 10px 12px;
+    }
+    .table-modern tbody td:last-child {
+        border-bottom: 1px solid var(--stroke-2);
+    }
+    /* remove label injection */
+    .table-modern tbody td::before {
+        content: none;
+    }
+    /* keep actions aligned right */
+    .td-actions {
+        text-align: right;
+        white-space: nowrap;
+    }
+}
+    </style>
+
+<body class="page-body">
+    <div class="app">
+        <!-- Sidebar HTML can be included here -->
+
+        <!-- === MAIN CONTENT === -->
+        <main class="content">
+            <div class="content-inner">
+                <ol class="breadcrumb bc-3">
+                    <li><a href="#"><i class="fa-home"></i>Home</a></li>
+                    <li class="active"><strong>All Campaigns</strong></li>
+                </ol>
+
+                <div class="page-title">
+                    <h1>All Campaigns</h1>
+                    <span class="note">Create, track and manage your campaigns.</span>
+                </div>
+
+                <div style="display:flex; justify-content:flex-end; margin:10px 0 14px;">
+                    <a href="{% url 'campaignhub:create_campaign' %}" class="btn-primary-modern">
+                        <i class="entypo-plus"></i> New Campaign
+                    </a>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Toolbar -->
+                        <div class="table-toolbar">
+                            <form method="GET" action="" class="search">
+                                <i class="entypo-search"></i>
+                                <input name="q" type="search" placeholder="Search campaigns..." value="{{ search_query }}" autocomplete="off">
+                            </form>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table-modern">
+                                <thead>
+                                    <tr>
+                                        {% with sort_by=current_sort_by dir=current_sort_dir %}
+                                        <th class="{% if sort_by == 'created_by__username' %}sorted-{{ dir }}{% endif %}">
+                                            <a href="?{% if query_params %}{{ query_params }}&{% endif %}sort=created_by__username&dir={% if sort_by == 'created_by__username' and dir == 'asc' %}desc{% else %}asc{% endif %}">Creator</a>
+                                        </th>
+                                        <th class="{% if sort_by == 'name' %}sorted-{{ dir }}{% endif %}">
+                                            <a href="?{% if query_params %}{{ query_params }}&{% endif %}sort=name&dir={% if sort_by == 'name' and dir == 'asc' %}desc{% else %}asc{% endif %}">Name</a>
+                                        </th>
+                                        <th class="{% if sort_by == 'status' %}sorted-{{ dir }}{% endif %}">
+                                            <a href="?{% if query_params %}{{ query_params }}&{% endif %}sort=status&dir={% if sort_by == 'status' and dir == 'asc' %}desc{% else %}asc{% endif %}">Status</a>
+                                        </th>
+                                        <th class="{% if sort_by == 'created_at' %}sorted-{{ dir }}{% endif %}">
+                                            <a href="?{% if query_params %}{{ query_params }}&{% endif %}sort=created_at&dir={% if sort_by == 'created_at' and dir == 'asc' %}desc{% else %}asc{% endif %}">Created On</a>
+                                        </th>
+                                        <th class="td-actions">Actions</th>
+                                        {% endwith %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                  {% for campaign in campaignhub %}
+                                  <tr>
+                                    <td data-th="Creator"><strong>{{ campaign.created_by.username|default:"N/A" }}</strong></td>
+                                    <td data-th="Name">{{ campaign.name }}</td>
+                                    <td data-th="Status">
+                                      {% with campaign_status=campaign.status|lower %}
+                                      <span class="badge-status st-{{ campaign_status }}">
+                                        <span class="dot"></span>&nbsp;{{ campaign.get_status_display }}
+                                      </span>
+                                      {% endwith %}
+                                    </td>
+                                    <td data-th="Created On">{{ campaign.created_at|date:"M j, Y, P" }}</td>
+                                    <td data-th="Actions" class="td-actions">
+                                      {% if campaign.status == 'DRAFT' %}
+                                      <form action="{% url 'campaignhub:approve_campaign' campaign.id %}" method="post" style="display: inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn-success-soft" onclick="return confirm('Approve this campaign?');">Approve</button>
+                                      </form>
+                                      {% endif %}
+                                      <form action="{% url 'campaignhub:delete_campaign' campaign.id %}" method="post" style="display: inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn-danger-soft" onclick="return confirm('Delete this campaign?');">Delete</button>
+                                      </form>
+                                    </td>
+                                  </tr>
+                                  {% empty %}
+                                  <tr>
+                                    <td colspan="5" class="empty">No campaigns found.</td>
+                                  </tr>
+                                  {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {% if page_obj.paginator.num_pages > 1 %}
+                        <div class="pagination">
+                            <div class="rows-info">
+                                Showing {{ page_obj.start_index }}–{{ page_obj.end_index }} of {{ page_obj.paginator.count }}
+                            </div>
+                            
+                            {% if page_obj.has_previous %}
+                                <a href="?{% if query_params %}{{ query_params }}&{% endif %}page={{ page_obj.previous_page_number }}" class="page-link">Prev</a>
+                            {% else %}
+                                <a href="#" class="page-link disabled">Prev</a>
+                            {% endif %}
+
+                            {% if page_obj.has_next %}
+                                <a href="?{% if query_params %}{{ query_params }}&{% endif %}page={{ page_obj.next_page_number }}" class="page-link">Next</a>
+                            {% else %}
+                                <a href="#" class="page-link disabled">Next</a>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+{% endblock content %}

@@ -1,0 +1,965 @@
+<!-- dashboard/templates/dashboard/user_dashboard.html -->
+{% extends "user_layout.html" %} {% load static %} {% block content %}
+
+<style>
+  body {
+    font-family: Inter, system-ui, Segoe UI, Arial, sans-serif;
+  }
+
+  :root {
+    --sidebar-top: #4a3a93;
+    --sidebar-bot: #2f2858;
+    --sidebar-hover: rgba(255, 255, 255, 0.08);
+    --sidebar-active: rgba(255, 255, 255, 0.1);
+    --sidebar-border: #a99bf7;
+    --sidebar-text: #e6e3ff;
+    --sidebar-text-dim: #cfcdf5;
+    --brand: #5b35f2;
+    --teal: #2dc5a1;
+    --blue: #4ba5ff;
+    --orange: #ffa24b;
+    --yellow: #f8d24e;
+    --red: #ff6b6b;
+    --ink-700: #3e3d52;
+    --ink-600: #53526a;
+    --ink-400: #8a88a6;
+  }
+
+  .sidebar-menu,
+  .sidebar-menu .sidebar-menu-inner {
+    background: linear-gradient(
+      180deg,
+      var(--sidebar-top),
+      var(--sidebar-bot)
+    ) !important;
+  }
+
+  .sidebar-menu .logo-env {
+    padding: 18px 22px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .sidebar-menu .logo a img {
+    display: block;
+    width: 120px;
+    max-width: 120px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .sidebar-menu #main-menu > li > a {
+    color: var(--sidebar-text) !important;
+    background: transparent !important;
+    padding: 14px 20px 14px 22px;
+    border-left: 3px solid transparent;
+  }
+
+  .sidebar-menu #main-menu > li > a i {
+    color: var(--sidebar-text-dim) !important;
+    margin-right: 10px;
+    font-size: 16px;
+  }
+
+  .sidebar-menu #main-menu > li > a:hover {
+    background: var(--sidebar-hover) !important;
+    color: #fff !important;
+  }
+
+  .sidebar-menu #main-menu > li.active > a,
+  .sidebar-menu #main-menu > li.opened > a {
+    background: var(--sidebar-active) !important;
+    border-left-color: var(--sidebar-border) !important;
+    color: #fff !important;
+  }
+
+  .sidebar-collapse-icon,
+  .sidebar-mobile-menu .with-animation {
+    color: #fff !important;
+  }
+
+  .page-title {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 4px 0 14px;
+  }
+
+  .page-title h1 {
+    margin: 0;
+    font-weight: 800;
+    font-size: 28px;
+  }
+
+  .note {
+    color: var(--ink-400);
+    font-size: 13px;
+  }
+
+  .section-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 16px;
+  }
+
+  .grid-1-1 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #ece9f7;
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card h3 {
+    margin: 0 0 10px;
+    font-weight: 800;
+    color: var(--ink-600);
+    text-align: center;
+  }
+
+  .card .subnote {
+    color: var(--ink-400);
+    font-size: 12px;
+    text-align: center;
+    margin-top: -4px;
+    margin-bottom: 10px;
+  }
+
+  .btn-purple {
+    background: var(--brand);
+    border-color: var(--brand);
+    color: #fff;
+  }
+
+  .btn-ghost {
+    background: #fff;
+    border: 1px solid #dcd7ee;
+    color: var(--brand);
+  }
+
+  .btn-ghost:hover {
+    background: #f4f2fe;
+  }
+
+  .badge-status {
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-weight: 700;
+    font-size: 12px;
+    display: inline-block;
+  }
+
+  .ok {
+    background: #eafaf6;
+    color: #1a8c6b;
+  }
+
+  .no {
+    background: #ffecee;
+    color: #b81a1a;
+  }
+
+  .warn {
+    background: #fff4e8;
+    color: #a6651a;
+  }
+
+  .input-help {
+    font-size: 12px;
+    color: #8c8aa6;
+    margin-top: 4px;
+  }
+
+  .inline {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  /* Switch */
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+  }
+
+  .switch input {
+    display: none;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #d9d6ea;
+    border-radius: 999px;
+    transition: 0.2s;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    top: 3px;
+    background: #fff;
+    border-radius: 50%;
+    transition: 0.2s;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+
+  input:checked + .slider {
+    background: #5b35f2;
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(20px);
+  }
+
+  .plan {
+    border: 2px solid #eee;
+    border-radius: 14px;
+    padding: 14px;
+  }
+
+  .plan.active {
+    border-color: #5b35f2;
+    box-shadow: 0 8px 22px rgba(91, 53, 242, 0.08);
+  }
+
+  .price {
+    font-size: 28px;
+    font-weight: 800;
+  }
+
+  .strike {
+    color: #8f8dab;
+    text-decoration: line-through;
+    font-weight: 600;
+  }
+
+  .list-unstyled li {
+    margin: 6px 0;
+  }
+
+  .sep {
+    height: 1px;
+    background: #f0ecff;
+    margin: 10px 0 0;
+  }
+
+  .oauth-note {
+    font-size: 12px;
+    color: #6f6d86;
+    margin: 6px 0 -2px;
+  }
+
+  .adv {
+    display: none;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed #eee;
+  }
+
+  .toastx {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    background: #1f2937;
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 10px;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.25s;
+  }
+
+  .toastx.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .main-content {
+    min-height: 100vh;
+  }
+</style>
+
+<!-- Breadcrumb -->
+<ol class="breadcrumb bc-3">
+  <li>
+    <a href="/index.html"><i class="fa-home"></i>Home</a>
+  </li>
+  <li class="active"><strong>Settings</strong></li>
+</ol>
+
+<!-- Başlık -->
+<div class="page-title">
+  <h1>Settings</h1>
+  <span class="note">Profile, integrations, security, and membership.</span>
+</div>
+
+<!-- Display Success/Error Messages -->
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+<form id="avatarForm" method="post" style="display: none">
+  {% csrf_token %} {{ avatar_form.as_p }} {# Renders the hidden input:
+  <input type="hidden" name="avatar_base64" ... /> #}
+  <input type="hidden" name="action" value="save_avatar" /> {# Identifier for
+  the view #}
+</form>
+
+<!-- Profile + Security -->
+<div class="row">
+    <!-- API Keys & Webhooks -->
+    <div class="card">
+      <h3>API Keys</h3>
+
+      <!-- This form handles regenerating the key -->
+      <form method="post" id="regenerateKeyForm">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="regenerate_key" />
+      </form>
+
+      <div class="form-group">
+        <label>Current API Key</label>
+        <div class="input-group">
+          <input
+            id="apiKey"
+            class="form-control"
+            value="{{ user.profile.api_key }}"
+            readonly
+          />
+          <span class="input-group-btn">
+            <button id="copyKey" class="btn btn-ghost">
+              <i class="entypo-docs"></i>
+            </button>
+
+            <!-- This button will now submit the hidden regenerate form -->
+            <button
+              type="submit"
+              form="regenerateKeyForm"
+              id="regenKey"
+              class="btn btn-purple"
+            >
+              <i class="entypo-cw"></i> Regenerate
+            </button>
+          </span>
+        </div>
+        <div class="input-help">Use this key for Publisha API access.</div>
+      </div>
+
+      <div class="sep"></div>
+
+      <!-- This form handles saving the webhook URL -->
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-group" style="margin-top: 10px">
+          <label for="{{ api_form.webhook_url.id_for_label }}"
+            >Webhook URL</label
+          >
+          <input
+            type="url"
+            name="{{ api_form.webhook_url.name }}"
+            id="{{ api_form.webhook_url.id_for_label }}"
+            class="form-control"
+            placeholder="https://yourapp.com/publisha-webhook"
+            value="{{ user.profile.webhook_url|default:'' }}"
+          />
+          <div class="input-help">Receive post status events.</div>
+        </div>
+        <div class="text-right">
+          <button
+            type="submit"
+            name="action"
+            value="save_api"
+            class="btn btn-purple"
+          >
+            <i class="entypo-check"></i> Save API Settings
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Integrations -->
+  <div class="card" style="margin-top: 16px">
+    <h3>Integrations (CMS & Platforms)</h3>
+    <div class="subnote">
+      Connect sources to import articles to Dashboard and publish from Publisha.
+    </div>
+    <div class="grid-2">
+      <!-- WordPress -->
+      <div class="plan">
+        <div
+          class="inline"
+          style="justify-content: space-between; margin-bottom: 8px"
+        >
+          <div class="inline" style="gap: 6px">
+            <i
+              class="entypo-wordpress"
+              style="font-size: 20px; color: #21759b"
+            ></i>
+            <strong>WordPress</strong>
+          </div>
+          <span id="wpStatus" class="badge-status no">Not connected</span>
+        </div>
+        <div class="oauth-note">
+          Smart Connect uses OAuth / Application Password flow automatically.
+        </div>
+        <div class="form-group">
+          <label>Website URL (optional)</label>
+          <input
+            id="wpUrl"
+            class="form-control"
+            placeholder="https://example.com"
+          />
+          <div class="input-help">
+            Leave blank to pick a site after redirect.
+          </div>
+        </div>
+
+        <a href="#" id="wpAdvTgl" class="input-help"
+          >Gelişmiş (manuel) ayarları göster</a
+        >
+        <div id="wpAdv" class="adv">
+          <div class="form-group">
+            <label>Username</label>
+            <input id="wpUser" class="form-control" placeholder="admin" />
+          </div>
+          <div class="form-group">
+            <label>Application Password / Token</label>
+            <input
+              id="wpToken"
+              class="form-control"
+              placeholder="xxxx-xxxx-xxxx-xxxx"
+            />
+          </div>
+        </div>
+
+        <div class="text-right">
+          <button data-prov="wordpress" class="btn btn-purple oauthConnect">
+            <i class="entypo-plug"></i> Connect
+          </button>
+          <button id="wpManage" class="btn btn-ghost" disabled>
+            <i class="entypo-cog"></i> Manage
+          </button>
+          <button id="wpDisconnect" class="btn btn-default">
+            <i class="entypo-cancel"></i> Disconnect
+          </button>
+        </div>
+      </div>
+
+      <!-- Medium -->
+      <div class="plan">
+        <div
+          class="inline"
+          style="justify-content: space-between; margin-bottom: 8px"
+        >
+          <div class="inline" style="gap: 6px">
+            <i
+              class="entypo-book-open"
+              style="font-size: 20px; color: #02b875"
+            ></i>
+            <strong>Medium</strong>
+          </div>
+          <span id="mdStatus" class="badge-status no">Not connected</span>
+        </div>
+        <div class="oauth-note">One-click OAuth. No tokens needed.</div>
+        <a href="#" id="mdAdvTgl" class="input-help">Gelişmiş (manuel token)</a>
+        <div id="mdAdv" class="adv">
+          <div class="form-group">
+            <label>Integration Token</label>
+            <input
+              id="mdToken"
+              class="form-control"
+              placeholder="Bearer token"
+            />
+          </div>
+        </div>
+        <div class="text-right">
+          <button data-prov="medium" class="btn btn-purple oauthConnect">
+            <i class="entypo-plug"></i> Connect
+          </button>
+          <button id="mdDisconnect" class="btn btn-default">
+            <i class="entypo-cancel"></i> Disconnect
+          </button>
+        </div>
+      </div>
+
+      <!-- Ghost -->
+      <div class="plan">
+        <div
+          class="inline"
+          style="justify-content: space-between; margin-bottom: 8px"
+        >
+          <div class="inline" style="gap: 6px">
+            <i
+              class="entypo-feather"
+              style="font-size: 20px; color: #0e0e0e"
+            ></i>
+            <strong>Ghost</strong>
+          </div>
+          <span id="ghStatus" class="badge-status no">Not connected</span>
+        </div>
+        <div class="oauth-note">
+          Smart Connect can discover Admin API via URL.
+        </div>
+        <div class="form-group">
+          <label>Site URL (optional)</label>
+          <input
+            id="ghUrl"
+            class="form-control"
+            placeholder="https://your-ghost.com"
+          />
+        </div>
+        <a href="#" id="ghAdvTgl" class="input-help"
+          >Gelişmiş (manuel anahtar)</a
+        >
+        <div id="ghAdv" class="adv">
+          <div class="form-group">
+            <label>Admin API Key</label>
+            <input
+              id="ghKey"
+              class="form-control"
+              placeholder="xxxxxxxx:yyyyyyyy"
+            />
+          </div>
+        </div>
+        <div class="text-right">
+          <button data-prov="ghost" class="btn btn-purple oauthConnect">
+            <i class="entypo-plug"></i> Connect
+          </button>
+          <button id="ghDisconnect" class="btn btn-default">
+            <i class="entypo-cancel"></i> Disconnect
+          </button>
+        </div>
+      </div>
+
+      <!-- Notion -->
+      <div class="plan">
+        <div
+          class="inline"
+          style="justify-content: space-between; margin-bottom: 8px"
+        >
+          <div class="inline" style="gap: 6px">
+            <i class="entypo-layout" style="font-size: 20px; color: #000"></i>
+            <strong>Notion</strong>
+          </div>
+          <span id="noStatus" class="badge-status no">Not connected</span>
+        </div>
+        <div class="oauth-note">Connect to your workspace via OAuth.</div>
+        <a href="#" id="noAdvTgl" class="input-help">Gelişmiş (manuel token)</a>
+        <div id="noAdv" class="adv">
+          <div class="form-group">
+            <label>Internal Integration Token</label>
+            <input id="noToken" class="form-control" placeholder="secret_xxx" />
+          </div>
+        </div>
+        <div class="text-right">
+          <button data-prov="notion" class="btn btn-purple oauthConnect">
+            <i class="entypo-plug"></i> Connect
+          </button>
+          <button id="noDisconnect" class="btn btn-default">
+            <i class="entypo-cancel"></i> Disconnect
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard Integration -->
+  <div class="card" style="margin-top: 16px">
+    <h3>Dashboard Integrations</h3>
+    <div class="grid-2">
+      <div>
+        <div class="form-group inline">
+          <label class="inline"
+            >Show “Import Articles” widget on Dashboard</label
+          >
+          <label class="switch"
+            ><input id="showImport" type="checkbox" /><span
+              class="slider"
+            ></span
+          ></label>
+        </div>
+        <div class="form-group">
+          <label>Default Import Source</label>
+          <select id="defaultSource" class="form-control">
+            <option value="wordpress">WordPress</option>
+            <option value="medium">Medium</option>
+            <option value="ghost">Ghost</option>
+            <option value="notion">Notion</option>
+            <option value="rss">RSS/Atom Feed</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>RSS/Feed URL (optional)</label>
+          <input
+            id="feedUrl"
+            class="form-control"
+            placeholder="https://blog.example.com/feed"
+          />
+          <div class="input-help">
+            If set, Dashboard widget can pull from this feed.
+          </div>
+        </div>
+        <button id="saveDash" class="btn btn-purple">
+          <i class="entypo-check"></i> Save Dashboard Settings
+        </button>
+      </div>
+      <div>
+        <div class="form-group">
+          <label>Quick test import (dummy)</label>
+          <div class="input-group">
+            <input
+              id="testImportUrl"
+              class="form-control"
+              placeholder="Paste article URL"
+            />
+            <span class="input-group-btn">
+              <button id="runImport" class="btn btn-ghost">
+                <i class="entypo-download"></i> Run
+              </button>
+            </span>
+          </div>
+          <div id="importResult" class="input-help">Ready.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ <!-- Membership / Pricing -->
+<div class="card" style="margin-top: 16px">
+    <h3>Membership & Pricing Plans</h3>
+    <div class="subnote">Manage your plan, seats and billing period.</div>
+
+    <div class="inline" style="justify-content: center; margin-bottom: 12px;">
+        <span>Monthly</span>
+        <label class="switch" style="margin: 0 8px">
+            <input id="yearlyToggle" type="checkbox" {% if user.profile.billing_is_yearly %}checked{% endif %} />
+            <span class="slider"></span>
+        </label>
+        <span id="billLabel">Yearly <small>(15% off)</small></span>
+    </div>
+
+    <!-- This grid should contain all your plans -->
+    <div class="grid-3">
+        
+        <!-- Free / Trial Plan -->
+        <div id="planFree" class="plan {% if user.profile.subscription_plan == 'free' %}active{% endif %}">
+            <h4><i class="entypo-leaf"></i> Free / Trial</h4>
+            <div><span class="price">$0</span> <span>/ 7 days</span></div>
+            <ul class="list-unstyled">
+                <li>• 1 user</li>
+                <li>• 1 active campaign</li>
+                <li>• 1 output (post) / lifetime</li>
+                <li>• 1 integration</li>
+                <li>• Email support (3 business days)</li>
+            </ul>
+                {% if user.profile.subscription_plan == 'free' %}
+        <button class="btn btn-purple" disabled>
+            <i class="entypo-check"></i> Current Plan
+        </button>
+    {% else %}
+        <!-- An empty placeholder to keep the card height consistent with others -->
+        <div style="height: 36px;"></div>
+    {% endif %}
+        </div>
+
+        <!-- Starter Plan -->
+        <div id="planStarter" class="plan {% if user.profile.subscription_plan == 'starter' %}active{% endif %}">
+            <h4><i class="entypo-paper-plane"></i> Starter</h4>
+            <div>
+                <span class="price" data-monthly-price="29" data-yearly-price="295">$29</span>
+                <span class="unit">/ mo</span>
+            </div>
+            <ul class="list-unstyled">
+                <li>• 1–2 users</li>
+                <li>• 3 active campaigns</li>
+                <li>• 50 outputs/month</li>
+                <li>• 1 integration</li>
+                <li>• Email support (48h)</li>
+            </ul>
+             <button data-plan="starter" class="btn {% if user.profile.subscription_plan == 'starter' %}btn-purple{% else %}btn-ghost{% endif %} choosePlan">
+        {% if user.profile.subscription_plan == 'starter' %}<i class="entypo-check"></i> Current{% else %}Choose{% endif %}
+    </button>
+        </div>
+
+        <!-- Pro Plan -->
+        <div id="planPro" class="plan {% if user.profile.subscription_plan == 'pro' %}active{% endif %}">
+            <h4><i class="entypo-rocket"></i> Pro</h4>
+            <div>
+                <span class="price" data-monthly-price="79" data-yearly-price="805">$79</span>
+                <span class="unit">/ mo</span>
+            </div>
+            <ul class="list-unstyled">
+                <li>• 5 users</li>
+                <li>• 10 active campaigns</li>
+                <li>• 200 outputs/month</li>
+                <li>• 5 integrations</li>
+                <li>• Priority queue</li>
+                <li>• Basic analytics</li>
+                <li>• Email + chat support (24h)</li>
+            </ul>
+            <button data-plan="pro" class="btn {% if user.profile.subscription_plan == 'pro' %}btn-purple{% else %}btn-ghost{% endif %} choosePlan">
+        {% if user.profile.subscription_plan == 'pro' %}<i class="entypo-check"></i> Current{% else %}Choose{% endif %}
+    </button>
+        </div>
+
+        <!-- Business Plan -->
+        <div id="planBusiness" class="plan {% if user.profile.subscription_plan == 'business' %}active{% endif %}">
+            <h4><i class="entypo-briefcase"></i> Business</h4>
+            <div>
+                <span class="price" data-monthly-price="199" data-yearly-price="2029">$199</span>
+                <span class="unit">/ mo</span>
+            </div>
+            <ul class="list-unstyled">
+                <li>• 10 users</li>
+                <li>• Unlimited campaigns (fair use)</li>
+                <li>• 800 outputs/month</li>
+                <li>• All integrations + API access</li>
+                <li>• Account manager, 12h response target</li>
+            </ul>
+            <button data-plan="business" class="btn {% if user.profile.subscription_plan == 'business' %}btn-purple{% else %}btn-ghost{% endif %} choosePlan">
+        {% if user.profile.subscription_plan == 'business' %}<i class="entypo-check"></i> Current{% else %}Choose{% endif %}
+    </button>
+        </div>
+        
+        <!-- Enterprise Plan -->
+        <div id="planEnterprise" class="plan {% if user.profile.subscription_plan == 'enterprise' %}active{% endif %}">
+            <h4><i class="entypo-globe"></i> Enterprise</h4>
+            <div><span class="price">$499+</span> <span class="unit">/ mo</span></div>
+            <ul class="list-unstyled">
+                <li>• Unlimited users, custom SLA</li>
+                <li>• Dedicated workers / isolated Redis queue</li>
+                <li>• Security/compliance & custom integrations</li>
+                <li>• Contract pricing</li>
+            </ul>
+            <!-- This should link to a contact form, not Stripe Checkout -->
+            <button data-plan="enterprise" class="btn {% if user.profile.subscription_plan == 'enterprise' %}btn-purple{% else %}btn-ghost{% endif %} choosePlan">
+                {% if user.profile.subscription_plan == 'enterprise' %}<i class="entypo-check"></i> Current{% else %}Choose{% endif %}
+            </button>
+        </div>
+        
+    </div>
+    
+    <!-- This section is for other billing details like seats and payment method -->
+    <div class="grid-2" style="margin-top:12px;">
+        <!-- ... your seats and payment method form groups ... -->
+    </div>
+</div>
+
+  <!-- Data export/import + Danger -->
+  <div class="grid-2" style="margin-top: 16px">
+    <div class="card">
+      <h3>Export / Import Settings</h3>
+      <div class="form-group">
+        <button id="exportSettings" class="btn btn-ghost">
+          <i class="entypo-download"></i> Export JSON
+        </button>
+      </div>
+      <div class="form-group">
+        <label>Import from JSON</label>
+        <input
+          id="importSettings"
+          type="file"
+          accept="application/json"
+          class="form-control"
+        />
+      </div>
+    </div>
+    <div class="card">
+      <h3>Danger Zone</h3>
+      <div class="input-help">
+        Reset all local settings and integration tokens on this device.
+      </div>
+      <button id="factoryReset" class="btn btn-danger">
+        <i class="entypo-trash"></i> Factory Reset
+      </button>
+    </div>
+  </div>
+  {% endblock content %}
+
+  <!-- JavaScript plugins for this page -->
+  {% block scripts %}
+   <script src="https://js.stripe.com/v3/"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      "use strict";
+
+      // --- NEW, ROBUST AVATAR UPLOAD LOGIC (Vanilla JS with Fetch) ---
+
+      // Function to get the CSRF token from the cookie
+      const stripe = Stripe("{{ STRIPE_PUBLISHABLE_KEY }}");
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+          const cookies = document.cookie.split(";");
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === name + "=") {
+              cookieValue = decodeURIComponent(
+                cookie.substring(name.length + 1)
+              );
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
+      const csrftoken = getCookie("csrftoken");
+      
+      // Handle avatar file input change
+      const avatarFileInput = document.getElementById("avatarFile");
+      if (avatarFileInput) {
+        avatarFileInput.addEventListener("change", function () {
+          const file = this.files[0];
+          if (!file) return;
+
+          if (file.size > 2 * 1024 * 1024) {
+            alert("File is too large. Please select an image under 2MB.");
+            this.value = "";
+            return;
+          }
+
+          const reader = new FileReader();
+
+          reader.onload = function (e) {
+            const base64String = e.target.result;
+
+            // 1. Update the preview image
+            document.getElementById("avatarPreview").src = base64String;
+
+            // 2. Prepare the data to be sent to the backend
+            const formData = new FormData();
+            formData.append("avatar_base64", base64String);
+            formData.append("action", "save_avatar");
+
+            // 3. Submit the data using Fetch API
+            fetch("{% url 'settings_profile' %}", {
+              method: "POST",
+              headers: {
+                "X-CSRFToken": csrftoken, // Add the CSRF token to the headers
+                // 'Content-Type' is not needed; browser sets it for FormData
+              },
+              body: formData,
+            })
+              .then((response) => {
+                if (response.ok) {
+                  // The request was successful, reload the page to see the success message
+                  window.location.reload();
+                } else {
+                  // The server responded with an error
+                  alert("An error occurred while uploading the avatar.");
+                }
+              })
+              .catch((error) => {
+                console.error("Fetch Error:", error);
+                alert("A network error occurred.");
+              });
+          };
+
+          reader.readAsDataURL(file);
+        });
+      }
+
+      // Handle stripe checkout for plan changes
+      const planButtons = document.querySelectorAll(".choosePlan");
+
+    planButtons.forEach(button => {
+        button.addEventListener("click", function () {
+            const plan = this.dataset.plan;
+            const isYearly = document.getElementById("yearlyToggle").checked;
+
+            // Don't do anything for the 'free' plan button
+            
+
+            console.log(`Plan chosen: ${plan}, Yearly: ${isYearly}`);
+
+            // Prepare the data to send to the backend
+            const formData = new FormData();
+            formData.append('plan', plan);
+            formData.append('billing_cycle', isYearly);
+
+            // Fetch the checkout session ID from your backend
+            fetch("{% url 'create_checkout_session' %}", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrftoken,
+                },
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.sessionId) {
+                    // We have a session ID, redirect to Stripe Checkout
+                    return stripe.redirectToCheckout({ sessionId: data.sessionId });
+                } else {
+                    // Handle any errors from the backend
+                    console.error("Error creating checkout session:", data.error);
+                    alert("An error occurred. Please try again.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("A network error occurred. Please check your connection and try again.");
+            });
+        });
+    });
+
+    // Optional: Add logic to update prices when the yearly toggle is switched
+    const yearlyToggle = document.getElementById('yearlyToggle');
+    yearlyToggle.addEventListener('change', function() {
+        const isYearly = this.checked;
+        document.querySelectorAll('.plan .price').forEach(priceEl => {
+            const monthlyPrice = priceEl.dataset.monthlyPrice;
+            const yearlyPrice = priceEl.dataset.yearlyPrice;
+            const unitEl = priceEl.nextElementSibling; // The '/ mo' or '/ yr' span
+
+            if (isYearly && yearlyPrice) {
+                priceEl.textContent = `$${(yearlyPrice / 12).toFixed(0)}`;
+                if (unitEl) unitEl.textContent = '/ mo';
+            } else if (monthlyPrice) {
+                priceEl.textContent = `$${monthlyPrice}`;
+                if (unitEl) unitEl.textContent = '/ mo';
+            }
+        });
+    });
+    // Trigger change on load to set initial prices correctly
+    yearlyToggle.dispatchEvent(new Event('change'));
+
+    });
+  </script>
+  {% endblock scripts %}
+</div>

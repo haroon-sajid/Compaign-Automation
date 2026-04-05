@@ -1,0 +1,1950 @@
+{% extends "user_layout.html" %} {% block content %} {% load static %}
+<!-- ——— Core CSS —— -->
+<link rel="stylesheet" href="{% static '/assets/css/font-icons/entypo/css/entypo.css' %}" />
+<link rel="stylesheet" href="{% static '/assets/css/custom.css' %}" />
+<link rel="stylesheet" href="{% static '/assets/css/bootstrap.css' %}" />
+<link rel="stylesheet" href="{% static '/assets/css/neon-core.css' %}" />
+<link rel="stylesheet" href="{% static '/assets/css/neon-theme.css' %}" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" />
+<link rel="stylesheet" href="{% static '/assets/css/neon-forms.css' %}" />
+<script src="{% static '/dmxAppConnect/dmxAppConnect.js' %}"></script>
+<script src="{% static '/assets/js/dmx-init.js' %}" defer></script>
+
+<!-- ——— Core JS —— -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.3/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="{% static '/assets/js/boot/runtime-guard.dev.js' %}" defer></script>
+
+<!-- ——— Plugins —— -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+
+<!-- ———  JS —— -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr" defer></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/tr.js" defer></script>-->
+
+<!-- Blog klasörü -->
+<script src="{% static '/assets/js/blog/create-campaign/05-set-schedule/schedule.js' %}" defer></script>
+<script src="{% static '/assets/js/blog/create-campaign/04-media/manually/match-images.js' %}" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="{% static '/assets/js/datatables.safe-init.js' %}"></script>
+
+<link rel="stylesheet" href="{% static '/assets/css/publisha-campaign.css' %}" />
+<link rel="stylesheet" href="{% static '/assets/css/create-campaign.prompt.css' %}" />
+
+<script src="{% static '/assets/js/blog/create-campaign/01-prompt/prompt.js' %}" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="{% static '/assets/js/blog/create-campaign/03-content-settings/tags-category-seoplugin.js' %}"
+  defer></script>
+<script src="{% static '/assets/js/blog/create-campaign/01-prompt/prompt-table.js' %}" defer></script>
+<link rel="stylesheet" href="{% static '/assets/css/create-campaign/01-prompt/prompt-table.css' %}" />
+<script src="{% static '/assets/js/blog/create-campaign/summary-card.js' %}" defer></script>
+<script src="{% static '/assets/js/blog/create-campaign/wizardSteps.js' %}" defer></script>
+
+<!-- Keywords -->
+<script src="{% static '/assets/js/blog/create-campaign/02-keywords/keyword-table.js' %}" defer></script>
+<script src="{% static '/assets/js/blog/create-campaign/02-keywords/keywordsBulkInput.js' %}" defer></script>
+<script src="{% static '/assets/js/blog/create-campaign/02-keywords/dropzone-box.js' %}" defer></script>
+
+<!-- Content settings & media -->
+<script src="{% static '/assets/js/blog/create-campaign/03-content-settings/wordCount.js' %}" defer></script>
+<script src="{% static '/assets/js/blog/create-campaign/03-content-settings/tone.js' %}" defer></script>
+<script src="{% static '/assets/js/blog/create-campaign/04-media/sourceToggle.js' %}" defer></script>
+<script src="{% static '/assets/js/blog/create-campaign/04-media/mediaCards.js' %}" defer></script>
+<script src="{% static '/assets/js/blog/create-campaign/04-media/auto/imgSourceSel.js' %}" defer></script>
+<script>
+  window.userPlan = "{{ user_plan|default:'free' }}";
+</script>
+<script src="{% static '/assets/js/blog/create-campaign/04-media/auto/searchModeSel.js' %}" defer></script>
+<link rel="stylesheet" href="{% static '/assets/css/create-campaign/04-media/auto/searchModeSel.css' %}" />
+
+<!-- Schedule -->
+<script src="{% static '/assets/js/blog/create-campaign/05-set-schedule/frequencySelect.js' %}" defer></script>
+<script src="{% static '/assets/js/blog/create-campaign/06-output/outputPreview.js' %}" defer></script>
+<!-- Schedule Modules -->
+<script src="{% static '/assets/js/publisha-cadence-warning.js' %}" defer></script>
+<script src="{% static '/assets/js/publisha-end-condition.js' %}" defer></script>
+<script src="{% static '/assets/js/publisha-randomness.js' %}" defer></script>
+
+<!-- Uploads & nav -->
+<script src="{% static '/assets/js/blog/create-campaign/04-media/manually/mediaDropzone-upload.js' %}" defer></script>
+<script src="{% static '/assets/js/blog/create-campaign/next-step-button.js' %}" defer></script>
+<script src="{% static '/assets/js/blog/create-campaign/prev-step-button.js' %}" defer></script>
+<script src="{% static '/assets/js/blog/create-campaign/auto-save.js' %}" defer></script>
+<!--<script src="{% static '/assets/js/blog/create-campaign/unsaved-changes.js' %}" defer></script>-->
+<script src="{% static '/assets/js/blog/create-campaign/ui-common.js' %}" defer></script>
+<script src="{% static '/assets/js/blog/create-campaign/ui-tooltips.js' %}" defer></script>
+
+<style>
+  #miPool {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+    margin-top: 15px;
+  }
+
+  /* Individual image thumbnail */
+  .thumb-item {
+    position: relative;
+    cursor: pointer;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    transition: all 0.2s ease-in-out;
+    aspect-ratio: 1 / 1;
+    /* Make them square */
+  }
+
+  .thumb-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Ensure image covers the area */
+    display: block;
+  }
+
+  .thumb-item:hover {
+    transform: scale(1.05);
+    border-color: #9b59b6;
+    /* Your purple color */
+  }
+
+  /* Style for the media card waiting for selection */
+  .media-card.is-selecting {
+    transform: translateY(-2px);
+  }
+
+  /* Style for a media card that has an image selected */
+  .media-card.has-image {
+    background-size: cover;
+    background-position: center;
+    color: white;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  }
+
+  /* Container for multiple content images */
+  .media-card .content-image-previews {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 5px;
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    right: 5px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 4px;
+  }
+
+  .media-card .content-image-previews img {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 3px;
+  }
+
+  #kwPreviewBar {
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    border: 1px solid #e0e0e0;
+  }
+
+  #kwPreviewBar:hover {
+    background-color: #f8f6fc;
+    /* A very light purple */
+    border-color: #9b59b6;
+    /* Your theme's purple */
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  /* ——— Keywords panel kartı (tabloda genişlik kontrolü) ——— */
+  .kw-card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+    padding: 14px 16px;
+    margin-top: 12px;
+  }
+
+  /* Table compact spacing & fixed columns like design */
+  #kwTable {
+    table-layout: fixed;
+    width: 100%;
+  }
+
+  #kwTable th,
+  #kwTable td {
+    vertical-align: middle;
+  }
+
+  #kwTable .select-col {
+    width: 36px;
+    text-align: center;
+  }
+
+  #kwTable .no-col {
+    width: 64px;
+    text-align: center;
+  }
+
+  #kwTable .actions-col {
+    width: 110px;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  #kwTable td.actions-col button {
+    background: none;
+    border: 0;
+    padding: 0 6px;
+    margin: 0;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  /* Top bar (Show / Bulk / Search) */
+  .pttable-container .dataTables_length label,
+  .pttable-container .dataTables_filter {
+    margin: 0;
+  }
+
+  .pttable-container .pt-search {
+    position: relative;
+  }
+
+  .pttable-container .pt-search .entypo-search {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  .pttable-container .pt-search-input {
+    padding-right: 28px;
+  }
+
+  /* Mobile-first responsive adjustments for Create Campaign wizard */
+  @media (max-width: 767px) {
+
+    /* Stack wizard steps vertically on small screens */
+    .wizard-two-cols {
+      flex-direction: column;
+    }
+
+    .col-lg-9,
+    .col-md-8,
+    .col-sm-12,
+    .col-lg-3 {
+      width: 100% !important;
+      max-width: 100%;
+      flex: 1 0 100%;
+    }
+
+    .summary-col {
+      display: none !important;
+      /* Hide sticky summary on mobile */
+    }
+
+    /* Full-width form controls */
+    .form-control,
+    .form-control-lg,
+    select.form-control,
+    input[type="number"] {
+      box-sizing: border-box;
+    }
+
+    /* Stack horizontal prompt cards */
+    #promptModeCards {
+      flex-direction: column !important;
+      gap: 8px !important;
+    }
+
+    #promptModeCards .entry-card {
+      width: 100%;
+      text-align: center;
+    }
+
+    /* Make tabs full-width */
+    .nav-tabs.big-tabs>li {
+      display: block;
+       width: 50%; 
+      margin-bottom: 4px;
+    }
+
+    .nav-tabs.big-tabs>li>a {
+      margin-right: 0 !important;
+      text-align: center;
+    }
+
+    /* Adjust media toggle */
+    #sourceToggle {
+      width: 100%;
+      justify-content: center;
+      display: flex;
+      flex-direction: row;
+    }
+
+    /* Full-width schedule inputs */
+    #scheduleDate,
+    #frequencyValue {
+      width: 100% !important;
+    }
+
+    /* Stack action buttons */
+    .form-actions.wizard-actions {
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-actions.wizard-actions .btn {
+      width: 100%;
+    }
+
+    /* Ensure dropzone and image pool are responsive */
+    .dropzone-box,
+    #miPool {
+      width: 100% !important;
+    }
+
+    #miPool {
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)) !important;
+    }
+
+    /* Responsive stepper */
+    .wizard-stepper-horizontal {
+      /* flex-wrap: wrap; */
+      gap: 4px;
+    }
+
+    .wizard-stepper-horizontal li {
+      flex: 1 1 calc(50% - 8px);
+      font-size: 12px;
+      padding: 6px 4px;
+    }
+
+    .wizard-stepper-horizontal .number {
+      font-size: 14px;
+    }
+
+    /* Breadcrumb and header spacing */
+    .breadcrumb.bc-3 {
+      padding: 8px 10px;
+      font-size: 13px;
+    }
+
+    .campaign-header h1 {
+      font-size: 22px;
+    }
+
+    .form-header {
+      font-size: 18px;
+    }
+  }
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    padding: 20px;
+    
+}
+
+.modal-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-head {
+    display: flex;
+    align-items: flex-start;
+    padding: 24px 24px 16px;
+    border-left: 5px solid #5433f5;
+}
+
+.modal-icon {
+    margin-right: 12px;
+    color: #5433f5;
+    font-size: 24px;
+    background: #EAE6FE;
+}
+
+.modal-title-block {
+    flex: 1;
+}
+
+.modal-title {
+    margin: 0 0 8px 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.modal-desc {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.modal-body {
+    padding: 20px 24px;
+}
+
+.modal-body ul {
+    margin: 0;
+    padding-left: 20px;
+    color: #4b5563;
+}
+
+.modal-body li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.modal-body strong {
+    color: #1f2937;
+}
+
+.modal-body p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.modal-footer {
+    padding: 16px 24px 24px;
+    text-align: right;
+    border-top: 1px solid #e9ecef;
+}
+
+.modal-close-btn {
+    background: #5a31ff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.modal-close-btn:hover {
+    background: #5a31ff;
+}
+
+/* Ensure the modal appears above everything */
+.modal-overlay {
+    z-index: 9999;
+}
+
+
+
+/* ---------- Randomness call-out ---------- */
+.schedule-callout {
+    background: #fff;
+    border: 1px solid rgba(90, 49, 255, .25);
+    border-left: 4px solid #5a31ff;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font: 13px/1.5 Inter, system-ui, sans-serif;
+    color: #2c2a3f;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, .06);
+    margin-top: 15px;
+}
+
+.schedule-callout .callout-body {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.schedule-callout-icon {
+    color: #5a31ff;
+    font-size: 16px;
+    line-height: 1.2;
+    font-weight: 700;
+}
+
+.schedule-callout .inline-code,
+.schedule-callout .robots-txt {
+    background: #f6f5ff;
+    border: 1px solid rgba(90, 49, 255, .25);
+    border-radius: 4px;
+    padding: 0 4px;
+    font-family: "SF Mono", Monaco, "Cascadia Code", monospace;
+}
+
+  @media (max-width: 768px) { /* adjust breakpoint as needed */
+  .mi-left {
+    width: 0% !important; /* override width */
+    float: none !important;  /* cancel float */
+    padding: 0px;           /* optional mobile padding */
+  }
+  #sourceToggle {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  #sourceToggle .source-opt[data-val="manual"] {
+    color: #6B7280; /* default text color */
+    background-color: transparent; /* default background */
+  }
+  #sourceToggle .source-opt[data-val="manual"].active {
+      color: #fff;
+      background: linear-gradient(90deg, #7B4FFF 0%, #693DF0 100%);
+      transform: translateY(1px);
+      transition: color 0.15s, transform 0.15s, background 0.15s;
+  }
+
+  /* one rule = all three buttons */
+  #sourceToggle .source-opt.active {
+    color: #fff;
+    {% comment %} background: linear-gradient(90deg, #7B4FFF 0%, #693DF0 100%); {% endcomment %}
+    transform: translateY(1px);
+    transition: color 0.15s, transform 0.15s, background 0.15s;
+  }
+
+  .kw-card{ overflow:auto; -webkit-overflow-scrolling:touch; }
+    #kwTable{ min-width:1000px; }   /* keeps full row intact */
+}
+  /* Tablet adjustments */
+  @media (min-width: 768px) and (max-width: 991px) {
+    .wizard-two-cols {
+      flex-direction: column;
+    }
+    
+    .summary-col {
+      display: none !important;
+    }
+
+    .nav-tabs.big-tabs>li {
+      flex: 1 1 50%;
+      text-align: center;
+    }
+
+    .nav-tabs.big-tabs>li>a {
+      margin-right: 0 !important;
+    }
+  }
+
+  @media (min-width: 992px) and (max-width: 1024px) {
+
+    /* Stack columns vertically to avoid crowding */
+    .wizard-two-cols {
+      flex-direction: column;
+      width: auto;
+    }
+
+    /* Hide summary card on 1024px to prioritize form space */
+    .summary-col {
+      display: none !important;
+    }
+
+    /* Full-width inputs and buttons */
+    .form-control,
+    .form-control-lg,
+    select.form-control,
+    input[type="number"] {
+      width: 100% !important;
+      box-sizing: border-box;
+    }
+
+    /* Adjust stepper to 3 items per line */
+    .wizard-stepper-horizontal {
+      /* flex-wrap: wrap; */
+      gap: 6px;
+    }
+
+    .wizard-stepper-horizontal li {
+      flex: 1 1 calc(33.333% - 4px);
+      font-size: 13px;
+      padding: 8px 6px;
+    }
+
+    /* Make tone grid wrap more gracefully */
+    .tone-grid {
+      grid-template-columns: repeat(3, 1fr) !important;
+    }
+
+    /* Ensure image pool stays responsive */
+    #miPool {
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)) !important;
+    }
+
+    /* Full-width schedule inputs */
+    #scheduleDate,
+    #frequencyValue {
+      width: 100% !important;
+    }
+
+    /* Stack action buttons */
+    .form-actions.wizard-actions {
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-actions.wizard-actions .btn {
+      width: 100%;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .wizard-two-cols .col-lg-9 {
+      flex: 1 1 auto;
+      width: auto;
+    }
+  }
+
+  /* Desktop (1025px+) – keep original layout */
+  @media (min-width: 1025px) {
+    .wizard-two-cols {
+      flex-direction: row;
+      width: auto !important;
+    }
+
+    .summary-col {
+      display: block !important;
+    }
+
+    .tone-grid {
+      grid-template-columns: repeat(4, 1fr) !important;
+    }
+
+    .form-actions.wizard-actions {
+      flex-direction: row;
+      gap: 10px;
+    }
+
+    .form-actions.wizard-actions .btn {
+      width: auto;
+    }
+
+    /* Fix summary card positioning */
+.summary-col {
+  position: sticky;
+  top: 20px;
+  height: fit-content;
+}
+
+/* Ensure proper row spacing */
+.wizard-step[data-step="5"] .row {
+  margin-bottom: 15px;
+}
+} 
+</style>
+
+<div class="">
+  <!-- ■■■ SIDEBAR ■■■ -->
+
+  <!-- /SIDEBAR -->
+
+  <!-- ■■■ MAIN CONTENT ■■■ -->
+  <div class="">
+
+    <!-- — Breadcrumb — -->
+    <ol class="breadcrumb bc-3">
+      <li>
+        <a href="{% url 'dashboard:dashboard' %}"><i class="fa-home"></i>Home</a>
+      </li>
+      <li>Campaigns</li>
+      <li class="active"><strong>Create Campaign</strong></li>
+    </ol>
+
+    <br /><!-- ▼▼ Campaign header ▼▼ -->
+    <div class="campaign-header">
+      <h1>Create Campaign</h1>
+
+      <ul id="wizardSteps" class="wizard-stepper-horizontal">
+        <li class="active" data-step="1">
+          <span class="number">1</span>Prompt
+        </li>
+        <li data-step="2"><span class="number">2</span>Keywords</li>
+        <li data-step="3"><span class="number">3</span>Content Settings</li>
+        <li data-step="4"><span class="number">4</span>Media</li>
+        <li data-step="5"><span class="number">5</span>Set Schedule</li>
+        <li data-step="6"><span class="number">6</span>Output</li>
+      </ul>
+    </div>
+    <!-- ▲▲ -->
+
+    <!-- Yatay ilerleme çubuğu -->
+    <div id="progressBar" class="progress" style="height: 6px; margin: 6px 26px 18px">
+      <div class="progress-bar" style="width: 16%"></div>
+    </div>
+
+    <!-- — Channel Tabs — -->
+    <ul class="nav nav-tabs big-tabs" style="margin-left:23px;" role="tablist" id="channelTabs">
+      <!-- Blog Tab -->
+      <li class="nav-item">
+        <a class="nav-link active" style="
+            background: linear-gradient(
+              90deg,
+              var(--clr-primary-600),
+              var(--clr-primary-400)
+            );
+            color: white;
+            border: none;
+          " href="/campaigns/create/" data-tab="blog">
+          Blog
+        </a>
+      </li>
+      <!-- Social Tab -->
+      <li class="nav-item">
+        <a class="nav-link {% if active_tab == 'social' %}active{% endif %}"
+          href="{% url 'campaignhub:create_social_campaign' %}" data-tab="social">Social</a>
+      </li>
+    </ul>
+
+    <!-- —— Tabs content —— -->
+    <div class="tab-content">
+      <!-- ★ BLOG TAB ★ -->
+      <div class="tab-pane active" id="tab-blog" role="tabpanel">
+        <div class="container-fluid">
+          <div class="row wizard-two-cols">
+            <!-- (JS’in referans verdiği) Yatay stepper’a ek olarak dikey mini wizard -->
+            <ul class="sidebar-wizard list-unstyled" style="display: none">
+              <li data-step="1">Prompt</li>
+              <li data-step="2">Keywords</li>
+              <li data-step="3">Content Settings</li>
+              <li data-step="4">Media</li>
+              <li data-step="5">Schedule</li>
+              <li data-step="6">Output</li>
+            </ul>
+
+            <!-- Wizard Content -->
+            <div class="col-lg-9 col-md-8 col-sm-12">
+              <!-- STEP 1 — PROMPT -->
+              <div class="wizard-step active" data-step="1">
+                <div id="promptModeCards" class="d-flex" style="gap: 12px; margin-bottom: 18px">
+                  <button type="button" id="cardExisting" class="entry-card selected">
+                    <i class="entypo-doc-text"></i> Existing
+                  </button>
+                  <button type="button" id="cardNew" class="entry-card">
+                    <i class="entypo-plus"></i> New
+                  </button>
+                </div>
+
+                <div class="form-group">
+                  <label for="campaignName">Campaign Name <span style="color: #c00">*</span></label>
+                  <input type="text" class="form-control form-control-lg" id="campaignName"
+                    placeholder="Enter campaign name" />
+                </div>
+
+                <h2 class="form-header"><i class="entypo-pencil"></i>Prompt</h2>
+
+                <div id="newControls" style="display: none">
+                  <label for="templateName" class="mb-1">Prompt Name <span style="color: #c00">*</span></label>
+                  <input type="text" id="templateName" class="form-control form-control-lg"
+                    placeholder="Give your template a name" />
+                </div>
+
+                <div id="existingControls" class="d-flex align-items-end form-group" style="gap: 16px">
+                  <div style=""; min-width: 280px">
+                    <label for="templateDropdown" class="mb-1">
+                      Existing Prompt Template
+                    </label>
+
+                    <select id="templateDropdown" class="form-control form-control-lg">
+                      <option value="">Select template…</option>
+                    </select>
+                  </div>
+
+                  <button id="manageTemplatesBtn" type="button" class="btn btn-purple"
+                    style="white-space: nowrap; height: 46px">
+                    <i class="entypo-plus" aria-hidden="true" style="font-size: 18px; margin-right: 6px"></i>
+                  </button>
+                </div>
+
+                <div class="form-group">
+                  <a id="toggleSystemPrompt" data-toggle="collapse" href="#systemPromptGroup" class="toggle-sys-btn"
+                    style="display:""; margin-bottom: 12px">Show System Prompt ✚</a>
+                  <div id="systemPromptGroup" class="collapse">
+                    <label for="systemPromptText">System Prompt</label>
+                    <textarea class="form-control form-control-lg" id="systemPromptText" rows="4"
+                      placeholder="e.g. You are an expert copywriter…"></textarea>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="userPromptText">User Prompt</label>
+                  <textarea class="form-control form-control-lg" id="userPromptText" rows="5"
+                    placeholder="Write your prompt here…"></textarea>
+                </div>
+
+                <div class="form-actions wizard-actions">
+                  <button type="button" id="step1BackBtn" class="btn btn-pill btn-back is-hidden">
+                    Back
+                  </button>
+                  <button type="button" class="btn btn-pill btn-next next-step" id="nextStepBtn">
+                    Next → Keywords
+                  </button>
+                </div>
+              </div>
+
+              <!-- STEP 2 — KEYWORDS -->
+              <div class="wizard-step" data-step="2">
+                <h2 class="form-header">
+                  <i class="entypo-doc-text"></i> Keywords
+                </h2>
+
+                <div class="form-group">
+                  <!-- NEW TOGGLE CARD -->
+                  <section class="tt-toggle-card mb-4">
+
+<!-- Toggle wrapper for Seed Keyword Generator + Trend Topics -->
+<section class="tt-toggle-card">
+  <header class="tt-toggle-header">
+    <div>
+
+    </div>
+  </header>
+
+  <div class="tt-toggle-list">
+    <!-- Seed Keyword Generator toggle -->
+    <div class="tt-toggle-item">
+      <button type="button" class="tt-toggle-row" data-toggle-panel="#seedToggleBody" aria-expanded="false">
+        <div class="tt-toggle-meta">
+          <div class="tt-toggle-title">
+            <span class="tt-toggle-dot"></span>
+            <span>Seed Keyword Generator</span>
+          </div>
+          <p class="tt-toggle-sub">Generate thousands of topic ideas from a single seed keyword.</p>
+        </div>
+
+        <div class="tt-toggle-right">
+          <span class="tt-toggle-label">Show</span>
+          <span class="tt-toggle-switch">
+            <span class="tt-toggle-knob"></span>
+          </span>
+        </div>
+      </button>
+
+      <div id="seedToggleBody" class="tt-toggle-body" hidden>
+        <!-- Place the Seed Keyword Generator card here -->
+        <!-- Example: paste your existing Seed Keyword Generator section into this container -->
+      </div>
+    </div>
+
+    <!-- Trend Topics toggle -->
+    <div class="tt-toggle-item">
+      <button type="button" class="tt-toggle-row" data-toggle-panel="#trendToggleBody" aria-expanded="false">
+        <div class="tt-toggle-meta">
+          <div class="tt-toggle-title">
+            <span class="tt-toggle-dot tt-toggle-dot-green"></span>
+            <span>Trend Topics</span>
+          </div>
+          <p class="tt-toggle-sub">Track trending topics via RSS, news and social signals.</p>
+        </div>
+
+        <div class="tt-toggle-right">
+          <span class="tt-toggle-label">Show</span>
+          <span class="tt-toggle-switch">
+            <span class="tt-toggle-knob"></span>
+          </span>
+        </div>
+      </button>
+
+      <div id="trendToggleBody" class="tt-toggle-body" hidden>
+        <!-- Place the Trend Topics panel here -->
+        <!-- Example: paste your existing Trend Topics panel into this container -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tt-toggle-card {
+    background: var(--panel, #ffffff);
+    border-radius: 18px;
+    border: 1px solid var(--border, #e6e7f4);
+    box-shadow: var(--shadow-sm, 0 4px 14px rgba(31, 36, 55, .06));
+    padding: 14px 16px 14px;
+  }
+
+  .tt-toggle-header {
+    padding: 4px 2px 8px;
+    border-bottom: 1px dashed var(--divider, #eef0f7);
+    margin-bottom: 6px;
+  }
+
+  .tt-toggle-header h2 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: #262b44;
+  }
+
+  .tt-toggle-header p {
+    margin: 4px 0 0;
+    font-size: 12px;
+    color: var(--text-muted, #7b8197);
+  }
+
+  .tt-toggle-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 4px;
+  }
+
+  .tt-toggle-item {
+    border-radius: 14px;
+    border: 1px solid var(--border, #e6e7f4);
+    background: var(--panel-ghost, #f7f7ff);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, .8);
+    overflow: hidden;
+  }
+
+  .tt-toggle-row {
+    width: 100%;
+    padding: 10px 12px;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    cursor: pointer;
+    transition:
+      background .16s ease,
+      transform .06s ease,
+      box-shadow .18s ease,
+      border-color .18s ease;
+  }
+
+  .tt-toggle-row:focus-visible {
+    outline: 0;
+    box-shadow: 0 0 0 3px var(--ctl-ring, rgba(124, 108, 255, .35));
+  }
+
+  .tt-toggle-item:hover .tt-toggle-row {
+    background: rgba(246, 247, 255, 0.9);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md, 0 16px 40px rgba(31, 36, 55, .12));
+  }
+
+  .tt-toggle-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  .tt-toggle-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text, #1f2437);
+  }
+
+  .tt-toggle-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: var(--brand, #6e56f7);
+    box-shadow: 0 0 0 4px rgba(110, 86, 247, .22);
+    flex-shrink: 0;
+  }
+
+  .tt-toggle-dot-green {
+    background: #22c55e;
+    box-shadow: 0 0 0 4px rgba(34, 197, 94, .22);
+  }
+
+  .tt-toggle-sub {
+    margin: 0;
+    font-size: 11px;
+    color: var(--text-muted, #7b8197);
+  }
+
+  .tt-toggle-right {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .tt-toggle-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted, #7b8197);
+  }
+
+  .tt-toggle-switch {
+    --w: 42px;
+    --h: 22px;
+    --pad: 2px;
+    position: relative;
+    width: var(--w);
+    height: var(--h);
+    border-radius: 999px;
+    background: #eeefff;
+    border: 1px solid #dedfff;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .85);
+    transition:
+      background .2s ease,
+      border-color .2s ease,
+      box-shadow .2s ease;
+  }
+
+  .tt-toggle-knob {
+    position: absolute;
+    top: var(--pad);
+    left: var(--pad);
+    width: calc(var(--h) - var(--pad) * 2);
+    height: calc(var(--h) - var(--pad) * 2);
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow:
+      0 1px 1px rgba(15, 23, 42, .18),
+      0 6px 12px rgba(15, 23, 42, .24);
+    transition:
+      left .22s cubic-bezier(.2, .8, .25, 1),
+      transform .12s ease;
+  }
+
+  /* active state (button[aria-expanded="true"]) */
+  .tt-toggle-row[aria-expanded="true"] .tt-toggle-switch {
+    background: linear-gradient(180deg,
+        var(--brand, #6e56f7),
+        var(--brand-800, #4e36e2));
+    border-color: transparent;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, .4),
+      0 8px 18px rgba(110, 86, 247, .35);
+  }
+
+  .tt-toggle-row[aria-expanded="true"] .tt-toggle-knob {
+    left: calc(100% - var(--h) + var(--pad));
+    transform: translateX(0);
+  }
+
+  .tt-toggle-row[aria-expanded="true"] .tt-toggle-label {
+    color: var(--brand-800, #4e36e2);
+  }
+
+  .tt-toggle-body {
+    padding: 10px 12px 12px;
+    border-top: 1px dashed var(--divider, #eef0f7);
+    background: rgba(247, 247, 255, 0.9);
+    animation: tt-toggle-fade .18s ease-out;
+  }
+
+  @keyframes tt-toggle-fade {
+    from {
+      opacity: 0;
+      transform: translateY(-2px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .tt-toggle-row {
+      align-items: flex-start;
+    }
+
+    .tt-toggle-right {
+      align-self: center;
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    "use strict";
+
+    var buttons = document.querySelectorAll("[data-toggle-panel]");
+
+    buttons.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var targetSelector = btn.getAttribute("data-toggle-panel");
+        if (!targetSelector) return;
+
+        var panel = document.querySelector(targetSelector);
+        if (!panel) return;
+
+        var isOpen = btn.getAttribute("aria-expanded") === "true";
+        var nextState = !isOpen;
+
+        btn.setAttribute("aria-expanded", String(nextState));
+        panel.hidden = !nextState;
+      });
+    });
+  })();
+</script>
+
+                  </section>
+                  <!-- already existing stuff -->
+                  <label for="keywordsBulkInput">Add Keywords (multi-create-topic)
+                    <span style="color: red;">*</span>
+                  </label>
+                  <textarea id="keywordsBulkInput" rows="4" class="form-control kw-textarea"
+                    placeholder="Enter one keyword or topic per line"></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label>or Upload CSV / Excel File</label>
+                  <div class="dropzone-box" id="csvDropzone">
+                    Drag &amp; drop CSV file here or click to browse
+                    <input type="file" id="csvFile" accept=".csv,.xls,.xlsx" style="display: none" />
+                  </div>
+                </div>
+
+                <section class="kw-card">
+                  <div id="kwTableBoxSecondary" class="kw-table"></div>
+                </section>
+
+                <div class="form-actions wizard-actions">
+                  <button type="button" class="btn btn-pill btn-back prev-step">
+                    Back
+                  </button>
+                  <button type="button" class="btn btn-pill btn-next next-step">
+                    Next → Content Settings
+                  </button>
+                </div>
+              </div>
+
+              <!-- STEP 3 — CONTENT SETTINGS -->
+              <div class="wizard-step" data-step="3">
+                <h2 class="form-header">
+                  <i class="entypo-cog"></i> Content Settings
+                </h2>
+                <div class="form-group">
+                  <div class="form-group">
+                    <label for="wordCount">Approximate Word Count</label>
+                    <span style="color: red;">*</span>
+                    <input type="number" class="form-control form-control-lg" id="wordCount" min="300" max="4000"
+                      step="100" placeholder="Enter the number of words" required />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="d-block mb-1">Tone of Voice</label><span style="color: red;">*</span>
+                  <input type="hidden" id="toneHidden" name="tone" value="" required />
+                  <div id="wsToneGrid" class="tone-grid">
+                    <div class="tone-item" data-value="professional">
+                      <i class="entypo-suitcase"></i><span>Professional</span>
+                    </div>
+                    <div class="tone-item" data-value="friendly">
+                      <i class="entypo-heart"></i><span>Friendly</span>
+                    </div>
+                    <div class="tone-item" data-value="informative">
+                      <i class="entypo-info"></i><span>Informative</span>
+                    </div>
+                    <div class="tone-item" data-value="persuasive">
+                      <i class="entypo-megaphone"></i><span>Persuasive</span>
+                    </div>
+                    <div class="tone-item" data-value="casual">
+                      <i class="entypo-search1"></i><span>Casual</span>
+                    </div>
+                    <div class="tone-item" data-value="playful">
+                      <i class="entypo-cool"></i><span>Playful</span>
+                    </div>
+                    <div class="tone-item" data-value="assertive">
+                      <i class="entypo-flash"></i><span>Assertive</span>
+                    </div>
+                    <div class="tone-item" data-value="empathetic">
+                      <i class="entypo-bubbles3"></i><span>Empathetic</span>
+                    </div>
+                    <div class="tone-item" data-value="formal">
+                      <i class="entypo-book"></i><span>Formal</span>
+                    </div>
+                    <div class="tone-item" data-value="creative">
+                      <i class="entypo-palette"></i><span>Creative</span>
+                    </div>
+                    <div class="tone-item" data-value="humorous">
+                      <i class="entypo-happy"></i><span>Humorous</span>
+                    </div>
+                    <div class="tone-item" data-value="neutral">
+                      <i class="entypo-neutral"></i><span>Neutral / Objective</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- META PANEL PLACEHOLDER (Tags + Category + SEO Plugin) -->
+                <div id="metaPanel" data-module="meta-tags-cat-seo"></div>
+
+                <div class="form-group d-flex align-items-center mb-3" id="tempAdjustCheckbox">
+                  <label for="useTempAdjust" class="mb-0 font-weight-600 mr-2">Temperature Adjust</label>
+                  <div class="checkbox checkbox-replace color-purple mb-0">
+                    <input type="checkbox" id="useTempAdjust" />
+                    <label for="useTempAdjust"></label>
+                  </div>
+                </div>
+
+                <div id="temperatureContainer"></div>
+                <div id="temperatureSlider" class="slider-range" style="display: none"></div>
+
+                <input type="hidden" id="temperatureHidden" value="1.00" />
+
+                <div class="form-actions wizard-actions">
+                  <button type="button" class="btn btn-pill btn-back prev-step">
+                    Back
+                  </button>
+                  <button type="button" class="btn btn-pill btn-next next-step">
+                    Next → Media
+                  </button>
+                </div>
+              </div>
+
+              <!-- STEP 4 — MEDIA -->
+              <div class="wizard-step" data-step="4">
+                <h2 class="form-header">
+                  <i class="entypo-picture"></i> Media
+                </h2>
+
+                <div class="d-flex justify-content-center mb-3">
+                  <div id="sourceToggle" class="source-toggle small" role="radiogroup" aria-label="Media add method">
+                    <span class="source-slider"></span>
+                    <span class="source-divider"></span>
+                    <label class="source-opt" data-val="auto"><i class="entypo-search"></i> Auto Search</label>
+                    <label class="source-opt" data-val="manual"><i class="entypo-upload"></i> Manually Add</label>
+                    <label class="source-opt" data-val="ai"><i class="entypo-rocket"></i> AI Image</label>
+                    <input type="hidden" id="sourceHidden" value="" />
+                  </div>
+                </div>
+
+                <br />
+
+                <!-- {% comment %} <div id="mediaCards" class="entry-cards mb-4">
+                  <button type="button" id="cardCover" class="entry-card media-card" data-tooltip="Main Image (Cover)">
+                    <span class="icon entypo-picture"></span>
+                    <h3>Featured Image</h3>
+                  </button>
+
+                  <button type="button" id="cardContent" class="entry-card media-card"
+                    data-tooltip="Media shown inside article">
+                    <span class="icon entypo-video"></span>
+                    <h3>Media in Content</h3>
+                  </button>
+                </div> {% endcomment %} -->
+                <div id="mediaCards" class="entry-cards mb-4">
+                  <button type="button" id="cardCover" class="entry-card media-card" data-tooltip="Main Image (Cover)">
+                    <span class="icon entypo-picture"></span>
+                    <h3>Featured Image</h3>
+                  </button>
+
+                  <button type="button" id="cardContent" class="entry-card media-card"
+                    data-tooltip="Media shown inside article">
+                    <span class="icon entypo-video"></span>
+                    <h3>Media in Content</h3>
+                  </button>
+
+                  <!-- ▼▼▼ ADD THESE TWO HIDDEN INPUTS HERE ▼▼▼ -->
+                  <input type="hidden" name="media_selection[cover]" id="mediaSelectionCover" value="" />
+                  <input type="hidden" name="media_selection[content]" id="mediaSelectionContent" value="" />
+                  <!-- ▲▲▲ END OF ADDED CODE ▲▲▲ -->
+                </div>
+
+                <div id="autoFields" style="display: none">
+                  <div class="form-group">
+                    <label for="imgSourceSel">Image Source</label>
+                    <select id="imgSourceSel" class="form-control form-control-lg">
+                      <option value="" selected>Select source…</option>
+                      <option value="pexels">Pexels.com</option>
+                      <option value="unsplash">Unsplash.com</option>
+                      <!--<option value="shutterstock">Shutterstock.com</option>-->
+                      <option value="pixabay">Pixabay.com</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="searchModeSel">Search Image With</label>
+                    <select id="searchModeSel" class="form-control form-control-lg">
+                      <option value="" selected>Select search mode...</option>
+                      <option value="keyword">Keyword</option>
+                      <!-- <option value="prompt">Free-form Command</option> -->
+                    </select>
+
+                    <div id="kwPreviewBar" class="kw-preview-bar" style="display: none" aria-live="polite">
+                      <div class="kw-preview-title">
+                        <i class="entypo-search"></i> Using these keywords:
+                        <span id="kwPreviewCount">0</span>
+                      </div>
+                      <div id="kwPreviewChips" class="kw-preview-chips"></div>
+                      <button id="kwPreviewToggle" type="button" class="btn btn-link btn-xs" style="display: none">
+                        Show all
+                      </button>
+                    </div>
+                  </div>
+
+                  <div id="freeFormGroup" class="form-group mt-3" style="display: none">
+                    <label for="freeFormInput" class="mb-1">Free-form Command</label>
+                    <div class="input-group">
+                      <input type="text" id="freeFormInput" class="form-control form-control-lg"
+                        placeholder="e.g. “sunset over mountains”" />
+                      <span class="input-group-btn">
+                        <button id="freeFormSearchBtn" type="button" class="btn btn-purple">
+                          <i class="entypo-search"></i>
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group" id="keywordSearchGroup" style="display: none; margin-top: 15px">
+                    <button id="runKeywordSearchBtn" type="button" class="btn btn-primary">
+                      <i class="entypo-search"></i> Search Using
+                      <span id="kwSearchBtnCount">0</span> Keywords
+                    </button>
+                    <p class="help-block">
+                      This will search for images for each keyword individually
+                      and show all results combined.
+                    </p>
+                  </div>
+                </div>
+
+                <div id="mediaUploadBox" style="display: none">
+                  <div id="matchImagesPanel" style="display: none">
+                    <div class="mi-header mb-3">
+                      <h3 style="margin: 0">Match images to your content</h3>
+                      <div>
+                        <button id="miShuffle" class="btn btn-primary btn-sm">
+                          ↻ Shuffle
+                        </button>
+                        <button id="miAuto" class="btn btn-primary btn-sm">
+                          ⚡ Auto-Match
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="mi-wrapper">
+                      <div class="mi-left">
+                        <div class="mi-search">
+                          <i class="entypo-search"></i>
+                          <input id="miSearchInput" type="text" placeholder="Search" />
+                          <button id="miClearSearch" type="button" class="mi-clear">
+                            &times;
+                          </button>
+                        </div>
+                        <div id="miContentList"></div>
+                        <div id="miPager" class="text-center mt-2" style="display: none">
+                          <button id="miPrev" class="btn btn-ghost btn-sm mr-1">
+                            ← Previous
+                          </button>
+                          <button id="miNext" class="btn btn-ghost btn-sm">
+                            Next →
+                          </button>
+                        </div>
+                      </div>
+                      <div class="mi-right">
+                        <h3 class="form-header" style="font-size: 1.35rem; margin: 0 0 12px">
+                          <i class="entypo-picture" style="font-size: 1.4em"></i>
+                          Image Pool
+                        </h3>
+
+                        <div id="mediaDropzone" class="dropzone-box" style="border: 2px dashed #c5c0ce; padding: 40px">
+                          <span class="entypo-upload" style="font-size: 36px"></span><br />
+                          <strong>Drag &amp; drop files here</strong><br /><em>or</em><br />
+                          <button id="mediaBrowseBtn" type="button" class="btn btn-purple mt-1">
+                            Browse Files
+                          </button>
+                          <input id="mediaFileInput" type="file" multiple accept="image/*,video/mp4"
+                            class="sr-only-file" />
+                          <p class="text-muted mt-2" style="font-size: 13px">
+                            Supports JPG, PNG, GIF, MP4 (max 25 MB)
+                          </p>
+                        </div>
+                        <div class="text-right mb-2">
+                          <button type="button" id="addMoreImagesBtn" class="btn btn-secondary btn-sm">
+                            Add More Images
+                          </button>
+                        </div>
+
+                        <div class="mi-grid thumb-grid" id="miPool"></div>
+                        <div id="mediaGallery" style="display: none"></div>
+                      </div>
+                    </div>
+
+                    <hr class="my-4" />
+                  </div>
+                </div>
+
+                <div class="form-actions wizard-actions">
+                  <button type="button" class="btn btn-pill btn-back prev-step">
+                    Back
+                  </button>
+                  <button type="button" class="btn btn-pill btn-next next-step">
+                    Next → Set Schedule
+                  </button>
+                </div>
+              </div>
+              <!-- /STEP-4 -->
+
+              <!-- STEP 5 — SCHEDULE -->
+              <div class="wizard-step" data-step="5">
+                <h2 class="form-header">
+                  <i class="entypo-calendar"></i> Set Schedule
+                </h2>
+
+                <!-- Row 1: First publish / Minutes Between Triggers -->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="scheduleDate">First Publish Date &amp; Time</label><span style="color: red;">*</span>
+                      <input 
+                        type="datetime-local" 
+                        class="form-control form-control-lg" 
+                        id="scheduleDate" 
+                        name="scheduleDate"
+                        placeholder="YYYY-MM-DD HH:mm"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group" id="freqValueGroup" style="display: none">
+                      <label id="freqValueLabel" for="frequencyValue">Minutes Between Triggers</label><span style="color: red;">*</span>
+                      <input type="number" class="form-control form-control-lg" id="frequencyValue" min="1"
+                        placeholder="Enter time interval..." />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Row 2: Frequency (left) & End condition (right) -->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="frequencySelect">Frequency (Triggers)</label><span style="color: red;">*</span>
+                      <select id="frequencySelect" class="form-control form-control-lg">
+                        <option value="minutes">Minutes</option>
+                        <option value="hours">Hours</option>
+                        <option value="days">Days</option>
+                        <option value="weeks">Weeks</option>
+                        <option value="months">Months</option>
+                      </select>
+                    </div>
+                  </div>
+
+<!-- Row 3: Randomness & Lock Exact Time -->
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="randomnessPercent">Randomness (%)</label>
+      <input type="number" name="randomness_percent" id ="randomnessPercent" class="form-control form-control-lg" value="20" min="0" max="100">
+      <small class="text-muted">We'll jitter each publish time by ± this %. Helps avoid a fixed pattern.</small>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="randomnessLock">Lock Exact Time?</label>
+      <select id="randomnessLock" name="randomness_lock" class="form-control form-control-lg">
+        <option value="no" selected>Allow randomness</option>
+        <option value="yes">Keep exact time</option>
+      </select>
+      <small class="text-muted">"Allow randomness" → 1–100. "Keep exact time" → always 0 (locked).</small>
+    </div>
+  </div>
+</div>
+
+<!-- ⭐ REQUIRED: Injected callout from publisha-randomness.js -->
+<div id="randomnessCalloutTarget"></div>
+
+<!-- Row 4: Static “Heads-up” call-out (always visible) -->
+<div class="row">
+  <div class="col-xs-12">
+    <div class="schedule-callout mt15">
+      <div class="callout-body">
+        <div class="schedule-callout-icon">i</div>
+        <div>
+          <strong>Heads-up:</strong> If search indexing is <em>disabled</em> for this project
+          (e.g. <span class="inline-code">meta robots="noindex"</span> or
+          <span class="robots-txt">robots.txt</span> <span class="inline-code">Disallow</span>),
+          your posting cadence won’t affect search engines. Once indexing is enabled, avoid spam-like patterns:
+          keep intervals <strong>≥ 60 minutes</strong> (typical: <strong>6–24 hours</strong>), use
+          <strong>Randomness</strong> to add ±15-30 % jitter, and maintain a steady cadence instead of bursts.
+          Check impact in <em>Search Console → Crawl stats</em>.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Cadence Warning Modal -->
+<div class="modal-overlay" id="cadenceModal" role="alertdialog" aria-modal="true"
+    aria-labelledby="cadenceModalTitle" aria-describedby="cadenceModalDesc"
+    style="display:none">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div class="modal-icon"><i class="entypo-attention"></i></div>
+      <div class="modal-title-block">
+        <h2 class="modal-title" id="cadenceModalTitle">High-frequency posting warning</h2>
+        <div class="modal-desc" id="cadenceModalDesc">
+          You're scheduling posts more often than every 12 hours. This pattern can look unnatural for smaller blogs.
+        </div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <ul>
+        <li><strong>Small / new blogs:</strong> ~1 post every 24–48h looks like healthy growth.</li>
+        <li><strong>Mid-size sites:</strong> ~1 post every 6–12h can be OK if quality stays high.</li>
+        <li><strong>News / large content sites:</strong> 1 post every 1–2h is normal.</li>
+      </ul>
+      <p style="margin-top:12px;">
+        If you're not a high-volume news site, consider slowing down a bit so it feels organic and sustainable.
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="modal-close-btn" id="cadenceModalClose">Got it</button>
+    </div>
+  </div>
+</div>
+
+
+                  <div class="col-md-6">
+                    <!-- <div class="form-group">
+                      <label for="endConditionSelect">End condition</label>
+                      <select id="endConditionSelect" class="form-control form-control-lg">
+                        <option value="never">Never</option>
+                        <option value="after">After N runs</option>
+                        <option value="until">Until date</option>
+                      </select>
+                    </div> -->
+
+                    <!-- Dynamic input for End condition -->
+                    <!-- <div class="form-group" id="endConditionWrap" style="display: none">
+                      <label id="endConditionLabel" for="endConditionValue">N runs</label>
+                      <input id="endConditionValue" class="form-control form-control-lg" placeholder="" />
+                    </div> -->
+                  </div>
+                </div>
+
+                <div class="form-actions wizard-actions">
+                  <button type="button" class="btn btn-pill btn-back prev-step">
+                    Back
+                  </button>
+                  <button type="button" class="btn btn-pill btn-next next-step">
+                    Next → Output
+                  </button>
+                </div>
+              </div>
+
+              <!-- STEP 6 — OUTPUT -->
+              <div class="wizard-step" data-step="6">
+                <h2 class="form-header">
+                  <i class="entypo-check"></i> Output Preview
+                </h2>
+                <p class="text-muted">
+                  Review your selections before queuing your campaign.
+                </p>
+                <div class="panel panel-default">
+                  <div class="panel-body" id="outputPreview">
+                    <em>Please complete previous steps to generate preview.</em>
+                  </div>
+                </div>
+
+                <div class="form-actions wizard-actions" style="flex-wrap: wrap; justify-content: space-between">
+                  <button type="button" class="btn btn-pill btn-back prev-step">
+                    Back
+                  </button>
+
+                  <!-- Container for the action buttons -->
+                  <div class="d-flex" style="gap: 10px">
+                    <!-- Removed the surrounding <form> tags -->
+                    <button type="button" class="btn btn-pill" id="saveDraftBtn"
+                      {% if not wordpress_connected %}disabled
+                      title="Please connect to WordPress in your organization settings to save." {% endif %}>
+                      <i class="entypo-doc-text"></i> Save as Draft
+                    </button>
+
+                    <button type="button" class="btn btn-pill btn-next" id="saveQueueBtn"
+                      {% if not wordpress_connected %}disabled
+                      title="Please connect to WordPress in your organization settings to queue." {% endif %}>
+                      <i class="entypo-upload-cloud"></i> Save &amp; Queue
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /wizard-content -->
+             <!-- ✅ SUCCESS MODAL -->
+<div class="modal fade" id="queueSuccessModal" tabindex="-1" role="dialog" aria-labelledby="queueSuccessLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document" style="margin-top:120px;">
+        <div class="modal-content" style="border-radius:12px;">
+            <div class="modal-header" style="border-bottom:0; text-align:center; display:block; padding-bottom:0;">
+                <div style="width:52px;height:52px;border-radius:50%;background:#e8f9f0;color:#1fad63;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 12px;">
+                    <i class="entypo-check"></i>
+                </div>
+                <h4 class="modal-title" id="queueSuccessLabel" style="font-weight:600; font-size:18px; color:#1fad63;">
+                    Campaign successfully queued
+                </h4>
+            </div>
+
+            <div class="modal-body" style="text-align:center; padding-top:6px;font-size:14px; line-height:1.45; color:#555;">
+                Your campaign has been saved and added to the publishing queue.
+            </div>
+
+            <div class="modal-footer" style="border-top:0; text-align:center; display:block; padding-top:0;">
+                <button type="button" class="btn btn-success btn-block" data-dismiss="modal" style="min-width:140px;">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+            <!-- ► Sticky Summary Card ◄ -->
+            <aside id="summaryCol" class="summary-col col-lg-3 d-none d-lg-block">
+              <div class="summary-card">
+                <h4>Summary</h4>
+                <p class="text-muted mb-2">Campaign Basics</p>
+                <ul class="mb-3">
+                  <li>
+                    <strong>Campaign Name:&nbsp;</strong><span id="sumCampaignName">-</span>
+                  </li>
+                  <li>
+                    <strong>System Prompt:&nbsp;</strong><span id="sumSystemPrompt">-</span>
+                  </li>
+                  <li>
+                    <strong>User Prompt:&nbsp;</strong><span id="sumPrompt">-</span>
+                  </li>
+                  <li>
+                    <strong>Keywords:&nbsp;</strong><span id="sumKeywords">-</span>
+                  </li>
+                  <li>
+                    <strong>Content&nbsp;Settings:&nbsp;</strong><span id="sumContent">-</span>
+                  </li>
+                  <li>
+                    <strong>Media:&nbsp;</strong><span id="sumMedia">-</span>
+                  </li>
+                  <li>
+                    <strong>Schedule:&nbsp;</strong><span id="sumSchedule">-</span>
+                  </li>
+                </ul>
+                <hr class="my-3" />
+                <p id="sumStepText" class="text-muted mb-1">Step 1 / 6 ✓</p>
+              </div>
+            </aside>
+          </div>
+          <!-- /row -->
+
+          <!-- ▼▼ KEYWORDS PANEL (sadece Keywords tablosu, Clusters kaldırıldı) ▼▼ -->
+          {% comment %}
+          <div class="row" id="kwTableRow" data-step="2" style="display: none">
+            <div class="col-12 px-0">
+              <div class="kw-block mt-4" id="kwTableBox">
+                <!-- Sol sekmeler: sadece Keywords -->
+                <aside class="kw-nav">
+                  <button type="button" class="kw-nav-btn active">
+                    <span class="entypo-quote1"></span> Keywords
+                  </button>
+                </aside>
+
+                <!-- Sağ DataTable: yalnızca Keywords -->
+                <div class="kw-table" id="kwTableBoxSecondary">
+                  <div class="pttable-container">
+                    <!-- üst bar -->
+                    <div class="row mb-2 align-items-center">
+                      <div class="col-sm-4">
+                        <div class="dataTables_length">
+                          <label>Show
+                            <select name="kw_length" class="form-control form-control-sm">
+                              <option value="10">10</option>
+                              <option value="25">25</option>
+                              <option value="50">50</option>
+                              <option value="-1">All</option>
+                            </select>
+                            entries
+                          </label>
+                        </div>
+                      </div>
+
+                      <!-- Bulk Actions (cluster ataması kaldırıldı) -->
+                      <div class="col-sm-4 text-center">
+                        <div class="bulk-actions">
+                          <select id="kwBulkField" class="form-control" style="
+                              width: auto;
+                              min-width: 140px;
+                              display: inline-block;
+                            ">
+                            <option value="" disabled selected>
+                              Bulk Actions
+                            </option>
+                            <option value="delete">Delete</option>
+                          </select>
+                          <span id="kwBulkWrapper"></span>
+                          <button id="kwBulkApply" class="btn btn-purple">
+                            Apply
+                          </button>
+                        </div>
+                      </div>
+
+                      <!-- Search -->
+                      <div class="col-sm-4 text-right">
+                        <div class="dataTables_filter">
+                          <div class="pt-search">
+                            <input id="kwSearchInput" class="pt-search-input" type="search" placeholder="Search…" />
+                            <i class="entypo-search"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- KEYWORDS TABLOSU -->
+                    <table id="kwTable">
+                      <thead>
+                        <tr>
+                          <th class="select-col">
+                            <input type="checkbox" id="kwSelectAll" />
+                          </th>
+                          <th class="no-col">No</th>
+                          <th>Keyword</th>
+                          <th>Last Used</th>
+                          <th class="actions-col">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                  <!-- /.pttable-container -->
+                </div>
+                <!-- /.kw-table -->
+              </div>
+              <!-- /.kw-block -->
+            </div>
+            <!-- /.col-12 -->
+          </div>
+          {% endcomment %}
+          <!-- /.row -->
+          <!-- ▲▲ KEYWORDS PANEL ▲▲ -->
+
+          <!-- Prompt Templates Table (clean) -->
+          {% comment %}
+          <div id="promptTableBox" data-list-url="{% url 'campaignhub:list_prompt_templates' %}"></div>
+          {% endcomment %}
+          <div id="promptTableBox" data-list-url="{% url 'campaignhub:list_prompt_templates' %}?type=BLOG"
+            data-save-url="{% url 'campaignhub:save_prompt_template' %}"
+            data-update-url-template="{% url 'campaignhub:update_prompt_template' '00000000-0000-0000-0000-000000000000' %}"
+            data-delete-url-template="{% url 'campaignhub:delete_prompt_template' '00000000-0000-0000-0000-000000000000' %}">
+          </div>
+        </div>
+        <!-- /container -->
+      </div>
+      <!-- /blog tab -->
+
+      <!-- — Placeholder tabs — -->
+      <div class="tab-pane fade" id="tab-social" role="tabpanel">
+        <p class="text-center text-muted" style="margin-top: 40px">
+          Social campaign builder coming soon…
+        </p>
+      </div>
+    </div>
+    <!-- /tab-content -->
+
+    <footer class="main">
+      © 2025 <strong>Publisha</strong> Admin Panel – customized “Create
+      Campaign” wizard
+    </footer>
+  </div>
+  <!-- /main-content -->
+</div>
+<!-- /page-container -->
+
+<script src="{% static '/assets/js/blog/create-campaign/03-content-settings/temperature-adjust.js' %}" defer></script>
+<script src="{% static '/assets/js/blog/create-campaign/06-output/submit.js' %}" defer></script>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function() {
+    const randomnessPercent = document.getElementById('randomnessPercent');
+    const randomnessLock = document.getElementById('randomnessLock');
+    
+    function updateRandomnessField() {
+        if (randomnessLock.value === 'yes') {
+            // Locked - set to 0 and disable
+            randomnessPercent.value = 0;
+            randomnessPercent.disabled = true;
+            randomnessPercent.style.opacity = '0.6';
+            randomnessPercent.style.cursor = 'not-allowed';
+        } else {
+            // Unlocked - enable and set to default 20
+            randomnessPercent.disabled = false;
+            randomnessPercent.style.opacity = '1';
+            randomnessPercent.style.cursor = 'auto';
+            if (!randomnessPercent.value || randomnessPercent.value === '0') {
+                randomnessPercent.value = 20;
+            }
+        }
+    }
+    
+    // Initial setup
+    updateRandomnessField();
+    
+    // Update when lock selection changes
+    randomnessLock.addEventListener('change', updateRandomnessField);
+    
+    // Also handle the form submission to ensure correct values
+    const form = document.querySelector('form');
+    if (form) {
+        form.addEventListener('submit', function() {
+            updateRandomnessField();  // This is correct
+        });
+    }
+});
+
+
+document.getElementById('cardCover').addEventListener('click', resetSearchMode);
+document.getElementById('cardContent').addEventListener('click', resetSearchMode);
+
+function resetSearchMode() {
+    // 1️⃣ Reset search mode selector
+    const searchModeSel = document.getElementById('searchModeSel');
+    if (searchModeSel) {
+        searchModeSel.value = "";
+    }
+
+    // 2️⃣ Hide keyword preview bar
+    const kwPreviewBar = document.getElementById('kwPreviewBar');
+    if (kwPreviewBar) {
+        kwPreviewBar.style.display = "none";
+    }
+
+    // 3️⃣ Clear keyword search button
+    const kwSearchBtnCount = document.getElementById('kwSearchBtnCount');
+    if (kwSearchBtnCount) {
+        kwSearchBtnCount.textContent = "0";
+    }
+
+    // 4️⃣ Hide the search button area
+    const keywordSearchGroup = document.getElementById('keywordSearchGroup');
+    if (keywordSearchGroup) {
+        keywordSearchGroup.style.display = "none";
+    }
+
+    // 5️⃣ Clear preview chips
+    const kwPreviewChips = document.getElementById('kwPreviewChips');
+    if (kwPreviewChips) {
+        kwPreviewChips.innerHTML = "";
+    }
+
+    // 6️⃣ Reset free-form input (if used)
+    const freeFormInput = document.getElementById('freeFormInput');
+    if (freeFormInput) {
+        freeFormInput.value = "";
+    }
+
+    console.log("Search mode reset — user must select keyword search again.");
+}
+
+   window.autoMatchUrl = "{% url 'campaignhub:api_auto_match_images' %}";
+  const scheduleInput = document.getElementById("scheduleDate");
+
+  function setMinDateTime() {
+    const now = new Date();
+    const formatted = now.toISOString().slice(0, 16); // "YYYY-MM-DDTHH:mm"
+    scheduleInput.min = formatted;
+  }
+
+  // Set the minimum datetime on load
+  setMinDateTime();
+
+  // Optional: update every minute in case the form stays open
+  setInterval(setMinDateTime, 60000);
+
+  // Validate input
+  scheduleInput.addEventListener("change", function () {
+    const selected = new Date(this.value);
+    const now = new Date();
+
+    // Round "now" down to the nearest minute (ignore seconds)
+    now.setSeconds(0, 0);
+
+    if (selected < now) {
+      alert("You cannot select a past date or time.");
+      this.value = "";
+    }
+  });
+  async function fetchAndPopulateCategories() {
+    const selectElement = document.getElementById('category-selector');
+    const messageElement = document.getElementById('category-loading-message');
+    const newCatBtn = document.getElementById('newCatBtn');
+
+    if (!selectElement || !messageElement || !newCatBtn) {
+      console.warn("Category elements not found. Card might not be rendered yet.");
+      return;
+    }
+
+    // --- SETUP EVENT LISTENER FOR THE BUTTON ---
+    // We set this up once, regardless of the API outcome.
+  
+
+    // --- API CALL LOGIC (Same as before, but with UI updates) ---
+    messageElement.textContent = 'Loading categories from WordPress...';
+    messageElement.style.color = '#666';
+
+    try {
+      const response = await fetch("{% url 'campaignhub:api_wordpress_categories' %}");
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `Error: ${response.statusText}`);
+      }
+
+      const categories = await response.json();
+
+      // Clear any previous options from the dropdown
+      selectElement.innerHTML = '<option value="">Select a category...</option>';
+
+      if (categories.length > 0) {
+        categories.forEach(category => {
+          const option = document.createElement('option');
+          option.value = category.name; // Use WordPress Name for existing categories
+          option.textContent = category.name;
+          selectElement.appendChild(option);
+        });
+      } else {
+        messageElement.textContent = 'No categories found on WordPress.';
+        // We still want to show the message, even if there are no categories.
+        messageElement.style.display = 'block';
+      }
+
+      // SUCCESS STATE:
+      if (categories.length > 0) {
+        messageElement.style.display = 'none'; // Hide the message if we have categories
+      }
+      selectElement.style.display = 'block'; // Show the dropdown
+      newCatBtn.style.display = 'inline-block'; // Show the '+ New category' button
+
+    } catch (error) {
+      console.error('Failed to fetch categories:', error);
+
+      // FAILURE STATE:
+      messageElement.textContent = `${error.message}`; // Show the error
+      messageElement.style.color = 'red';
+      selectElement.style.display = 'block'; // Still show the (empty) dropdown
+      newCatBtn.style.display = 'inline-block'; // Show the '+ New category' button as a fallback
+    }
+  }
+</script>
+
+{% endblock content %}

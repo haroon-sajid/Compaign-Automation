@@ -1,0 +1,909 @@
+{% extends "_base.html" %} {% load static %} {% block content %}
+<style>
+  .price-item-amount {
+    text-align: center;
+  }
+
+  .price-item {
+    height: 96%;
+    display: flex;
+    flex-direction: column;
+  }
+  .price-item-head {
+    flex-grow: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 3. Push the button to the bottom of the head section */
+  .price-item-btn {
+    margin-top: auto;
+  }
+
+  .price-inline {
+    display: inline-flex;
+    align-items: baseline; /* keeps text and label aligned */
+    gap: 6px;
+    position: relative;
+  }
+
+  .price-item-amount-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #14213d;
+    margin: 0;
+    display: inline;
+  }
+
+  .amount-offer {
+    background-color: #28a745;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 4px;
+    display: inline-block;
+    line-height: 1;
+    position: relative;
+    top: -4px; /* lifts the tag slightly above price */
+  }
+
+  .price-item-1 p {
+    margin-bottom: 6%;
+  }
+  .h5_footer-top {
+    background-color: #1b2a52; /* Example: Dark Slate Blue */
+  }
+
+  /* Change the color of the footer widget titles like "Company" */
+  .h5_footer-widget-title {
+    color: #ffffff; /* Example: White */
+  }
+
+  /* Change the color of the main descriptive text */
+  .h5_footer-widget-text {
+    color: #bdc3c7; /* Example: Light Silver */
+  }
+
+  /* Change the color of the footer navigation links */
+  .h5_footer-widget ul li a {
+    color: #bdc3c7; /* Example: Light Silver */
+  }
+
+  /* Change the background of the very bottom bar */
+  .h5_footer-bottom {
+    background-color: #233140; /* Example: Even darker blue */
+  }
+
+  /* Change the copyright text color */
+  .h5_footer-bottom-copyright p {
+    color: #bdc3c7; /* Example: Light Silver */
+  }
+
+  .h5_footer-logo a {
+    display: inline-block; /* Ensure the link has dimensions */
+    /* Set your NEW logo as the background */
+    background-image: url("{% static 'assets/images/logo/logo-w.png' %}");
+    background-size: contain; /* Ensure the logo fits correctly */
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  /* 2. Hide the original <img> tag that's inside the link */
+  .h5_footer-logo a img {
+    /* This hides the original logo but keeps its space, so the layout doesn't break */
+    visibility: hidden;
+  }
+</style>
+
+<main>
+  <!-- banner area start -->
+  <section class="banner-area">
+    <div class="container custom-container-1">
+      <div class="banner-single">
+        <div class="banner-content">
+          <span class="banner-content-subtitle tp_fade_left"
+            >Today special offer</span
+          >
+          <h1 class="banner-content-title tp_has_text_reveal_anim">
+            Best Content Automation Service
+          </h1>
+          <p class="tp_desc_anim">
+            Boost your online presence with our best-in-class content automation
+            service, <br />
+            delivering consistent, engaging, high-quality content at scale.
+          </p>
+          <div class="banner-content-btn">
+            <a href="/accounts/signup/" class="theme-btn tp_fade_bottom"
+              >Get Started For Free</a
+            >
+            <span class="tp_fade_bottom">
+              <svg
+                width="18"
+                height="16"
+                viewBox="0 0 18 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M17.4555 0.0244961C16.2201 0.206689 15.2018 0.523653 14.0862 1.07023C12.6337 1.78153 11.3259 2.7424 10.0056 4.06517C8.07885 5.9969 6.49652 8.40034 5.42334 11.0359C5.33349 11.258 5.25612 11.4427 5.25113 11.4477C5.24863 11.4502 5.22118 11.3304 5.19123 11.1781C4.88425 9.64324 3.79359 8.26307 2.56067 7.84877C2.20128 7.72898 1.8369 7.70152 1.50745 7.77141C1.27784 7.81882 0.920944 8.00102 0.736256 8.16574C0.481686 8.38786 0.204654 8.80716 0.0524114 9.1965L0 9.32378L0.292007 9.34125C0.983338 9.37869 1.43258 9.58584 1.8943 10.0725C2.14388 10.3346 2.32357 10.6041 2.53322 11.0259C2.75534 11.4727 2.89511 11.8395 3.26448 12.9327C3.62887 14.0084 3.77362 14.3877 3.9658 14.7721C4.21288 15.2662 4.52485 15.683 4.80438 15.8952L4.94415 16L5.08391 15.9052C5.30853 15.7504 5.78273 15.2612 6.0348 14.9243C6.53645 14.2455 6.90084 13.6065 7.8717 11.6898C8.97733 9.50348 9.39912 8.71731 10.0231 7.68405C12.0621 4.30227 14.4106 1.90632 17.3157 0.24163C17.5279 0.121832 17.7076 0.0170088 17.7126 0.00952148C17.73 -0.00794792 17.6377 -0.000461578 17.4555 0.0244961Z"
+                  fill="currentColor"
+                />
+              </svg>
+              No credit card required to try it out
+            </span>
+          </div>
+        </div>
+        <div class="banner-img tp_fade_left">
+          <img
+            src="{% static 'assets/images/banner/home1/bg.png' %}"
+            alt="Image Not Found"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="banner-shape d-none d-lg-block">
+      <img
+        src="{% static 'assets/images/banner/home1/shape-1.png' %}"
+        alt="Image Not Found"
+        class="banner-shape-1"
+        data-speed="0.7"
+      />
+      <img
+        src="{% static 'assets/images/banner/home1/shape-2.png' %}"
+        alt="Image Not Found"
+        class="banner-shape-2"
+        data-speed="0.8"
+      />
+      <img
+        src="{% static 'assets/images/banner/home1/shape-3.png' %}"
+        alt="Image Not Found"
+        class="banner-shape-3"
+        data-speed="0.8"
+      />
+      <img
+        src="{% static 'assets/images/banner/home1/shape-4.png' %}"
+        alt="Image Not Found"
+        class="banner-shape-4"
+        data-speed="0.7"
+      />
+      <img
+        src="{% static 'assets/images/banner/home1/shape-5.png' %}"
+        alt="Image Not Found"
+        class="banner-shape-5"
+      />
+    </div>
+  </section>
+  <!-- banner area end -->
+
+  <!-- choose area start -->
+  <section class="choose-area pt-140">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12">
+          <div class="section-area text-center mb-50">
+            <span class="section-subtitle tp_fade_left">Why Choose Us</span>
+            <h2 class="section-title tp_title_slideup mb-0">
+              Why Choose Publisha
+            </h2>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div
+          class="col-xl-3 col-lg-4 col-md-6 tp_fade_left"
+          data-fade-from="left"
+        >
+          <div class="choose-item mb-30">
+            <span class="choose-item-count">01</span>
+            <div class="choose-item-img">
+              <img
+                src="{% static 'assets/images/choose/1.png' %}"
+                alt="Image Not Found"
+              />
+            </div>
+            <div class="choose-item-content">
+              <h5 class="choose-item-content-title">
+                <a href="#">Fast Text Generate</a>
+              </h5>
+              <p>
+                Instantly generate high-quality text with just one click. Save
+                time and streamline your content creation process. Get started
+                with ease!
+              </p>
+              <a href="#" class="choose-item-content-btn"
+                >Learn More<i class="fa-light fa-angle-right"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-xl-3 col-lg-4 col-md-6 tp_fade_left"
+          data-fade-from="left"
+          data-delay=".8"
+        >
+          <div class="choose-item mb-30">
+            <span class="choose-item-count">02</span>
+            <div class="choose-item-img">
+              <img
+                src="{% static 'assets/images/choose/2.png' %}"
+                alt="Image Not Found"
+              />
+            </div>
+            <div class="choose-item-content">
+              <h5 class="choose-item-content-title">
+                <a href="#">High Quality Content</a>
+              </h5>
+              <p>
+                Create professional, original, and SEO-friendly content that
+                resonates with your audience. Stand out with top-notch quality
+                that elevates your brand.
+              </p>
+              <a href="#" class="choose-item-content-btn"
+                >Learn More<i class="fa-light fa-angle-right"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-xl-3 col-lg-4 col-md-6 tp_fade_left"
+          data-fade-from="left"
+          data-delay="1.1"
+        >
+          <div class="choose-item mb-30">
+            <span class="choose-item-count">03</span>
+            <div class="choose-item-img">
+              <img
+                src="{% static 'assets/images/choose/3.png' %}"
+                alt="Image Not Found"
+              />
+            </div>
+            <div class="choose-item-content">
+              <h5 class="choose-item-content-title">
+                <a href="#">96+ Language...</a>
+              </h5>
+              <p>
+                Produce content in over 96 languages to connect with audiences
+                worldwide. Reach international markets and engage effectively in
+                every language.
+              </p>
+              <a href="#" class="choose-item-content-btn"
+                >Learn More<i class="fa-light fa-angle-right"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-xl-3 col-lg-4 col-md-6 tp_fade_left"
+          data-fade-from="left"
+          data-delay="1.3"
+        >
+          <div class="choose-item mb-30">
+            <span class="choose-item-count">04</span>
+            <div class="choose-item-img">
+              <img
+                src="{% static 'assets/images/choose/4.png' %}"
+                alt="Image Not Found"
+              />
+            </div>
+            <div class="choose-item-content">
+              <h5 class="choose-item-content-title">
+                <a href="#"
+                  >24/7 Hours <br />
+                  Publisher Asistant</a
+                >
+              </h5>
+              <p>
+                Give your tasks to your Publisher Assistant and watch them get
+                done efficiently, anytime. Let your Assistant handle the work
+                while you focus on what matters.
+              </p>
+              <a href="#" class="choose-item-content-btn"
+                >Learn More<i class="fa-light fa-angle-right"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- choose area end -->
+
+  <!-- feature area start -->
+  <section class="feature-area pt-110 pb-110">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12">
+          <div class="section-area text-center mb-50">
+            <span class="section-subtitle tp_fade_left">Our Features</span>
+            <h2 class="section-title tp_title_slideup mb-0">
+              What’s Included: Our Core Features
+            </h2>
+          </div>
+        </div>
+      </div>
+      <div class="feature-top mb-50 tp_fade_bottom">
+        <div class="feature-item feature-item-1">
+          <h5 class="feature-item-title">Automation</h5>
+          <p>
+            A helpful content management tool that lets you easily plan and
+            publish your content.
+          </p>
+        </div>
+        <div class="feature-item feature-item-2">
+          <h5 class="feature-item-title">One-click management</h5>
+          <p>
+            Control and manage all your publishing tasks with a single click.
+          </p>
+        </div>
+        <div class="feature-item feature-item-3">
+          <h5 class="feature-item-title">Time and cost saving</h5>
+          <p>Save time and money through automatic content sharing.</p>
+        </div>
+      </div>
+      <div class="row align-items-end">
+        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8">
+          <div class="feature-left-img mb-30 tp_fade_right">
+            <img
+              src="{% static 'assets/images/feature/bg.png' %}"
+              alt="Image Not Found"
+            />
+          </div>
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
+          <div class="feature-right-img mb-30">
+            <img
+              src="{% static 'assets/images/feature/bg-1.png' %}"
+              alt="Image Not Found"
+              class="f-main-img tp_fade_left"
+            />
+            <img
+              src="{% static 'assets/images/feature/shape-1.png' %}"
+              alt="Image Not Found"
+              class="feature-shape-1"
+              data-speed="0.7"
+            />
+            <img
+              src="{% static 'assets/images/feature/shape-2.png' %}"
+              alt="Image Not Found"
+              class="feature-shape-2"
+              data-speed="0.8"
+            />
+            <img
+              src="{% static 'assets/images/feature/shape-3.png' %}"
+              alt="Image Not Found"
+              class="feature-shape-3"
+              data-speed="0.7"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- feature area end -->
+
+  <!-- apps area start -->
+  <section class="apps-area pt-140 pb-140">
+    <div class="container">
+      <div class="apps-icon tp_fade_bottom">
+        <div class="apps-icon-item">
+          <img
+            src="{% static 'assets/images/apps/1.png' %}"
+            alt="Image Not Found"
+          />
+        </div>
+        <div class="apps-icon-item">
+          <img
+            src="{% static 'assets/images/apps/2.png' %}"
+            alt="Image Not Found"
+          />
+        </div>
+        <div class="apps-icon-item">
+          <img
+            src="{% static 'assets/images/apps/3.png' %}"
+            alt="Image Not Found"
+          />
+        </div>
+        <div class="apps-icon-item">
+          <img
+            src="{% static 'assets/images/apps/4.png' %}"
+            alt="Image Not Found"
+          />
+        </div>
+        <div class="apps-icon-item">
+          <img
+            src="{% static 'assets/images/apps/5.png' %}"
+            alt="Image Not Found"
+          />
+        </div>
+        <div class="apps-icon-item">
+          <img
+            src="{% static 'assets/images/apps/6.png' %}"
+            alt="Image Not Found"
+          />
+        </div>
+        <div class="apps-icon-item">
+          <img
+            src="{% static 'assets/images/apps/7.png' %}"
+            alt="Image Not Found"
+          />
+        </div>
+        <div class="apps-icon-item">
+          <img
+            src="{% static 'assets/images/apps/8.png' %}"
+            alt="Image Not Found"
+          />
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-xxl-6 col-xl-7 col-lg-8 col-md-9">
+          <div class="apps-content">
+            <h2 class="tp_title_slideup">
+              Create Once, Publish Anywhere Powered by AI
+            </h2>
+            <p class="tp_fade_bottom">
+              Publisha helps you craft and distribute content across all your
+              channels — whether it’s a blog on WordPress, a store on Shopify,
+              or your social media audience on LinkedIn, X, or Instagram. AI
+              that adapts to your voice and automates your publishing process.
+            </p>
+            <a href="#" class="theme-btn tp_fade_bottom"
+              >Start Creating with AI</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="apps-shape d-none d-md-block">
+      <img
+        src="{% static 'assets/images/apps/shape-1.png' %}"
+        alt="Image Not Found"
+        class="apps-shape-1"
+        data-speed="0.6"
+      />
+      <img
+        src="{% static 'assets/images/apps/shape-2.png' %}"
+        alt="Image Not Found"
+        class="apps-shape-2"
+        data-speed="0.8"
+      />
+      <img
+        src="{% static 'assets/images/apps/shape-3.png' %}"
+        alt="Image Not Found"
+        class="apps-shape-3"
+      />
+      <img
+        src="{% static 'assets/images/apps/shape-4.png' %}"
+        alt="Image Not Found"
+        class="apps-shape-4"
+        data-speed="0.7"
+      />
+      <img
+        src="{% static 'assets/images/apps/shape-5.png' %}"
+        alt="Image Not Found"
+        class="apps-shape-5"
+        data-speed="0.7"
+      />
+      <img
+        src="{% static 'assets/images/apps/shape-6.png' %}"
+        alt="Image Not Found"
+        class="apps-shape-6"
+        data-speed="0.8"
+      />
+    </div>
+  </section>
+  <!-- apps area end -->
+
+  <!-- price area start -->
+  <section class="price-area price-tab pt-140 pb-140">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-xxl-6 col-xl-7 col-lg-9 col-md-10">
+          <div class="section-area text-center mb-45">
+            <span class="section-subtitle tp_fade_left">Pricing Plan</span>
+            <h2
+              class="section-title tp_title_slideup mb-0 section-title tp_title_slideup-big"
+            >
+              Personalized Pricing Plans Suited to You.
+            </h2>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="price-switch-wrapper">
+            <label class="toggler toggler--is-active" id="filt-monthly"
+              >Pay Monthly</label
+            >
+            <div class="toggle">
+              <input type="checkbox" id="switcher" class="tp-check" />
+              <b class="switch"></b>
+            </div>
+            <label class="toggler yearly-pack" id="filt-yearly"
+              >Pay Yearly<span class="amount-offer">Save 15%</span></label
+            >
+          </div>
+        </div>
+      </div>
+      <div class="wrapper-full">
+        <!-- THIS IS THE CORRECTED LINE -->
+        <div class="row align-items-stretch justify-content-center">
+          <!-- Free Trial Card (No price change) -->
+          <div class="col-xl-4 tp_fade_left" data-fade-from="left">
+            <div class="price-item price-item-1">
+              <div class="price-item-head">
+                <h5 class="price-item-title">Free Trial</h5>
+                <h2 class="price-item-amount-title">Free</h2>
+                <p>No Need For Credit Card</p>
+                <a class="price-item-btn" href="/accounts/signup/"
+                  >Choose Plan<i class="fa-light fa-angle-right"></i
+                ></a>
+              </div>
+              <ul class="price-item-list">
+                <li>1 user</li>
+                <li>1 active campaign</li>
+                <li>1 output (post) / lifetime</li>
+                <li>1 integration</li>
+                <li>Email support (3 days)</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Starter Plan Card -->
+          <div
+            class="col-xl-4 tp_fade_left"
+            data-fade-from="left"
+            data-delay=".8"
+          >
+            <div class="price-item">
+              <div class="price-item-head">
+                <h5 class="price-item-title">Starter Plan</h5>
+                <div class="price-item-amount">
+                  <del>€59</del>
+                  <div class="price-inline">
+                    <h2
+                      class="price-item-amount-title price-value"
+                      data-monthly-price="29"
+                      data-annual-price="24.65"
+                    >
+                      €29<span>.00</span>
+                    </h2>
+                    <span
+                      class="amount-offer price-total-discount"
+                      style="display: none"
+                      >58.2%</span
+                    >
+                  </div>
+                </div>
+                <p class="price-period">/Month</p>
+                <span
+                  class="price-item-offer price-saving"
+                  style="display: none"
+                  >SAVE €4.35 / mo</span
+                >
+                <a class="price-item-btn" href="/accounts/signup/"
+                  >Choose Plan<i class="fa-light fa-angle-right"></i
+                ></a>
+              </div>
+              <ul class="price-item-list">
+                <li>1-2 user</li>
+                <li>3 active campaigns</li>
+                <li>50 outputs/month</li>
+                <li>1 integrations</li>
+                <li>Email support (48h)</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Pro Plan Card -->
+          <div
+            class="col-xl-4 tp_fade_left"
+            data-fade-from="left"
+            data-delay="1.1"
+          >
+            <div class="price-item active">
+              <div class="price-item-option">
+                <span>Best Choice</span>
+              </div>
+              <div class="price-item-head">
+                <h5 class="price-item-title">Pro Plan</h5>
+                <div class="price-item-amount">
+                  <del>€179</del>
+                  <div class="price-inline">
+                    <h2
+                      class="price-item-amount-title price-value"
+                      data-monthly-price="79"
+                      data-annual-price="67.15"
+                    >
+                      €79<span>.00</span>
+                    </h2>
+                    <span
+                      class="amount-offer price-total-discount"
+                      style="display: none"
+                      >62.5%</span
+                    >
+                  </div>
+                </div>
+                <p class="price-period">/Month</p>
+                <span
+                  class="price-item-offer price-saving"
+                  style="display: none"
+                  >SAVE €11.85 / mo</span
+                >
+                <a class="price-item-btn" href="/accounts/signup/"
+                  >Choose Plan<i class="fa-light fa-angle-right"></i
+                ></a>
+              </div>
+              <ul class="price-item-list">
+                <li>5 users</li>
+                <li>10 active campaigns</li>
+                <li>200 outputs/month</li>
+                <li>5 integrations</li>
+                <li>Priority queue</li>
+                <li>Basic analytics</li>
+                <li>Email + chat support (24h)</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Business Plan Card -->
+          <div
+            class="col-xl-4 tp_fade_left"
+            data-fade-from="left"
+            data-delay="1.3"
+          >
+            <div class="price-item">
+              <div class="price-item-head">
+                <h5 class="price-item-title">Business Plan</h5>
+                <div class="price-item-amount">
+                  <del>€499</del>
+                  <div class="price-inline">
+                    <h2
+                      class="price-item-amount-title price-value"
+                      data-monthly-price="199"
+                      data-annual-price="169.15"
+                    >
+                      €199<span>.00</span>
+                    </h2>
+                    <span
+                      class="amount-offer price-total-discount"
+                      style="display: none"
+                      >66.1%</span
+                    >
+                  </div>
+                </div>
+                <p class="price-period">/Month</p>
+                <span
+                  class="price-item-offer price-saving"
+                  style="display: none"
+                  >SAVE €29.85 / mo</span
+                >
+                <a class="price-item-btn" href="/accounts/signup/"
+                  >Choose Plan<i class="fa-light fa-angle-right"></i
+                ></a>
+              </div>
+              <ul class="price-item-list">
+                <li>10 users</li>
+                <li>Unlimited campaigns (fair use)</li>
+                <li>800 outputs/month</li>
+                <li>All integrations + API access</li>
+                <li>Account manager, 12h resp.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Enterprise Plan Card -->
+          <div
+            class="col-xl-4 tp_fade_left"
+            data-fade-from="left"
+            data-delay="1.5">
+            <div class="price-item">
+              <div class="price-item-head">
+                <h5 class="price-item-title">Enterprise Plan</h5>
+                <div class="price-item-amount">
+                  <del>€1499</del>
+                  <div class="price-inline">
+                    <h2
+                      class="price-item-amount-title price-value"
+                      data-monthly-price="499"
+                      data-annual-price="424.15"
+                    >
+                      €499<span>.00</span>
+                    </h2>
+                    <span
+                      class="amount-offer price-total-discount"
+                      style="display: none"
+                      >71.7%</span
+                    >
+                  </div>
+                </div>
+                <p class="price-period">/Month</p>
+                <span
+                  class="price-item-offer price-saving"
+                  style="display: none"
+                  >SAVE €74.85 / mo</span
+                >
+                <a class="price-item-btn" href="{% url 'public:contact' %}"
+                  >Contact Sales<i class="fa-light fa-angle-right"></i
+                ></a>
+              </div>
+              <ul class="price-item-list">
+                <li>Unlimited users, custom SLA</li>
+                <li>Dedicated workers / isolated Redis queue</li>
+                <li>Security/compliance & custom integrations</li>
+                <li>Contract pricing</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- price area end -->
+  <!-- blog area start -->
+  <section class="blog-area pt-140 pb-110">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12">
+          <div class="section-area text-center mb-50">
+            <span class="section-subtitle tp_fade_left">Our Blog</span>
+            <h2 class="section-title tp_title_slideup mb-0">
+              Watch Our Latest Blog News
+            </h2>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div
+          class="col-xl-4 col-lg-4 col-md-6 tp_fade_left"
+          data-fade-from="left"
+        >
+          <div class="blog-item mb-30">
+            <div class="blog-img">
+              <a href="/blog-details.html"
+                ><img
+                  src="{% static 'assets/images/blog/home1/1.png' %}"
+                  alt="Image Not Found"
+              /></a>
+            </div>
+            <div class="blog-content">
+              <div class="blog-content-meta">
+                <a href="#">Creative</a>
+                <span
+                  ><i class="fa-light fa-calendar-days"></i>April 18, 2024</span
+                >
+              </div>
+              <h4 class="blog-content-title">
+                <a href="/blog-details.html"
+                  >Exploring The Power Of AI Text Generator</a
+                >
+              </h4>
+              <a href="/blog-details.html" class="blog-content-btn"
+                >Learn More<i class="fa-light fa-angle-right"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-xl-4 col-lg-4 col-md-6 tp_fade_left"
+          data-fade-from="left"
+          data-delay=".8"
+        >
+          <div class="blog-item mb-30">
+            <div class="blog-img">
+              <a href="/blog-details.html"
+                ><img
+                  src="{% static 'assets/images/blog/home1/2.png' %}"
+                  alt="Image Not Found"
+              /></a>
+            </div>
+            <div class="blog-content">
+              <div class="blog-content-meta">
+                <a href="#">Animation</a>
+                <span
+                  ><i class="fa-light fa-calendar-days"></i>June 18, 2024</span
+                >
+              </div>
+              <h4 class="blog-content-title">
+                <a href="/blog-details.html"
+                  >The 6 Types Of Menus For Your Business</a
+                >
+              </h4>
+              <a href="/blog-details.html" class="blog-content-btn"
+                >Learn More<i class="fa-light fa-angle-right"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-xl-4 col-lg-4 col-md-6 tp_fade_left"
+          data-fade-from="left"
+          data-delay="1.1"
+        >
+          <div class="blog-item mb-30">
+            <div class="blog-img">
+              <a href="/blog-details.html"
+                ><img
+                  src="{% static 'assets/images/blog/home1/3.png' %}"
+                  alt="Image Not Found"
+              /></a>
+            </div>
+            <div class="blog-content">
+              <div class="blog-content-meta">
+                <a href="#">Creative</a>
+                <span
+                  ><i class="fa-light fa-calendar-days"></i>April 18, 2024</span
+                >
+              </div>
+              <h4 class="blog-content-title">
+                <a href="/blog-details.html"
+                  >Exploring The Power Of AI Text Generator</a
+                >
+              </h4>
+              <a href="/blog-details.html" class="blog-content-btn"
+                >Learn More<i class="fa-light fa-angle-right"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Select all the elements we need to interact with
+    const switcher = document.getElementById("switcher");
+    const monthlyLabel = document.getElementById("filt-monthly");
+    const yearlyLabel = document.getElementById("filt-yearly");
+
+    // Select all elements that will change price or text
+    const priceElements = document.querySelectorAll(".price-value");
+    const periodElements = document.querySelectorAll(".price-period");
+    const savingElements = document.querySelectorAll(".price-saving");
+    const discountElements = document.querySelectorAll(".price-total-discount");
+
+    // Add an event listener for when the toggle is clicked
+    switcher.addEventListener("change", function () {
+      const isYearly = this.checked; // true if yearly is selected, false if monthly
+
+      // 1. Update the labels' active state
+      monthlyLabel.classList.toggle("toggler--is-active", !isYearly);
+      yearlyLabel.classList.toggle("toggler--is-active", isYearly);
+
+      // 2. Update the price values on each card
+      priceElements.forEach((priceEl) => {
+        // Get the monthly and annual prices from the data attributes
+        const monthlyPrice = priceEl.getAttribute("data-monthly-price");
+        const annualPrice = priceEl.getAttribute("data-annual-price");
+
+        // Choose which price to display
+        const priceToShow = isYearly ? annualPrice : monthlyPrice;
+
+        // Format the price to have two decimal places for consistency
+        const [whole, decimal] = parseFloat(priceToShow).toFixed(2).split(".");
+
+        // Update the HTML with the new price
+        priceEl.innerHTML = `€${whole}<span>.${decimal}</span>`;
+      });
+
+      // 3. Update the billing period text (e.g., "/Month")
+      periodElements.forEach((periodEl) => {
+        periodEl.textContent = isYearly ? "/Month (billed annually)" : "/Month";
+      });
+
+      // 4. Show or hide the savings and discount elements
+      savingElements.forEach((savingEl) => {
+        savingEl.style.display = isYearly ? "block" : "none";
+      });
+
+      discountElements.forEach((discountEl) => {
+        discountEl.style.display = isYearly ? "inline-block" : "none";
+      });
+    });
+  });
+</script>
+
+{% endblock content %}

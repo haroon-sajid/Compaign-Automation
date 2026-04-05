@@ -1,0 +1,317 @@
+        body {
+            font-family: Inter, system-ui, Segoe UI, Arial, sans-serif;
+        }
+
+        :root {
+            --sidebar-top: #4a3a93;
+            --sidebar-bot: #2f2858;
+            --sidebar-hover: rgba(255, 255, 255, .08);
+            --sidebar-active: rgba(255, 255, 255, .10);
+            --sidebar-border: #a99bf7;
+            --sidebar-text: #e6e3ff;
+            --sidebar-text-dim: #cfcdf5;
+            --brand: #5b35f2;
+            --teal: #2dc5a1;
+            --blue: #4ba5ff;
+            --orange: #ffa24b;
+            --yellow: #f8d24e;
+            --red: #ff6b6b;
+            --ink-600: #53526a;
+            --ink-400: #8a88a6;
+        }
+
+        .sidebar-menu,
+        .sidebar-menu .sidebar-menu-inner {
+            background: linear-gradient(180deg, var(--sidebar-top), var(--sidebar-bot)) !important
+        }
+
+        .sidebar-menu .logo-env {
+            padding: 18px 22px;
+            border-bottom: 1px solid rgba(255, 255, 255, .12)
+        }
+
+        .sidebar-menu .logo a img {
+            display: block;
+            width: 120px;
+            max-width: 120px;
+            height: auto;
+            object-fit: contain
+        }
+
+        .sidebar-menu #main-menu>li>a {
+            color: var(--sidebar-text) !important;
+            background: transparent !important;
+            padding: 14px 20px 14px 22px;
+            border-left: 3px solid transparent
+        }
+
+        .sidebar-menu #main-menu>li>a i {
+            color: var(--sidebar-text-dim) !important;
+            margin-right: 10px;
+            font-size: 16px
+        }
+
+        .sidebar-menu #main-menu>li>a:hover {
+            background: var(--sidebar-hover) !important;
+            color: #fff !important
+        }
+
+        .sidebar-menu #main-menu>li.active>a,
+        .sidebar-menu #main-menu>li.opened>a {
+            background: var(--sidebar-active) !important;
+            border-left-color: var(--sidebar-border) !important;
+            color: #fff !important
+        }
+
+        .sidebar-menu #main-menu li ul {
+            background: rgba(0, 0, 0, .08) !important;
+            padding: 6px 0 10px
+        }
+
+        .sidebar-menu #main-menu li ul>li>a {
+            color: var(--sidebar-text-dim) !important;
+            padding: 10px 18px 10px 44px
+        }
+
+        .sidebar-collapse-icon,
+        .sidebar-mobile-menu .with-animation {
+            color: #fff !important
+        }
+
+        .page-title {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin: 4px 0 14px
+        }
+
+        .page-title h1 {
+            margin: 0;
+            font-weight: 800;
+            font-size: 28px
+        }
+
+        .note {
+            color: var(--ink-400);
+            font-size: 13px
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin: 10px 0 12px
+        }
+
+        .btn-purple {
+            background: var(--brand);
+            border-color: var(--brand);
+            color: #fff
+        }
+
+        .btn-ghost {
+            background: #fff;
+            border: 1px solid #dcd7ee;
+            color: var(--brand)
+        }
+
+        .btn-ghost:hover {
+            background: #f4f2fe
+        }
+
+        .chip {
+            border: 1px solid #e5e1ef;
+            border-radius: 999px;
+            padding: 6px 10px;
+            background: #fff;
+            font-weight: 600;
+            cursor: pointer
+        }
+
+        .chip.active {
+            background: var(--brand);
+            color: #fff;
+            border-color: var(--brand)
+        }
+
+        /* KPI */
+        .kpi-wrap {
+            display: grid;
+            grid-template-columns: repeat(6, minmax(160px, 1fr));
+            gap: 14px;
+            margin: 8px 0 14px
+        }
+
+        .kpi {
+            background: #fff;
+            border: 1px solid #ece9f7;
+            border-radius: 14px;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-height: 94px
+        }
+
+        .kpi .kicon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 20px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, .12), inset 0 1px 0 rgba(255, 255, 255, .25)
+        }
+
+        .kicon.purple {
+            background: linear-gradient(145deg, #6a49f6, #5b35f2)
+        }
+
+        .kicon.blue {
+            background: linear-gradient(145deg, #66b6ff, #4ba5ff)
+        }
+
+        .kicon.lightblue {
+            background: linear-gradient(145deg, #6675ff, #4b66ff)
+        }
+
+        .kicon.green {
+            background: linear-gradient(145deg, #3cd6b4, #2dc5a1)
+        }
+
+        .kicon.orange {
+            background: linear-gradient(145deg, #ffb86a, #ffa24b)
+        }
+
+        .kicon.violet {
+            background: linear-gradient(145deg, #8c7bff, #6a49f6)
+        }
+
+        .kicon.red {
+            background: linear-gradient(145deg, #ff8585, #ff6b6b)
+        }
+
+        .kicon.lightyellow {
+            background: linear-gradient(145deg, #ff9e37, #ff9532)
+        }
+        .kicon.purpleblue{
+            background: rgba(124, 131, 253, 0.9);
+        }
+        .kicon.softblue{ background-color: rgba(108, 166, 255, 0.9); }
+        .kicon.ngreen{ background-color: rgba(126, 217, 87, 0.9); color: #ffffff; }
+        .kicon.orange{ background-color: rgba(126, 169, 77, 0.9); color: #ffffff; }
+        .kicon.grayblue{ background-color: rgba(176, 190, 197, 0.9); color: #ffffff; }
+        .kicon.softred{ background-color: rgba(255, 107, 107, 0.9); color: #ffffff; }
+
+
+
+        .kpi .label {
+            color: #6a6884;
+            font-weight: 700;
+            font-size: 13px;
+            margin-bottom: 6px
+        }
+
+        .kpi .value {
+            font-size: 24px;
+            font-weight: 800;
+            line-height: 1
+        }
+
+        .kpi .sub {
+            font-size: 12px;
+            color: #9090ad;
+            margin-top: 2px
+        }
+
+        /* Cards, charts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 16px
+        }
+
+        .grid-1-1 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid #ece9f7;
+            border-radius: 14px;
+            padding: 14px;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: var(--ink-600);
+            margin: 0 0 8px
+        }
+
+        .chart-box {
+            flex: 1 1 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 240px
+        }
+
+        canvas {
+            display: block;
+            width: 100% !important;
+            height: 260px !important;
+            max-height: 300px
+        }
+
+        /* Status badge */
+        .badge-pill {
+            border-radius: 999px;
+            padding: 4px 10px;
+            font-weight: 700;
+            font-size: 12px;
+            display: inline-block
+        }
+
+        .bg-pub {
+            background: #e9f7ff;
+            color: #1773b8
+        }
+
+        .bg-sch {
+            background: #eafaf6;
+            color: #1a8c6b
+        }
+
+        .bg-drf {
+            background: #fff4e8;
+            color: #a6651a
+        }
+
+        .bg-fail {
+            background: #ffecee;
+            color: #b81a1a
+        }
+
+        /* Tables */
+        #recentTable td {
+            vertical-align: middle
+        }
+
+        .table thead th {
+            white-space: nowrap
+        }
+
+        .main-content {
+            min-height: 100vh
+        }

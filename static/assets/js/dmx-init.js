@@ -1,0 +1,1 @@
+window.dmxAppConnect = window.dmxAppConnect || {};

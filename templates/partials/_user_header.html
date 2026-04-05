@@ -1,0 +1,129 @@
+<!-- templates/partials/_user_header.html -->
+{% load static %}
+<style>
+  /* Mobile top header (minimal, appears only on small screens <=786px)
+       This duplicates the logo so the header remains visible when the
+       sidebar/nav is collapsed. It's intentionally lightweight. */
+  .mobile-top-header {
+    display: none;
+  }
+
+  @media (max-width: 786px) {
+    .mobile-top-header {
+      display: flex !important;
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      height: 96px !important;
+      align-items: center !important;
+      justify-content: center !important;
+      z-index: 10002 !important;
+      background: #3f2f85;
+      color: #fff;
+      border-bottom: 1px solid rgba(0, 0, 0, .06);
+      padding: 24px 20px;
+    }
+
+
+    /* Push main content down so it doesn't hide under the fixed mobile header */
+    .body-wrapper {
+      padding-top: 96px;
+    }
+
+    /* Move the mobile menu toggle to the right side so it's visible in the header */
+    .mobile-sidebar-toggle {
+      left: auto !important;
+      right: 16px !important;
+      top: 18px !important;
+      z-index: 10003 !important;
+    }
+    .profile-info {
+      margin-top: 15px !important; /* increase or decrease as you like */
+    }
+  }
+</style>
+<div class="mobile-top-header">
+  <a href="{% url 'dashboard:dashboard' %}" aria-label="Publisha (mobile)">
+    <img src="{% static 'assets/images/publisha-logo-dashboard.png' %}" alt="Publisha"
+      style="height:48px; object-fit:contain;" />
+  </a>
+</div>
+<div class="row">
+  <div class="col-md-6 col-sm-8 clearfix">
+    <ul class="user-info pull-left pull-none-xsm">
+      <li class="profile-info">
+        <a href="{% url 'security_settings' %}">
+          <img
+            src="{{ user.profile.avatar_base64|default:'/static/assets/images/transparent.png' }}"
+            class="img-circle"
+            width="44"
+            alt="Profile picture for {{ user.username }}"
+          />
+          {{ user.first_name|default:user.username }}
+        </a>
+        <ul class="dropdown-menu">
+          <li class="caret"></li>
+          <li>
+            <a href="/extra-timeline.html"
+              ><i class="entypo-user"></i> Edit Profile</a
+            >
+          </li>
+          <li>
+            <a href="/mailbox.html"><i class="entypo-mail"></i> Inbox</a>
+          </li>
+          <li>
+            <a href="/extra-calendar.html"
+              ><i class="entypo-calendar"></i> Calendar</a
+            >
+          </li>
+          <li>
+            <a href="#"><i class="entypo-clipboard"></i> Tasks</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <ul class="user-info pull-left pull-right-xs pull-none-xsm" style="display:none">
+      <li class="notifications dropdown">
+        <a href="#" class="dropdown-toggle"
+          ><i class="entypo-attention"></i
+          ><span class="badge badge-info">6</span></a
+        >
+      </li>
+      <li class="notifications dropdown">
+        <a href="#" class="dropdown-toggle"
+          ><i class="entypo-mail"></i
+          ><span class="badge badge-secondary">10</span></a
+        >
+      </li>
+      <li class="notifications dropdown">
+        <a href="#" class="dropdown-toggle"
+          ><i class="entypo-list"></i
+          ><span class="badge badge-warning">1</span></a
+        >
+      </li>
+    </ul>
+  </div>
+  <div class="col-md-6 col-sm-4 clearfix hidden-xs">
+    <ul class="list-inline links-list pull-right">
+      <li class="dropdown language-selector">
+        Language:
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+          ><img
+            src="{% static 'assets/images/flags/flag-uk.png' %}"
+            width="16"
+            alt=""
+        /></a>
+      </li>
+      <li class="sep"></li>
+      <li>
+        <form method="post" action="{% url 'logout' %}" style="display: inline">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-link p-0 m-0 align-baseline">
+            Log Out <i class="entypo-logout right"></i>
+          </button>
+        </form>
+      </li>
+    </ul>
+  </div>
+</div>

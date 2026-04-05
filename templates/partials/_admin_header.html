@@ -1,0 +1,68 @@
+{% load static %}
+<div class="row">
+  <div class="col-md-6 col-sm-8 clearfix">
+    <ul class="user-info pull-left pull-none-xsm">
+      <li class="profile-info dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          <img
+            src="{% static 'assets/images/Thumb-Yunus.png' %}"
+            class="img-circle"
+            width="44"
+            alt="{{ user.username }}"
+          />
+          {{ user.first_name }} {{ user.last_name }}
+        </a>
+        <ul class="dropdown-menu">
+          <li class="caret"></li>
+          <li>
+            <a href="#"><i class="entypo-user"></i> Edit Profile</a>
+          </li>
+          <li>
+            <a href="#"><i class="entypo-mail"></i> Inbox</a>
+          </li>
+          <li>
+            <a href="#"><i class="entypo-calendar"></i> Calendar</a>
+          </li>
+          <li>
+            <a href="#"><i class="entypo-clipboard"></i> Tasks</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <div class="col-md-6 col-sm-4 clearfix hidden-xs">
+    <ul class="list-inline links-list pull-right">
+      <li class="dropdown language-selector">
+        Language:&nbsp;<a
+          href="#"
+          class="dropdown-toggle"
+          data-toggle="dropdown"
+        >
+          <img
+            src="{% static 'assets/images/flags/flag-uk.png' %}"
+            width="16"
+            alt=""
+        /></a>
+      </li>
+      <li class="sep"></li>
+
+      <!-- SECURE LOGOUT FORM -->
+      <li>
+        <form action="{% url 'logout' %}" method="post" style="display: inline">
+          {% csrf_token %}
+          <button
+            type="submit"
+            style="
+              background: none;
+              border: none;
+              color: #666;
+              padding-top: 20px;
+            "
+          >
+            Log Out <i class="entypo-logout right"></i>
+          </button>
+        </form>
+      </li>
+    </ul>
+  </div>
+</div>

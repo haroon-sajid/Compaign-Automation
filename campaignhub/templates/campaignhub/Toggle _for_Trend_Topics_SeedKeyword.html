@@ -1,0 +1,290 @@
+<!-- Toggle wrapper for Seed Keyword Generator + Trend Topics -->
+<section class="tt-toggle-card">
+  <header class="tt-toggle-header">
+    <div>
+
+    </div>
+  </header>
+
+  <div class="tt-toggle-list">
+    <!-- Seed Keyword Generator toggle -->
+    <div class="tt-toggle-item">
+      <button type="button" class="tt-toggle-row" data-toggle-panel="#seedToggleBody" aria-expanded="false">
+        <div class="tt-toggle-meta">
+          <div class="tt-toggle-title">
+            <span class="tt-toggle-dot"></span>
+            <span>Seed Keyword Generator</span>
+          </div>
+          <p class="tt-toggle-sub">Generate thousands of topic ideas from a single seed keyword.</p>
+        </div>
+
+        <div class="tt-toggle-right">
+          <span class="tt-toggle-label">Show</span>
+          <span class="tt-toggle-switch">
+            <span class="tt-toggle-knob"></span>
+          </span>
+        </div>
+      </button>
+
+      <div id="seedToggleBody" class="tt-toggle-body" hidden>
+        <!-- Place the Seed Keyword Generator card here -->
+        <!-- Example: paste your existing Seed Keyword Generator section into this container -->
+      </div>
+    </div>
+
+    <!-- Trend Topics toggle -->
+    <div class="tt-toggle-item">
+      <button type="button" class="tt-toggle-row" data-toggle-panel="#trendToggleBody" aria-expanded="false">
+        <div class="tt-toggle-meta">
+          <div class="tt-toggle-title">
+            <span class="tt-toggle-dot tt-toggle-dot-green"></span>
+            <span>Trend Topics</span>
+          </div>
+          <p class="tt-toggle-sub">Track trending topics via RSS, news and social signals.</p>
+        </div>
+
+        <div class="tt-toggle-right">
+          <span class="tt-toggle-label">Show</span>
+          <span class="tt-toggle-switch">
+            <span class="tt-toggle-knob"></span>
+          </span>
+        </div>
+      </button>
+
+      <div id="trendToggleBody" class="tt-toggle-body" hidden>
+        <!-- Place the Trend Topics panel here -->
+        <!-- Example: paste your existing Trend Topics panel into this container -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tt-toggle-card {
+    background: var(--panel, #ffffff);
+    border-radius: 18px;
+    border: 1px solid var(--border, #e6e7f4);
+    box-shadow: var(--shadow-sm, 0 4px 14px rgba(31, 36, 55, .06));
+    padding: 14px 16px 14px;
+  }
+
+  .tt-toggle-header {
+    padding: 4px 2px 8px;
+    border-bottom: 1px dashed var(--divider, #eef0f7);
+    margin-bottom: 6px;
+  }
+
+  .tt-toggle-header h2 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: #262b44;
+  }
+
+  .tt-toggle-header p {
+    margin: 4px 0 0;
+    font-size: 12px;
+    color: var(--text-muted, #7b8197);
+  }
+
+  .tt-toggle-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 4px;
+  }
+
+  .tt-toggle-item {
+    border-radius: 14px;
+    border: 1px solid var(--border, #e6e7f4);
+    background: var(--panel-ghost, #f7f7ff);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, .8);
+    overflow: hidden;
+  }
+
+  .tt-toggle-row {
+    width: 100%;
+    padding: 10px 12px;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    cursor: pointer;
+    transition:
+      background .16s ease,
+      transform .06s ease,
+      box-shadow .18s ease,
+      border-color .18s ease;
+  }
+
+  .tt-toggle-row:focus-visible {
+    outline: 0;
+    box-shadow: 0 0 0 3px var(--ctl-ring, rgba(124, 108, 255, .35));
+  }
+
+  .tt-toggle-item:hover .tt-toggle-row {
+    background: rgba(246, 247, 255, 0.9);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md, 0 16px 40px rgba(31, 36, 55, .12));
+  }
+
+  .tt-toggle-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  .tt-toggle-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text, #1f2437);
+  }
+
+  .tt-toggle-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: var(--brand, #6e56f7);
+    box-shadow: 0 0 0 4px rgba(110, 86, 247, .22);
+    flex-shrink: 0;
+  }
+
+  .tt-toggle-dot-green {
+    background: #22c55e;
+    box-shadow: 0 0 0 4px rgba(34, 197, 94, .22);
+  }
+
+  .tt-toggle-sub {
+    margin: 0;
+    font-size: 11px;
+    color: var(--text-muted, #7b8197);
+  }
+
+  .tt-toggle-right {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .tt-toggle-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted, #7b8197);
+  }
+
+  .tt-toggle-switch {
+    --w: 42px;
+    --h: 22px;
+    --pad: 2px;
+    position: relative;
+    width: var(--w);
+    height: var(--h);
+    border-radius: 999px;
+    background: #eeefff;
+    border: 1px solid #dedfff;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .85);
+    transition:
+      background .2s ease,
+      border-color .2s ease,
+      box-shadow .2s ease;
+  }
+
+  .tt-toggle-knob {
+    position: absolute;
+    top: var(--pad);
+    left: var(--pad);
+    width: calc(var(--h) - var(--pad) * 2);
+    height: calc(var(--h) - var(--pad) * 2);
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow:
+      0 1px 1px rgba(15, 23, 42, .18),
+      0 6px 12px rgba(15, 23, 42, .24);
+    transition:
+      left .22s cubic-bezier(.2, .8, .25, 1),
+      transform .12s ease;
+  }
+
+  /* active state (button[aria-expanded="true"]) */
+  .tt-toggle-row[aria-expanded="true"] .tt-toggle-switch {
+    background: linear-gradient(180deg,
+        var(--brand, #6e56f7),
+        var(--brand-800, #4e36e2));
+    border-color: transparent;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, .4),
+      0 8px 18px rgba(110, 86, 247, .35);
+  }
+
+  .tt-toggle-row[aria-expanded="true"] .tt-toggle-knob {
+    left: calc(100% - var(--h) + var(--pad));
+    transform: translateX(0);
+  }
+
+  .tt-toggle-row[aria-expanded="true"] .tt-toggle-label {
+    color: var(--brand-800, #4e36e2);
+  }
+
+  .tt-toggle-body {
+    padding: 10px 12px 12px;
+    border-top: 1px dashed var(--divider, #eef0f7);
+    background: rgba(247, 247, 255, 0.9);
+    animation: tt-toggle-fade .18s ease-out;
+  }
+
+  @keyframes tt-toggle-fade {
+    from {
+      opacity: 0;
+      transform: translateY(-2px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .tt-toggle-row {
+      align-items: flex-start;
+    }
+
+    .tt-toggle-right {
+      align-self: center;
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    "use strict";
+
+    var buttons = document.querySelectorAll("[data-toggle-panel]");
+
+    buttons.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var targetSelector = btn.getAttribute("data-toggle-panel");
+        if (!targetSelector) return;
+
+        var panel = document.querySelector(targetSelector);
+        if (!panel) return;
+
+        var isOpen = btn.getAttribute("aria-expanded") === "true";
+        var nextState = !isOpen;
+
+        btn.setAttribute("aria-expanded", String(nextState));
+        panel.hidden = !nextState;
+      });
+    });
+  })();
+</script>

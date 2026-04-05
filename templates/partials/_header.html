@@ -1,0 +1,176 @@
+{% load static %}
+
+<style>
+  .auth-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.auth-buttons a {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.btn-login {
+    background: #f0f0f0;
+    color: #333;
+}
+
+.btn-join {
+    background: #4a4fff;
+    color: #fff;
+}
+.menu-item{
+  display:none;
+}
+
+</style>
+<header class="header-area">
+  <div class="header-top d-none d-md-flex">
+    <div class="container custom-container-1">
+      <div class="row">
+        <div class="col-xl-9 col-lg-9">
+          <div class="header-top-text">
+            <p>
+              New members: get your first 7 days of Premium free! Unlock your
+              discount now!
+            </p>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 d-none d-lg-block">
+          <div class="header-top-social">
+            <ul>
+              <li>
+                <a href="https://www.instagram.com/publisha.io"
+                  ><i class="fa-brands fa-instagram"></i
+                ></a>
+              </li>
+              <li>
+                <a href="https://x.com/Publisha_IO"
+                  ><i class="fa-brands fa-twitter"></i
+                ></a>
+              </li>
+              <li>
+                <a href="https://www.linkedin.com/company/publisha-io"
+                  ><i class="fa-brands fa-linkedin-in"></i
+                ></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="header-main header-sticky">
+    <div class="container custom-container-1">
+      <div class="row align-items-center">
+        <div class="col-xl-2 col-lg-2 col-6">
+          <div class="header-logo">
+            <a href="{% url 'public:home' %}">
+              <img
+                src="{% static 'assets/images/logo/logo.png' %}"
+                alt="Image Not Found"
+              />
+            </a>
+          </div>
+        </div>
+        <div class="col-xl-7 col-lg-7 text-center d-none d-lg-block">
+          <div class="header-menu">
+            <nav class="header-nav-menu" id="mobile-menu">
+              <ul>
+                <li class="menu-has-child">
+                  <a href="{% url 'public:home' %}">Home</a>
+  
+                </li>
+                <li><a href="{% url 'public:about' %}">About</a></li>
+                <li class="menu-has-child">
+                  <a href="#">Pages</a>
+                  <ul class="submenu">
+                    <li><a href="{% url 'public:services' %}">Services</a></li>
+                    <li><a href="{% url 'public:pricing' %}">Pricing</a></li>
+                    <li><a href="{% url 'public:faq' %}">FAQ's</a></li>
+
+                    
+                  </ul>
+                </li>
+
+                <li class="menu-has-child">
+                  <a href="{% url 'public:blog' %}">Blog</a>
+                </li>
+                <li><a href="{% url 'public:contact' %}">Contact</a></li>
+                <li class="auth-buttons mean-last" style="display:none;">
+                  <a href="/accounts/login/" class="btn-login" style="
+                  background: #7D25EC;
+                  text-align: center;
+              ">Login</a>
+                  <a href="/accounts/signup/" class="btn-join" style="
+                  background: #7D25EC;
+                  text-align: center;
+              ">Join AI</a> 
+              </li>
+
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-6">
+          <div
+            class="header-action-wrap d-flex align-items-center justify-content-end"
+          >
+            <div class="header-action d-none d-sm-flex">
+              <a href="{% url 'login' %}" class="header-action-login">
+                <svg
+                  width="14"
+                  height="16"
+                  viewBox="0 0 14 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7.01172 8C8.94472 8 10.5117 6.433 10.5117 4.5C10.5117 2.567 8.94472 1 7.01172 1C5.07872 1 3.51172 2.567 3.51172 4.5C3.51172 6.433 5.07872 8 7.01172 8Z"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M13.026 15C13.026 12.291 10.331 10.1 7.013 10.1C3.695 10.1 1 12.291 1 15"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                Login
+              </a>
+              <a href="/accounts/signup/" class="header-action-btn">
+                Join AI
+              </a>
+            </div>
+            <div class="header-menu-bar d-lg-none ml-10">
+              <span class="header-menu-bar-icon side-toggle">
+                <i class="fa-light fa-bars"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<script>
+document.querySelector('.side-toggle').addEventListener('click', function () {
+    const authButtons = document.querySelector('.auth-buttons');
+
+    // Toggle display
+    if (authButtons.style.display === 'none' || authButtons.style.display === '') {
+        authButtons.style.display = 'flex';
+    } else {
+        authButtons.style.display = 'none';
+    }
+});
+
+</script>

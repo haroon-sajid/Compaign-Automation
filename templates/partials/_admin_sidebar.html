@@ -1,0 +1,58 @@
+{% load static %}
+<div class="sidebar-menu">
+  <div class="sidebar-menu-inner">
+    <header class="logo-env">
+      <div class="logo">
+        <a href="{% url 'admin_dashboard' %}">
+          <img
+            src="{% static 'assets/images/publisha-logo-dashboard.png' %}"
+            width="120"
+            alt="Publisha"
+          />
+        </a>
+      </div>
+      <div class="sidebar-collapse">
+        <a href="#" class="sidebar-collapse-icon"
+          ><i class="entypo-menu"></i
+        ></a>
+      </div>
+      <div class="sidebar-mobile-menu visible-xs">
+        <a href="#" class="with-animation"><i class="entypo-menu"></i></a>
+      </div>
+    </header>
+
+    <ul id="main-menu" class="main-menu">
+      <li>
+        <a href="{% url 'admin_dashboard' %}"
+          ><i class="entypo-gauge"></i><span class="title">Dashboard</span></a
+        >
+      </li>
+      <li class="opened active has-sub">
+        <a href="#"
+          ><i class="entypo-direction"></i
+          ><span class="title">Campaigns</span></a
+        >
+        <ul class="visible">
+          <li class="active"><a href="#">Create Campaign</a></li>
+          <li><a href="#">All Campaigns</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#"
+          ><i class="entypo-newspaper"></i><span class="title">Posts</span></a
+        >
+      </li>
+      <li>
+        <a href="#"
+          ><i class="entypo-chart-bar"></i
+          ><span class="title">Analytics</span></a
+        >
+      </li>
+      <li>
+        <a href="#"
+          ><i class="entypo-cog"></i><span class="title">Settings</span></a
+        >
+      </li>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,1422 @@
+{% extends "user_layout.html" %} {% block content %} {% load static %}
+
+<meta name="ac:route" content="/Analytics" />
+<base href="/" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Publisha – Analytics" />
+<link rel="icon" href="{% static '/assets/images/favicon.ico' %}" />
+<title>Analytics</title>
+
+<!-- Core CSS -->
+<link
+  rel="stylesheet"
+  href="{% static '/assets/css/font-icons/entypo/css/entypo.css' %}"
+/>
+<link rel="stylesheet" href="{% static '/assets/css/bootstrap.css' %}" />
+<link rel="stylesheet" href="{% static '/assets/css/neon-core.css' %}" />
+<link rel="stylesheet" href="{% static '/assets/css/neon-theme.css' %}" />
+<link rel="stylesheet" href="{% static '/assets/css/neon-forms.css' %}" />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"
+/>
+<link rel="stylesheet" href="{% static '/assets/css/custom.css' %}" />
+
+<!-- Charts / Date picker -->
+<script
+  src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"
+  defer
+></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr" defer></script>
+
+<style>
+  body {
+    font-family: Inter, system-ui, Segoe UI, Arial, sans-serif;
+  }
+
+  /* Sidebar (mor gradyan) + logo fix */
+  :root {
+    --sidebar-top: #4a3a93;
+    --sidebar-bot: #2f2858;
+    --sidebar-hover: rgba(255, 255, 255, 0.08);
+    --sidebar-active: rgba(255, 255, 255, 0.1);
+    --sidebar-border: #a99bf7;
+    --sidebar-text: #e6e3ff;
+    --sidebar-text-dim: #cfcdf5;
+
+    /* Chart brand */
+    --brand: #5b35f2;
+    --brand-2: #7f5df5;
+    --teal: #2dc5a1;
+    --blue: #4ba5ff;
+    --orange: #ffa24b;
+    --yellow: #f8d24e;
+    --red: #ff6b6b;
+    --ink-600: #53526a;
+    --ink-400: #8a88a6;
+    --ink-300: #b9b8d3;
+  }
+
+  .sidebar-menu,
+  .sidebar-menu .sidebar-menu-inner {
+    background: linear-gradient(
+      180deg,
+      var(--sidebar-top) 0%,
+      var(--sidebar-bot) 100%
+    ) !important;
+  }
+
+  .sidebar-menu .logo-env {
+    padding: 18px 22px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+   .btn-purple {
+  background: #5b35f2 !important;      /* black button */
+  color: #fff !important;           /* white text */
+  border-color: #5b35f2 !important;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.btn-purple:hover {
+  background: #5b35f2!important;      /* slightly lighter black on hover */
+  transform: scale(1.05);           /* zoom-in effect */
+  color: #fff !important;
+}
+  .sidebar-menu .logo a img {
+    display: block;
+    width: 120px;
+    max-width: 120px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .sidebar-menu #main-menu > li > a {
+    color: var(--sidebar-text) !important;
+    background: transparent !important;
+    padding: 14px 20px 14px 22px;
+    border-left: 3px solid transparent;
+  }
+
+  .sidebar-menu #main-menu > li > a i {
+    color: var(--sidebar-text-dim) !important;
+    margin-right: 10px;
+    font-size: 16px;
+  }
+
+  .sidebar-menu #main-menu > li > a:hover {
+    background: var(--sidebar-hover) !important;
+    color: #fff !important;
+  }
+
+  .sidebar-menu #main-menu > li.active > a,
+  .sidebar-menu #main-menu > li.opened > a {
+    background: var(--sidebar-active) !important;
+    border-left-color: var(--sidebar-border) !important;
+    color: #fff !important;
+  }
+
+  .sidebar-menu #main-menu li ul {
+    background: rgba(0, 0, 0, 0.08) !important;
+    padding: 6px 0 10px;
+  }
+
+  .sidebar-menu #main-menu li ul > li > a {
+    color: var(--sidebar-text-dim) !important;
+    padding: 10px 18px 10px 44px;
+  }
+
+  .sidebar-collapse-icon,
+  .sidebar-mobile-menu .with-animation {
+    color: #fff !important;
+  }
+
+  /* Başlık ve not */
+  .page-title {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    margin: 4px 0 14px;
+  }
+
+  .page-title h1 {
+    margin: 0;
+    font-weight: 800;
+    font-size: 28px;
+  }
+
+  .note {
+    color: var(--ink-400);
+    font-size: 13px;
+  }
+
+  /* Toolbar */
+  .toolbar {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .topbar {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0 8px;
+    flex-wrap: wrap;
+  }
+
+  .btn-purple {
+    background: var(--brand);
+    border-color: var(--brand);
+    color: #fff;
+  }
+
+  .btn-ghost {
+    background: #fff;
+    border: 1px solid #dcd7ee;
+    color: var(--brand);
+  }
+
+  .btn-ghost:hover {
+    background: #f4f2fe;
+  }
+
+  .chip {
+    border: 1px solid #e5e1ef;
+    border-radius: 999px;
+    padding: 6px 10px;
+    background: #fff;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .chip.active {
+    background: var(--brand);
+    color: #fff;
+    border-color: var(--brand);
+  }
+
+  .select-sm {
+    min-width: 170px;
+  }
+
+  /* KPI kartları */
+  .kpi-wrap {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(180px, 1fr));
+    /* 5 kart: Campaigns + 4 metrik */
+    gap: 14px;
+    margin: 8px 0 14px;
+  }
+
+  .kpi {
+    background: #fff;
+    border: 1px solid #ece9f7;
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 98px;
+  }
+
+  .kpi .kpi-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 22px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    flex: 0 0 44px;
+  }
+
+  .kpi .kpi-icon.purple {
+    background: linear-gradient(145deg, #6a49f6, #5b35f2);
+  }
+
+  .kpi .kpi-icon.purpleblue {
+    background: rgba(124, 131, 253, 0.9);
+  }
+  .kpi .kpi-icon.softblue {
+     background-color: rgba(108, 166, 255, 0.9); 
+  }
+    .kpi .kpi-icon.ngreen {
+     background-color: rgba(126, 217, 87, 0.9); color: #ffffff;
+  }
+
+
+
+
+
+  
+  .kpi .kpi-icon.blue {
+    background: linear-gradient(145deg, #66b6ff, #4ba5ff);
+  }
+
+  .kpi .kpi-icon.green {
+    background: linear-gradient(145deg, #3cd6b4, #2dc5a1);
+  }
+
+  .kpi .kpi-icon.orange {
+    background: linear-gradient(145deg, #ffb86a, #ffa24b);
+  }
+
+  .kpi .kpi-icon.red {
+    background: linear-gradient(145deg, #ff8585, #ff6b6b);
+  }
+
+  .kpi .label {
+    color: #6a6884;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+  .kpi .value {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .kpi .sub {
+    font-size: 12px;
+    color: #9090ad;
+    margin-top: 4px;
+  }
+
+  /* Kart + Grid */
+  .card {
+    background: #fff;
+    border: 1px solid #ece9f7;
+    border-radius: 14px;
+    padding: 14px;
+    min-height: 340px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  /* eşit sütun */
+  .card-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0 8px;
+    font-weight: 800;
+    color: var(--ink-600);
+    text-align: center;
+  }
+
+  /* Canvas ve kutu */
+  .chart-box {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 280px;
+  }
+
+  canvas {
+    display: block;
+    width: 100% !important;
+    height: 280px !important;
+    max-height: 320px;
+  }
+
+  /* Fallback */
+  .chart-fallback {
+    font-size: 13px;
+    color: #6a6884;
+  }
+
+  .chart-fallback ul {
+    margin: 6px 0 0 16px;
+    padding: 0;
+  }
+
+  .chart-fallback li {
+    margin: 2px 0;
+  }
+
+  /* DataTable */
+  .table thead th {
+    white-space: nowrap;
+  }
+
+  .main-content {
+    min-height: 100vh;
+  }
+
+  @media (max-width: 767px) {
+    /* Breadcrumb */
+    .breadcrumb.bc-3 {
+      padding: 8px 10px;
+      font-size: 13px;
+    }
+
+    /* Page title */
+    .page-title h1 {
+      font-size: 22px;
+    }
+
+    .note {
+      font-size: 12px;
+    }
+
+    /* Topbar: stack vertically */
+    .topbar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    /* Toolbars: full-width and wrap */
+    .toolbar {
+      width: 100%;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .toolbar .input-group,
+    .toolbar .form-control.select-sm {
+      flex: 1 1 140px;
+      min-width: 140px;
+    }
+
+    .toolbar .btn,
+    .toolbar .chip {
+      padding: 6px 10px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    /* KPI Cards: 1 column */
+    .kpi-wrap {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .kpi {
+      min-height: auto;
+      padding: 14px;
+    }
+
+    .kpi .value {
+      font-size: 24px;
+    }
+
+    /* Charts: 1 column */
+    .grid-3 {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .card {
+      min-height: auto;
+    }
+
+    .chart-box {
+      min-height: 220px;
+    }
+
+    canvas {
+      height: 220px !important;
+    }
+
+    /* Table */
+    #campaignsTable {
+      min-width: 600px;
+      /* Ensures readability */
+      width: 100% !important;
+    }
+
+    #campaignsTable thead th,
+    #campaignsTable tbody td {
+      padding: 6px 8px !important;
+      white-space: nowrap !important;
+    }
+
+    /* Footer */
+    footer.main {
+      font-size: 13px;
+      text-align: center;
+    }
+
+    /* Scroll wrapper fix */
+    #campaignsTable_wrapper .dataTables_scrollBody,
+    #campaignsTable_wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+
+  /* ============= TABLET (768px – 991px) ============= */
+  @media (min-width: 768px) and (max-width: 991px) {
+    .kpi-wrap {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    canvas {
+      height: 240px !important;
+    }
+
+    #campaignsTable_wrapper .dataTables_scrollBody,
+    #campaignsTable_wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Keep all table columns visible */
+  }
+
+  /* ============= NARROW DESKTOP (992px – 1024px) ============= */
+  @media (min-width: 992px) and (max-width: 1024px) {
+    .kpi-wrap {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    #campaignsTable_wrapper .dataTables_scrollBody,
+    #campaignsTable_wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    canvas {
+      height: 250px !important;
+    }
+
+    /* Keep all table columns visible */
+  }
+
+  /* ============= DESKTOP (1025px – 1199px) ============= */
+  @media (min-width: 1025px) and (max-width: 1199px) {
+    .kpi-wrap {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    canvas {
+      height: 260px !important;
+    }
+  }
+
+  /* ============= LARGE DESKTOP (1200px+) ============= */
+  @media (min-width: 1200px) {
+    .kpi-wrap {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    canvas {
+      height: 280px !important;
+    }
+  }
+
+  /* ============= VERY SMALL SCREENS (≤480px) ============= */
+  /* Only hide non-essential columns to preserve readability */
+  @media (max-width: 480px) {
+    /* #campaignsTable th:nth-child(6),
+    /* Draft */
+    /* #campaignsTable td:nth-child(6), */
+    /* #campaignsTable th:nth-child(8), */
+    /* Publish Rate */
+    /* #campaignsTable td:nth-child(8) { */
+    /* display: none; */
+    /* } */
+    */ #campaignsTable_wrapper .dataTables_scrollBody,
+    #campaignsTable_wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    #campaignsTable {
+      min-width: 600px;
+      /* Ensures readability */
+      width: 100% !important;
+    }
+
+    /* Compact table cells */
+    #campaignsTable thead th,
+    #campaignsTable tbody td {
+      padding: 6px 8px !important;
+      font-size: 12px !important;
+      white-space: nowrap;
+    }
+  }
+
+  .kicon.softblue {
+    background-color: rgba(108, 166, 255, 0.9);
+  }
+  .kicon.ngreen {
+    background-color: rgba(126, 217, 87, 0.9);
+    color: #ffffff;
+  }
+  .kicon.orange {
+    background-color: rgba(126, 169, 77, 0.9);
+    color: #ffffff;
+  }
+  .kicon.grayblue {
+    background-color: rgba(176, 190, 197, 0.9);
+    color: #ffffff;
+  }
+  .kicon.softred {
+    background-color: rgba(255, 107, 107, 0.9);
+    color: #ffffff;
+  }
+</style>
+
+<div class="page-container">
+  <!-- Sidebar -->
+
+  <!-- Main -->
+  <div class="main-content">
+    <!-- Üst bar -->
+
+    <!-- Breadcrumb -->
+    <ol class="breadcrumb bc-3">
+      <li>
+        <a href="{% url 'dashboard:dashboard' %}"><i class="fa-home"></i>Home</a>
+      </li>
+      <li class="active"><strong>Analytics</strong></li>
+    </ol>
+
+    <!-- Başlık -->
+    <div class="page-title">
+      <h1>Analytics</h1>
+      <span class="note">Track performance across campaigns and channels.</span>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="topbar">
+      <div class="toolbar">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="entypo-calendar"></i></span>
+          <input
+            id="dateFrom"
+            class="form-control"
+            placeholder="From (yyyy-mm-dd)"
+          />
+        </div>
+        <div class="input-group">
+          <span class="input-group-addon"><i class="entypo-calendar"></i></span>
+          <input
+            id="dateTo"
+            class="form-control"
+            placeholder="To (yyyy-mm-dd)"
+          />
+        </div>
+        <select id="channelSel" class="form-control select-sm">
+          <option value="all">All Channels</option>
+          <option value="Blog">Blog</option>
+          <option value="Twitter">Twitter</option>
+          <option value="LinkedIn">LinkedIn</option>
+          <option value="Facebook">Facebook</option>
+          <option value="Instagram">Instagram</option>
+        </select>
+        <button id="applyFilters" class="btn btn-purple">
+          <i class="entypo-check"></i> Apply
+        </button>
+        <button id="resetFilters" class="btn btn-ghost">Reset</button>
+      </div>
+      <div class="toolbar">
+        <button class="chip" data-range="7">Last 7d</button>
+        <button class="chip active" data-range="30">Last 30d</button>
+        <button class="chip" data-range="90">Last 90d</button>
+        <button class="chip" data-range="all">All time</button>
+        <button id="exportCSV" class="btn btn-ghost">
+          <i class="entypo-download"></i> Export CSV
+        </button>
+      </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="kpi-wrap">
+      <div class="kpi">
+        <div class="kpi-icon purpleblue"><i class="entypo-paper-plane"></i></div>
+        <div>
+          <div class="label">Total Campaigns</div>
+          <div class="value" id="kpiCampaigns">0</div>
+          <div class="sub" id="kpiCampaignsSub">— active</div>
+        </div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-icon softblue"><i class="entypo-doc-text"></i></div>
+        <div>
+          <div class="label">Total Posts</div>
+          <div class="value" id="kpiTotal">0</div>
+          <div class="sub" id="kpiTotalSub">—</div>
+        </div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-icon ngreen"><i class="entypo-check"></i></div>
+        <div>
+          <div class="label">Published</div>
+          <div class="value" id="kpiPublished">0</div>
+          <div class="sub" id="kpiPublishedSub">—</div>
+        </div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-icon orange"><i class="entypo-clock"></i></div>
+        <div>
+          <div class="label">Scheduled</div>
+          <div class="value" id="kpiScheduled">0</div>
+          <div class="sub" id="kpiScheduledSub">—</div>
+        </div>
+      </div>
+      <div class="kpi">
+        <div class="kicon grayblue"><i class="entypo-archive"></i></div>
+        <div>
+          <div class="label">Drafts</div>
+          <div class="value" id="kpiDrafts">0</div>
+          <div class="sub">current</div>
+        </div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-icon red"><i class="entypo-cancel"></i></div>
+        <div>
+          <div class="label">Failed</div>
+          <div class="value" id="kpiFailed">0</div>
+          <div class="sub" id="kpiFailedSub">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="grid-3">
+      <div class="card">
+        <h3 class="card-title">Posts over time</h3>
+        <div class="chart-box">
+          <canvas id="linePosts"></canvas>
+        </div>
+        <div
+          id="lineFallback"
+          class="chart-fallback"
+          style="display: none"
+        ></div>
+      </div>
+      <div class="card">
+        <h3 class="card-title">By channel</h3>
+        <div class="chart-box">
+          <canvas id="barChannel"></canvas>
+        </div>
+        <div
+          id="barFallback"
+          class="chart-fallback"
+          style="display: none"
+        ></div>
+      </div>
+      <div class="card">
+        <h3 class="card-title">Status breakdown</h3>
+        <div class="chart-box">
+          <canvas id="donutStatus"></canvas>
+        </div>
+        <div
+          id="donutFallback"
+          class="chart-fallback"
+          style="display: none"
+        ></div>
+      </div>
+    </div>
+
+    <!-- Top Campaigns -->
+    <div class="card" style="margin-top: 14px">
+      <h3 class="card-title">Top Campaigns</h3>
+      <div class="panel-body" style="padding: 0">
+        <table id="campaignsTable" class="display" style="width: 100%">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Campaign</th>
+              <th>Total Posts</th>
+              <th>Published</th>
+              <th>Scheduled</th>
+              <th>Draft</th>
+              <th>Failed</th>
+              <th>Publish Rate</th>
+              <th>Last Activity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- JS doldurur -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <footer class="main">
+      © 2025 <strong>Publisha</strong> Admin Panel – Analytics
+    </footer>
+  </div>
+</div>
+
+<!-- Core JS -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<!-- Copy and paste this entire script block to replace the old one in analytics.html -->
+<script>
+  (function () {
+    "use strict";
+
+    // ---- Flatpickr Initialization (No changes) ----
+    window.addEventListener("load", function () {
+      if (window.flatpickr) {
+        flatpickr("#dateFrom", { dateFormat: "Y-m-d" });
+        flatpickr("#dateTo", { dateFormat: "Y-m-d" });
+      }
+    });
+
+    // ---- Helper Functions (No changes) ----
+    const fmtDateTime = (iso) => {
+      if (!iso) return "—";
+      const d = new Date(iso);
+      if (isNaN(d)) return "—";
+      return d.toLocaleString();
+    };
+    const fmtDate = (d) =>
+      `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
+        d.getDate()
+      ).padStart(2, "0")}`;
+    const dayStart = (d) =>
+      new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    const clamp = (n, min, max) => Math.min(Math.max(n, min), max);
+
+    // =====================================================================
+    //  MODIFICATION 1: Function to fetch REAL data from your Django API
+    // =====================================================================
+    async function fetchAnalyticsData() {
+      try {
+        const response = await fetch(
+          "{% url 'campaignhub:api_analytics_data' %}"
+        );
+        if (!response.ok) {
+          console.error(
+            "Error: Failed to fetch analytics data from the server. Status:",
+            response.status
+          );
+          alert(
+            "Could not load analytics data. Please check the console for errors."
+          );
+          return [];
+        }
+        return await response.json();
+      } catch (error) {
+        console.error(
+          "An unexpected error occurred while fetching analytics data:",
+          error
+        );
+        alert(
+          "An unexpected error occurred. Please check the console for details."
+        );
+        return [];
+      }
+    }
+
+    const normStatus = (s) => (s === "queued" ? "scheduled" : s);
+
+    // ---- Filters (No changes) ----
+    let filter = {
+      from: new Date(Date.now() - 30 * 86400e3),
+      to: new Date(),
+      channel: "all",
+    };
+    $("#dateFrom").val(fmtDate(filter.from));
+    $("#dateTo").val(fmtDate(filter.to));
+
+    $(".chip").on("click", function () {
+      $(".chip").removeClass("active");
+      $(this).addClass("active");
+      const v = $(this).data("range");
+      if (v === "all") {
+        filter.from = new Date(2000, 0, 1);
+        filter.to = new Date();
+      } else {
+        const days = parseInt(v, 10);
+        filter.from = new Date(Date.now() - days * 86400e3);
+        filter.to = new Date();
+      }
+      $("#dateFrom").val(fmtDate(filter.from));
+      $("#dateTo").val(fmtDate(filter.to));
+      drawAll();
+    });
+    $("#applyFilters").on("click", function () {
+      const f = $("#dateFrom").val(),
+        t = $("#dateTo").val();
+      if (f) filter.from = new Date(f + "T00:00:00");
+      if (t) filter.to = new Date(t + "T23:59:59");
+      filter.channel = $("#channelSel").val() || "all";
+      drawAll();
+    });
+    $("#resetFilters").on("click", function () {
+      filter = {
+        from: new Date(Date.now() - 30 * 86400e3),
+        to: new Date(),
+        channel: "all",
+      };
+      $("#dateFrom").val(fmtDate(filter.from));
+      $("#dateTo").val(fmtDate(filter.to));
+      $("#channelSel").val("all");
+      $(".chip").removeClass("active");
+      $('.chip[data-range="30"]').addClass("active");
+      drawAll();
+    });
+
+    // ---- Aggregation Functions (No changes) ----
+    function withinRange(post) {
+      const st = normStatus(post.status);
+      const base =
+        st === "published" || st === "failed"
+          ? post.publishAt || post.createdAt
+          : post.createdAt;
+      const d = new Date(base);
+      if (isNaN(d)) return false;
+      return d >= filter.from && d <= filter.to;
+    }
+    function channelOK(post) {
+      return filter.channel === "all" ? true : post.channel === filter.channel;
+    }
+    function filtered(data) {
+      return data.filter((p) => withinRange(p) && channelOK(p));
+    }
+    function kpis(data) {
+      const total = data.length,
+        by = (st) => data.filter((x) => normStatus(x.status) === st).length;
+      const pub = by("published"),
+        sch = by("scheduled"),
+        drf = by("draft"),
+        fail = by("failed");
+      return {
+        total,
+        pub,
+        sch,
+        drf,
+        fail,
+        pubRate: total ? (pub / total) * 100 : 0,
+      };
+    }
+    function seriesByDate(data) {
+      const map = new Map();
+      data.forEach((p) => {
+        const st = normStatus(p.status);
+        const base =
+          st === "published" || st === "failed"
+            ? p.publishAt || p.createdAt
+            : p.createdAt;
+        const key = fmtDate(dayStart(new Date(base)));
+        map.set(key, (map.get(key) || 0) + 1);
+      });
+      const labels = [],
+        values = [];
+      for (
+        let d = dayStart(new Date(filter.from));
+        d <= filter.to;
+        d = new Date(d.getTime() + 86400e3)
+      ) {
+        const k = fmtDate(d);
+        labels.push(k);
+        values.push(map.get(k) || 0);
+      }
+      return { labels, values };
+    }
+    function countsByChannel(data) {
+      const map = {};
+      data.forEach((p) => {
+        map[p.channel] = (map[p.channel] || 0) + 1;
+      });
+      const entries = Object.entries(map).sort((a, b) => b[1] - a[1]);
+      return {
+        labels: entries.map((e) => e[0]),
+        values: entries.map((e) => e[1]),
+      };
+    }
+    function statusBreakdown(data) {
+      const keys = ["published", "scheduled", "draft", "failed"];
+      const map = { published: 0, scheduled: 0, draft: 0, failed: 0 };
+      data.forEach((p) => map[normStatus(p.status)]++);
+      return {
+        labels: keys.map((k) => k[0].toUpperCase() + k.slice(1)),
+        values: keys.map((k) => map[k]),
+      };
+    }
+    function aggregateCampaigns(data) {
+      const map = new Map();
+      data.forEach((p) => {
+        const k = p.campaign || "—";
+        if (!map.has(k))
+          map.set(k, {
+            campaign: k,
+            total: 0,
+            published: 0,
+            scheduled: 0,
+            draft: 0,
+            failed: 0,
+            last: "",
+          });
+        const row = map.get(k);
+        row.total++;
+        const st = normStatus(p.status);
+        row[st] = (row[st] || 0) + 1;
+        const ts = p.publishAt || p.createdAt || "";
+        if (!row.last || (ts && new Date(ts) > new Date(row.last)))
+          row.last = ts;
+      });
+      return Array.from(map.values())
+        .map((r) => {
+          const rate = r.total ? Math.round((r.published / r.total) * 100) : 0;
+          return { ...r, rate };
+        })
+        .sort((a, b) => b.total - a.total);
+    }
+
+    // ---- Chart helpers / plugins (No changes) ----
+    let pluginsRegistered = false;
+    function registerPlugins() {
+      if (pluginsRegistered || typeof Chart === "undefined") return;
+      Chart.defaults.font.family =
+        "Inter, system-ui, -apple-system, Segoe UI, Arial, sans-serif";
+      Chart.defaults.color = "#5a5873";
+      Chart.defaults.elements.line.borderJoinStyle = "round";
+      Chart.defaults.elements.line.borderCapStyle = "round";
+      Chart.defaults.elements.point.radius = 0;
+      Chart.defaults.elements.point.hoverRadius = 5;
+      Chart.defaults.elements.point.hitRadius = 12;
+      const ShadowPlugin = {
+        id: "chartShadow",
+        beforeDatasetsDraw(chart, args, opts) {
+          const { ctx } = chart;
+          ctx.save();
+          const o = opts || {};
+          ctx.shadowColor = o.color || "rgba(0,0,0,0.18)";
+          ctx.shadowBlur = o.blur ?? 18;
+          ctx.shadowOffsetX = o.offsetX ?? 0;
+          ctx.shadowOffsetY = o.offsetY ?? 8;
+        },
+        afterDatasetsDraw(chart) {
+          chart.ctx.restore();
+        },
+      };
+      const CenterText = {
+        id: "centerText",
+        afterDraw(chart, args, opts) {
+          if (chart.config.type !== "doughnut") return;
+          const text =
+            typeof opts?.formatter === "function"
+              ? opts.formatter(chart)
+              : opts?.text || "";
+          if (!text) return;
+          const {
+            ctx,
+            chartArea: { left, right, top, bottom },
+          } = chart;
+          const x = (left + right) / 2,
+            y = (top + bottom) / 2;
+          ctx.save();
+          ctx.font = `700 ${opts.fontSize || 18}px Inter, system-ui, Segoe UI`;
+          ctx.fillStyle = opts.color || "#2f2858";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(text, x, y);
+          ctx.restore();
+        },
+      };
+      Chart.register(ShadowPlugin, CenterText);
+      pluginsRegistered = true;
+    }
+    function vGradient(chart, c1, c2) {
+      const { ctx, chartArea } = chart;
+      if (!chartArea) return c1;
+      const g = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+      g.addColorStop(0, c1);
+      g.addColorStop(1, c2);
+      return g;
+    }
+    function movingAvg(arr, win = 7) {
+      const out = [];
+      for (let i = 0; i < arr.length; i++) {
+        const s = Math.max(0, i - win + 1);
+        const seg = arr.slice(s, i + 1);
+        out.push(seg.reduce((a, b) => a + b, 0) / seg.length);
+      }
+      return out;
+    }
+
+    // ---- Charts Rendering Logic (No changes) ----
+    let lineChart,
+      barChart,
+      donutChart,
+      chartTries = 0,
+      chartReady = false;
+    function renderCharts(posts) {
+      const s = seriesByDate(posts),
+        ch = countsByChannel(posts),
+        st = statusBreakdown(posts);
+      if (typeof Chart !== "undefined") {
+        chartReady = true;
+        registerPlugins();
+        const lineCfg = {
+          type: "line",
+          data: {
+            labels: s.labels,
+            datasets: [
+              {
+                label: "Posts",
+                data: s.values,
+                tension: 0.35,
+                fill: true,
+                borderWidth: 2.5,
+                borderColor: "#5b35f2",
+                backgroundColor: (ctx) =>
+                  vGradient(
+                    ctx.chart,
+                    "rgba(91,53,242,0.45)",
+                    "rgba(91,53,242,0.05)"
+                  ),
+                pointRadius: 0,
+              },
+              {
+                label: "7d MA",
+                data: movingAvg(s.values, 7),
+                fill: false,
+                borderDash: [6, 4],
+                borderWidth: 2,
+                borderColor: "#2dc5a1",
+                pointRadius: 0,
+                tension: 0.35,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: { padding: { top: 6, right: 10, left: 6, bottom: 6 } },
+            plugins: {
+              legend: { display: false },
+              chartShadow: { blur: 22, offsetY: 10, color: "rgba(0,0,0,0.16)" },
+              tooltip: { mode: "index", intersect: false },
+            },
+            scales: {
+              x: {
+                grid: { display: false },
+                ticks: { maxRotation: 0, autoSkip: true, autoSkipPadding: 10 },
+              },
+              y: {
+                grid: { color: "rgba(0,0,0,0.06)", drawBorder: false },
+                ticks: { precision: 0 },
+              },
+            },
+          },
+        };
+        if (!lineChart) {
+          lineChart = new Chart(document.getElementById("linePosts"), lineCfg);
+        } else {
+          lineChart.data.labels = s.labels;
+          lineChart.data.datasets[0].data = s.values;
+          lineChart.data.datasets[1].data = movingAvg(s.values, 7);
+          lineChart.update();
+        }
+        const barCfg = {
+          type: "bar",
+          data: {
+            labels: ch.labels,
+            datasets: [
+              {
+                label: "Posts",
+                data: ch.values,
+                backgroundColor: (ctx) =>
+                  vGradient(
+                    ctx.chart,
+                    "rgba(127,93,245,1)",
+                    "rgba(127,93,245,.7)"
+                  ),
+                borderWidth: 0,
+                borderRadius: 10,
+                barPercentage: 0.7,
+                categoryPercentage: 0.7,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: { padding: { top: 6, right: 10, left: 6, bottom: 6 } },
+            plugins: {
+              legend: { display: false },
+              chartShadow: { blur: 18, offsetY: 8, color: "rgba(0,0,0,0.14)" },
+              tooltip: { callbacks: { label: (ctx) => `${ctx.raw} posts` } },
+            },
+            scales: {
+              x: { grid: { display: false } },
+              y: {
+                grid: { color: "rgba(0,0,0,0.06)", drawBorder: false },
+                ticks: { precision: 0, beginAtZero: true },
+              },
+            },
+          },
+        };
+        if (!barChart) {
+          barChart = new Chart(document.getElementById("barChannel"), barCfg);
+        } else {
+          barChart.data.labels = ch.labels;
+          barChart.data.datasets[0].data = ch.values;
+          barChart.update();
+        }
+        const donutColors = ['rgba(126, 217, 87, 0.9)', '#ffa24b', '#8095a8', '#ff6b6b'];
+        const donutCfg = {
+          type: "doughnut",
+          data: {
+            labels: st.labels,
+            datasets: [
+              {
+                data: st.values,
+                backgroundColor: donutColors,
+                borderColor: "#fff",
+                borderWidth: 2,
+                hoverOffset: 6,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: "62%",
+            rotation: -90,
+            plugins: {
+              legend: { position: "bottom" },
+              centerText: {
+                formatter: (chart) => {
+                  const d = chart.data.datasets?.[0]?.data || [];
+                  const tot = d.reduce((a, b) => a + b, 0);
+                  return tot ? `${tot} posts` : "—";
+                },
+                fontSize: 18,
+                color: "#2f2858",
+              },
+              chartShadow: { blur: 16, offsetY: 6, color: "rgba(0,0,0,0.16)" },
+            },
+          },
+        };
+        if (!donutChart) {
+          donutChart = new Chart(
+            document.getElementById("donutStatus"),
+            donutCfg
+          );
+        } else {
+          donutChart.data.labels = st.labels;
+          donutChart.data.datasets[0].data = st.values;
+          donutChart.update();
+        }
+        $("#lineFallback,#barFallback,#donutFallback").hide();
+        return;
+      }
+      $("#lineFallback")
+        .html(
+          `<div class="chart-fallback"><strong>Daily totals</strong><ul>${s.labels
+            .slice(-10)
+            .map(
+              (d, i) =>
+                `<li>${d}: ${s.values[s.values.length - 10 + i] || 0}</li>`
+            )
+            .join("")}</ul></div>`
+        )
+        .show();
+      $("#barFallback")
+        .html(
+          `<div class="chart-fallback"><strong>Channels</strong><ul>${ch.labels
+            .map((l, i) => `<li>${l}: ${ch.values[i]}</li>`)
+            .join("")}</ul></div>`
+        )
+        .show();
+      $("#donutFallback")
+        .html(
+          `<div class="chart-fallback"><strong>Statuses</strong><ul>${st.labels
+            .map((l, i) => `<li>${l}: ${st.values[i]}</li>`)
+            .join("")}</ul></div>`
+        )
+        .show();
+    }
+    function waitForChartsAndRender(posts) {
+      if (typeof Chart !== "undefined") {
+        renderCharts(posts);
+        return;
+      }
+      if (chartTries > 40) {
+        renderCharts(posts);
+        return;
+      }
+      chartTries++;
+      setTimeout(() => waitForChartsAndRender(posts), 100);
+    }
+
+    let dt;
+    function ensureTable() {
+      if (!dt) {
+        dt = $("#campaignsTable").DataTable({
+          data: [],
+          columns: [
+            { data: null, render: (d, t, r, meta) => meta.row + 1 },
+            { data: "campaign" },
+            { data: "total" },
+            { data: "published" },
+            { data: "scheduled" },
+            { data: "draft" },
+            { data: "failed" },
+            { data: null, render: (d) => d.rate + "%" },
+            { data: "last", render: (v) => fmtDateTime(v) },
+          ],
+          order: [[2, "desc"]],
+          pageLength: 10,
+          autoWidth: false,
+          dom: "tip",
+        });
+      }
+    }
+
+    function exportCSV(rows) {
+      const header = [
+        "Campaign",
+        "Total",
+        "Published",
+        "Scheduled",
+        "Draft",
+        "Failed",
+        "Publish Rate",
+        "Last Activity",
+      ];
+      const lines = [header.join(",")];
+      rows.forEach((r) => {
+        lines.push(
+          [
+            r.campaign,
+            r.total,
+            r.published,
+            r.scheduled,
+            r.draft,
+            r.failed,
+            r.rate + "%",
+            fmtDateTime(r.last),
+          ].join(",")
+        );
+      });
+      const blob = new Blob([lines.join("\n")], {
+        type: "text/csv;charset=utf-8;",
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "publisha_analytics_campaigns.csv";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+    $("#exportCSV").on("click", function () {
+      const posts = filtered(masterPostList);
+      const rows = aggregateCampaigns(posts);
+      exportCSV(rows);
+    });
+
+    let masterPostList = [];
+
+    function drawAll() {
+      if (!masterPostList) {
+        console.log("Data is not loaded yet. Cannot draw.");
+        return;
+      }
+      const posts = filtered(masterPostList);
+
+      // KPI
+      const k = kpis(posts);
+      const campaignsCount = new Set(posts.map((p) => p.campaign || "—")).size;
+      $("#kpiCampaigns").text(campaignsCount);
+      $("#kpiCampaignsSub").text(
+        `${campaignsCount ? campaignsCount : "—"} active`
+      );
+      $("#kpiTotal").text(k.total);
+      $("#kpiPublished").text(k.pub);
+      $("#kpiScheduled").text(k.sch);
+      $("#kpiDrafts").text(k.drf);
+      $("#kpiFailed").text(k.fail);
+      $("#kpiTotalSub").text(`${fmtDate(filter.from)} → ${fmtDate(filter.to)}`);
+      $("#kpiPublishedSub").text(
+        `Rate ${clamp(k.pubRate, 0, 100).toFixed(0)}%`
+      );
+      $("#kpiScheduledSub").text(`${k.sch} in queue`);
+      $("#kpiFailedSub").text(`${k.fail} errors`);
+
+      // Charts
+      waitForChartsAndRender(posts);
+
+      // Table
+      ensureTable();
+      const rows = aggregateCampaigns(posts);
+      dt.clear().rows.add(rows).draw(false);
+    }
+
+    // =====================================================================
+    //  MODIFICATION 3: Initial data load and dashboard initialization
+    // =====================================================================
+    async function initializeDashboard() {
+      // Show a loading indicator if you have one
+      console.log("Fetching analytics data...");
+      masterPostList = await fetchAnalyticsData();
+      // Hide loading indicator
+      console.log("Data fetched. Drawing dashboard...");
+      drawAll();
+    }
+
+    // Start everything when the page content is loaded
+    initializeDashboard();
+
+    // Fallback for late-loading Chart.js library
+    window.addEventListener("load", () => {
+      if (!chartReady) {
+        drawAll();
+      }
+    });
+  })();
+</script>
+{% endblock content %}

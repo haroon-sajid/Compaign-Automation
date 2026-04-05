@@ -1,0 +1,1036 @@
+{% extends "user_layout.html" %} {% block content %} {% load static %}
+
+<!-- ——— Core CSS —— -->
+<link rel="stylesheet" href="{% static
+"/assets/css/font-icons/entypo/css/entypo.css" %} " />
+<link rel="stylesheet" href="{% static "/assets/css/custom.css" %}" />
+<link rel="stylesheet" href="{%
+static "/assets/css/bootstrap.css" %}" />
+<link rel="stylesheet" href="{% static
+"/assets/css/neon-core.css" %}" />
+<link rel="stylesheet" href="{% static
+"/assets/css/neon-theme.css" %}" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" />
+<link rel="stylesheet" href="{% static "/assets/css/neon-forms.css" %}" />
+
+<!--<script src="{% static " /dmxAppConnect/dmxAppConnect.js" %}"></script> -->
+<script src="{% static "/assets/js/dmx-init.js" %} " defer></script>
+
+<!-- ——— Core JS —— -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.3/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="{% static "/assets/js/boot/runtime-guard.dev.js" %}" defer></script>
+
+<!-- ——— Plugins —— -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+
+<!-- ———  JS —— -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/tr.js" defer></script>
+
+<script>
+  window.userPlan = "{{ user_plan|default:'free' }}";
+</script>
+<!-- Social klasörü -->
+<script src="{% static "/assets/js/social/create-campaign/05-set-schedule/schedule.js" %}" defer></script>
+<script src="{% static '/assets/js/social/create-campaign/04-media/manually/social-match-images.js' %}" defer></script>
+<!-- Schedule Modules -->
+<script src="{% static '/assets/js/publisha-cadence-warning.js' %}" defer></script>
+<script src="{% static '/assets/js/publisha-end-condition.js' %}" defer></script>
+<script src="{% static '/assets/js/publisha-randomness.js' %}" defer></script>
+<script src="{% static '/assets/js/social/create-campaign/05-set-schedule/scheduleSafetyGuard.js' %}" defer></script>
+
+<!--<script
+  src="{% static "/assets/js/social/create-campaign/04-media/manually/social-match-images.js" %}"
+  defer
+></script> -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="{% static "/assets/js/datatables.safe-init.js" %}"></script>
+
+<link rel="stylesheet" href="{% static "/assets/css/publisha-campaign.css" %}" />
+<link rel="stylesheet" href="{% static "/assets/css/create-campaign.prompt.css" %}" />
+<link rel="stylesheet" href="{% static "/assets/css/create-campaign/04-media/auto/searchModeSel.css" %}" />
+<link rel="stylesheet" href="{% static "/assets/css/create-campaign/01-prompt/prompt-table.css" %}" />
+
+<script src="{% static "/assets/js/social/create-campaign/01-prompt/prompt.js" %}" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<!-- <script
+  src="{% static '/assets/js/social/create-campaign/03-content-settings/tags-category-seoplugin.js' %}"
+  defer
+></script> -->
+<script src="{% static '/assets/js/social/create-campaign/03-content-settings/tone.js' %}" defer></script>
+
+<script src="{% static '/assets/js/blog/create-campaign/04-media/sourceToggle.js' %}" defer></script>
+<script src="{% static '/assets/js/blog/create-campaign/04-media/mediaCards.js' %}" defer></script>
+<script src="{% static '/assets/js/blog/create-campaign/04-media/auto/imgSourceSel.js' %}" defer></script>
+<script src="{% static '/assets/js/blog/create-campaign/04-media/auto/searchModeSel.js' %}" defer></script>
+<link rel="stylesheet" href="{% static '/assets/css/create-campaign/04-media/auto/searchModeSel.css' %}" />
+
+
+
+
+
+
+
+<script src="{% static "/assets/js/social/create-campaign/01-prompt/prompt-table.js" %}" defer></script>
+<script src="{% static "/assets/js/social/create-campaign/summary-card.js" %} " defer></script>
+<script src="{% static "/assets/js/social/create-campaign/wizardSteps.js" %}" defer></script>
+<script src="{% static "/assets/js/social/create-campaign/02-keywords/keywordsBulkInput.js" %} " defer></script>
+<script src="{% static "/assets/js/social/create-campaign/02-keywords/dropzone-box.js" %}" defer></script>
+
+<!-- Güncellenmiş köprü JS -->
+<script src="{% static "/assets/js/social/create-campaign/02-keywords/blogLinkBridge.js" %}" defer></script>
+
+<script src="{% static "/assets/js/social/create-campaign/04-media/sourceToggle.js" %}" defer></script>
+<!--<script
+  src="{% static "/assets/js/social/create-campaign/04-media/platform-bridge.js" %}"
+  defer
+></script> -->
+<script src="{% static '/assets/js/blog/create-campaign/04-media/manually/mediaDropzone-upload.js' %}" defer></script>
+
+<script src="{% static "/assets/js/social/create-campaign/04-media/auto/imgSourceSel.js" %}" defer></script>
+<script src="{% static "/assets/js/social/create-campaign/04-media/auto/searchModeSel.js" %}" defer></script>
+<!--<script
+  src="{% static "/assets/js/social/create-campaign/04-media/auto/auto-media-core.js" %}"
+  defer
+></script> -->
+
+<script src="{% static "/assets/js/social/create-campaign/05-set-schedule/frequencySelect.js" %}" defer></script>
+<script src="{% static "/assets/js/social/create-campaign/06-output/outputPreview.js" %}" defer></script>
+<script src="{% static "/assets/js/social/create-campaign/04-media/manually/mediaDropzone-upload.js" %}" defer></script>
+<script src="{% static "/assets/js/social/create-campaign/next-step-button.js" %}" defer></script>
+<script src="{% static "/assets/js/social/create-campaign/prev-step-button.js" %}" defer></script>
+<script src="{% static "/assets/js/social/create-campaign/auto-save.js" %}" defer></script>
+<script src="{% static "/assets/js/social/create-campaign/unsaved-changes.js" %}" defer></script>
+<script src="{% static "/assets/js/social/create-campaign/ui-common.js" %}" defer></script>
+<script src="{% static "/assets/js/social/create-campaign/ui-tooltips.js" %}" defer></script>
+
+<style>
+  /* Mobile-first responsive adjustments for Create Campaign wizard */
+  @media (max-width: 767px) {
+
+    /* Keep tab layout horizontal */
+    .nav-tabs.big-tabs {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    /* Each tab gets 50% width */
+    .nav-tabs.big-tabs>li {
+      flex: 1 1 50%;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    /* Anchor full width */
+    .nav-tabs.big-tabs>li>a {
+      width: 100%;
+      margin-right: 0 !important;
+      text-align: center;
+    }
+
+    /* Responsive media toggle layout */
+    #sourceToggle {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+    }
+
+    #sourceToggle .source-opt[data-val="manual"] {
+      color: #6b7280;
+      /* default text color */
+      background-color: transparent;
+      /* default background */
+    }
+
+    #sourceToggle .source-opt[data-val="manual"].active {
+      color: #fff;
+      background: linear-gradient(90deg, #7B4FFF 0%, #693DF0 100%);
+      transform: translateY(1px);
+      transition: color 0.15s, transform 0.15s, background 0.15s;
+    }
+
+    .kw-card {
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    #kwTable {
+      min-width: 600px;
+    }
+  }
+
+  .tip-note {
+    font-size: 13px;
+    color: #6b6f76;
+    margin-top: 6px;
+  }
+
+  .tip-note .token {
+    font-family: monospace;
+    font-weight: 600;
+    cursor: help;
+  }
+
+  .token-hover-preview {
+    position: fixed;
+    z-index: 9999;
+    display: none;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 360px;
+    max-width: 520px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+    padding: 14px 16px;
+    text-align: left;
+  }
+
+  .token-hover-preview .title {
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .token-hover-preview .url {
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+  }
+
+  .token-hover-preview .meta {
+    font-size: 12px;
+    color: #666;
+    margin-top: 6px;
+  }
+
+  .bloglink-card {
+    border: 1px solid #ece7ff;
+    border-radius: 12px;
+    padding: 14px;
+    margin-top: 12px;
+    background: #faf9ff;
+  }
+
+  .bloglink-head {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  .bl-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    line-height: 1;
+  }
+
+  .bl-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    display: inline-block;
+    vertical-align: middle;
+    accent-color: #6c4ad0;
+  }
+
+  .bl-group label {
+    margin: 0;
+    padding: 0;
+    font-weight: 600;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+    color: #2b2541;
+  }
+
+  .bl-group label .sub {
+    font-weight: 500;
+    color: #4e4770;
+  }
+
+  .bloglink-subnote {
+    margin: 6px 0 10px 28px;
+    font-size: 12.5px;
+    color: #6b6f76;
+  }
+
+  table.bloglink-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+  }
+
+  table.bloglink-table th {
+    font-size: 12px;
+    font-weight: 700;
+    color: #7b7f86;
+    padding: 6px 10px;
+  }
+
+  table.bloglink-table td {
+    background: #fff;
+    border: 1px solid #eee;
+    border-left: none;
+    border-right: none;
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  table.bloglink-table td:first-child {
+    border-left: 1px solid #eee;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+
+  table.bloglink-table td:last-child {
+    border-right: 1px solid #eee;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+
+  /* BlogLink ile keywords tablo placeholder’ı arasında estetik boşluk */
+  #kwTableBoxSecondary {
+    margin-top: 16px;
+  }
+
+  /* (Opsiyonel) Step 5 form aralıklarını hafif sıkılaştır */
+  @media (min-width: 992px) {
+    .wizard-step[data-step="5"] .form-group {
+      margin-bottom: 14px;
+    }
+  }
+</style>
+
+
+<div class="">
+  <!-- MAIN CONTENT -->
+  <div>
+
+
+    <!-- Breadcrumb -->
+    <ol class="breadcrumb bc-3">
+      <li>
+        <a href="{% url 'dashboard:dashboard' %}"><i class="fa-home"></i>Home</a>
+      </li>
+      <li><a href="">Campaigns</a></li>
+      <li class="active"><strong>Create Campaign</strong></li>
+    </ol>
+
+    <br />
+    <div class="campaign-header">
+      <h1>Create Campaign</h1>
+
+      <ul id="wizardSteps" class="wizard-stepper-horizontal">
+        <li class="active" data-step="1">
+          <span class="number">1</span>Prompt
+        </li>
+        <li data-step="2"><span class="number">2</span>Keywords</li>
+        <li data-step="3"><span class="number">3</span>Content Settings</li>
+        <li data-step="4"><span class="number">4</span>Media</li>
+        <li data-step="5"><span class="number">5</span>Set Schedule</li>
+        <li data-step="6"><span class="number">6</span>Output</li>
+      </ul>
+    </div>
+
+    <div id="progressBar" class="progress" style="height: 6px; margin: 6px 26px 18px">
+      <div class="progress-bar" style="width: 16%"></div>
+    </div>
+
+    <!-- Channel Tabs -->
+    <ul class="nav nav-tabs big-tabs" role="tablist" id="channelTabs">
+      <!-- Blog Tab -->
+      <li class="nav-item">
+        <a class="nav-link {% if active_tab == 'blog' %}active{% endif %}"
+          href="{% url 'campaignhub:create_campaign' %}" data-tab="blog">Blog</a>
+      </li>
+      <!-- Social Tab -->
+      <li class="nav-item">
+        <a class="nav-link {% if active_tab == 'social' %}active{% endif %}" style="
+            background: linear-gradient(
+              90deg,
+              var(--clr-primary-600),
+              var(--clr-primary-400)
+            );
+            color: white;
+            border: none;
+          " href="{% url 'campaignhub:create_social_campaign' %}" data-tab="social">Social</a>
+      </li>
+    </ul>
+
+    <!-- Tabs content -->
+    <div class="tab-content">
+      <div class="tab-pane active" id="tab-blog" role="tabpanel">
+        <div class="container-fluid">
+          <div class="row wizard-two-cols">
+            <ul class="sidebar-wizard list-unstyled" style="display: none">
+              <li data-step="1">Prompt</li>
+              <li data-step="2">Keywords</li>
+              <li data-step="3">Content Settings</li>
+              <li data-step="4">Media</li>
+              <li data-step="5">Schedule</li>
+              <li data-step="6">Output</li>
+            </ul>
+
+            <!-- Wizard Content -->
+            <div class="col-lg-9 col-md-8 col-sm-12">
+              <!-- STEP 1 — PROMPT -->
+              <div class="wizard-step active" data-step="1">
+                <div id="promptModeCards" class="d-flex" style="gap: 12px; margin-bottom: 18px">
+                  <button type="button" id="cardExisting" class="entry-card selected">
+                    <i class="entypo-doc-text"></i> Existing
+                  </button>
+                  <button type="button" id="cardNew" class="entry-card">
+                    <i class="entypo-plus"></i> New
+                  </button>
+                </div>
+
+                <div class="form-group">
+                  <label for="campaignName">Campaign Name <span style="color: #c00">*</span></label>
+                  <input type="text" class="form-control form-control-lg" id="campaignName"
+                    placeholder="Enter campaign name" />
+                </div>
+
+                <h2 class="form-header">
+                  <i class="entypo-pencil"></i>Prompt
+                </h2>
+
+                <div id="newControls" style="display: none">
+                  <label for="templateName" class="mb-1">Prompt Name <span style="color: #c00">*</span></label>
+                  <input type="text" id="templateName" class="form-control form-control-lg"
+                    placeholder="Give your template a name" />
+                </div>
+
+                <div id="existingControls" class="d-flex align-items-end form-group" style="gap: 16px">
+                  <div style="""; min-width: 280px">
+                    <label for="templateDropdown" class="mb-1">Existing Prompt Template</label>
+                    <select id="templateDropdown" class="form-control form-control-lg">
+                      <option value="">Select template…</option>
+                    </select>
+                  </div>
+
+                  <button id="manageTemplatesBtn" type="button" class="btn btn-purple"
+                    style="white-space: nowrap; height: 46px">
+                    <i class="entypo-plus" aria-hidden="true" style="font-size: 18px; margin-right: 6px"></i>
+                  </button>
+                </div>
+
+                <div class="form-group">
+                  <a id="toggleSystemPrompt" data-toggle="collapse" href="#systemPromptGroup" class="toggle-sys-btn"
+                    style="display: inline-block; margin-bottom: 12px">Show System Prompt ✚</a>
+                  <div id="systemPromptGroup" class="collapse">
+                    <label for="systemPromptText">System Prompt</label>
+                    <textarea class="form-control form-control-lg" id="systemPromptText" rows="4"
+                      placeholder="e.g. You are an expert copywriter…"></textarea>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="userPromptText">User Prompt</label>
+                  <textarea class="form-control form-control-lg" id="userPromptText" rows="5"
+                    placeholder="Write your prompt here…"></textarea>
+                </div>
+
+                <div class="form-actions wizard-actions">
+                  <button type="button" id="step1BackBtn" class="btn btn-pill btn-back is-hidden">
+                    Back
+                  </button>
+                  <button type="button" class="btn btn-pill btn-next next-step" id="nextStepBtn">
+                    Next → Keywords
+                  </button>
+                </div>
+              </div>
+
+              <!-- STEP 2 — KEYWORDS -->
+              <div class="wizard-step" data-step="2">
+                <h2 class="form-header">
+                  <i class="entypo-doc-text"></i> Keywords
+                </h2>
+
+                <div class="form-group" id="keywordsInputGroup">
+                  <label for="keywordsBulkInput">Add Keywords (multi-create-topic)</label>
+                  <textarea id="keywordsBulkInput" rows="4" class="form-control kw-textarea"
+                    placeholder="Enter one keyword or topic per line"></textarea>
+
+                  <div class="tip-note">
+                    Tip:
+                    <span id="sourceToken" class="token">#source</span> will
+                    be replaced with the selected blog link.
+                  </div>
+                  <div id="sourcePreview" class="token-hover-preview" role="tooltip" aria-hidden="true">
+                    <div class="title"></div>
+                    <a class="url" target="_blank" rel="noopener"></a>
+                    <div class="meta"></div>
+                  </div>
+                </div>
+
+                <div class="form-group" id="csvUploadGroup">
+                  <label>or Upload CSV / Excel File</label>
+                  <div class="dropzone-box" id="csvDropzone">
+                    Drag &amp; drop CSV file here or click to browse
+                    <input type="file" id="csvFile" accept=".csv,.xls,.xlsx" style="display: none" />
+                  </div>
+                </div>
+
+                <div id="blogLinkCard" class="bloglink-card">
+                  <div class="bloglink-head">
+                    <div class="bl-group">
+                      <input type="checkbox" id="blogLinkMaster" />
+                      <label for="blogLinkMaster"><span class="sub">Blog Link</span></label>
+                    </div>
+
+                    <div class="bl-group">
+                      <input type="checkbox" id="onlyTitleMaster" />
+                      <label for="onlyTitleMaster"><span class="sub">Use only Blog Title to create social
+                          posts</span></label>
+                    </div>
+
+                    <button id="blogLinkRefresh" class="btn btn-default btn-sm" title="Shift+Click to reload page">
+                      Refresh
+                    </button>
+                  </div>
+                  <div class="bloglink-subnote">
+                    Note: The blog link will be appended at the end of the
+                    post.
+                  </div>
+
+                  <div class="table-responsive">
+                    <table class="bloglink-table" id="blogLinkTable">
+                      <thead>
+                        <tr>
+                          <th style="width: 34px">
+                            <input type="checkbox" id="blogLinkSelectAll" />
+                          </th>
+                          <th>Title</th>
+                          <th>URL</th>
+                          <th style="width: 160px">Published</th>
+                          <th style="width: 90px">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- keywords table placeholder -->
+                <section class="kw-card">
+                  <div id="kwTableBoxSecondary" class="kw-table"></div>
+                </section>
+
+                <div class="form-actions wizard-actions">
+                  <button type="button" class="btn btn-pill btn-back prev-step">
+                    Back
+                  </button>
+                  <button type="button" class="btn btn-pill btn-next next-step">
+                    Next → Content Settings
+                  </button>
+                </div>
+              </div>
+
+              <!-- STEP 3 — CONTENT SETTINGS -->
+              <div class="wizard-step" data-step="3">
+                <h2 class="form-header">
+                  <i class="entypo-cog"></i> Content Settings
+                </h2>
+
+                <!-- ▼▼ Yeni Sosyal Platformlar Paneli ▼▼ -->
+                <div id="socialPlatformsPanel"></div>
+                <!-- ▲▲ -->
+                <div class="form-group">
+                  <label class="d-block mb-1">Tone of Voice</label>
+                  <input type="hidden" id="toneHidden" name="tone" value="" required />
+                  <div id="wsToneGrid" class="tone-grid">
+                    <div class="tone-item" data-value="professional">
+                      <i class="entypo-suitcase"></i><span>Professional</span>
+                    </div>
+                    <div class="tone-item" data-value="friendly">
+                      <i class="entypo-heart"></i><span>Friendly</span>
+                    </div>
+                    <div class="tone-item" data-value="informative">
+                      <i class="entypo-info"></i><span>Informative</span>
+                    </div>
+                    <div class="tone-item" data-value="persuasive">
+                      <i class="entypo-megaphone"></i><span>Persuasive</span>
+                    </div>
+                    <div class="tone-item" data-value="casual">
+                      <i class="entypo-search1"></i><span>Casual</span>
+                    </div>
+                    <div class="tone-item" data-value="playful">
+                      <i class="entypo-cool"></i><span>Playful</span>
+                    </div>
+                    <div class="tone-item" data-value="assertive">
+                      <i class="entypo-flash"></i><span>Assertive</span>
+                    </div>
+                    <div class="tone-item" data-value="empathetic">
+                      <i class="entypo-bubbles3"></i><span>Empathetic</span>
+                    </div>
+                    <div class="tone-item" data-value="formal">
+                      <i class="entypo-book"></i><span>Formal</span>
+                    </div>
+                    <div class="tone-item" data-value="creative">
+                      <i class="entypo-palette"></i><span>Creative</span>
+                    </div>
+                    <div class="tone-item" data-value="humorous">
+                      <i class="entypo-happy"></i><span>Humorous</span>
+                    </div>
+                    <div class="tone-item" data-value="neutral">
+                      <i class="entypo-neutral"></i><span>Neutral / Objective</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div id="metaPanel" data-module="meta-tags-cat-seo"></div>
+
+                <div class="form-group d-flex align-items-center mb-3" id="tempAdjustCheckbox">
+                  <label for="useTempAdjust" class="mb-0 font-weight-600 mr-2">Temperature Adjust</label>
+                  <div class="checkbox checkbox-replace color-purple mb-0">
+                    <input type="checkbox" id="useTempAdjust" />
+                    <label for="useTempAdjust"></label>
+                  </div>
+                </div>
+
+                <div id="temperatureContainer"></div>
+                <div id="temperatureSlider" class="slider-range" style="display: none"></div>
+
+                <input type="hidden" id="temperatureHidden" value="1.00" />
+
+                <div class="form-actions wizard-actions">
+                  <button type="button" class="btn btn-pill btn-back prev-step">
+                    Back
+                  </button>
+                  <button type="button" class="btn btn-pill btn-next next-step">
+                    Next → Media
+                  </button>
+                </div>
+              </div>
+
+              <!-- STEP 4 — MEDIA -->
+              <div class="wizard-step" data-step="4">
+                <h2 class="form-header">
+                  <i class="entypo-picture"></i> Media
+                </h2>
+
+                <div class="d-flex justify-content-center mb-3">
+                  <div id="sourceToggle" class="source-toggle small" role="radiogroup" aria-label="Media add method">
+                    <span class="source-slider"></span>
+                    <span class="source-divider"></span>
+                    <label class="source-opt" data-val="auto"><i class="entypo-search"></i> Auto Search</label>
+                    <label class="source-opt" data-val="manual"><i class="entypo-upload"></i> Manually Add</label>
+                    <label class="source-opt" data-val="ai"><i class="entypo-rocket"></i> AI Image</label>
+                    <input type="hidden" id="sourceHidden" value="" />
+                  </div>
+                </div>
+
+                <br />
+
+                <!-- {% comment %} <div id="mediaCards" class="entry-cards mb-4">
+                  <button type="button" id="cardCover" class="entry-card media-card" data-tooltip="Main Image (Cover)">
+                    <span class="icon entypo-picture"></span>
+                    <h3>Featured Image</h3>
+                  </button>
+
+                  <button type="button" id="cardContent" class="entry-card media-card"
+                    data-tooltip="Media shown inside article">
+                    <span class="icon entypo-video"></span>
+                    <h3>Media in Content</h3>
+                  </button>
+                </div> {% endcomment %} -->
+                <div id="mediaCards" class="entry-cards mb-4">
+                  <button type="button" id="cardCover" class="entry-card media-card" data-tooltip="Main Image (Cover)">
+                    <span class="icon entypo-picture"></span>
+                    <h3>Featured Image</h3>
+                  </button>
+
+                  <button type="button" id="cardContent" class="entry-card media-card"
+                    data-tooltip="Media shown inside article">
+                    <span class="icon entypo-video"></span>
+                    <h3>Media in Content</h3>
+                  </button>
+
+                  <input type="hidden" name="media_selection[cover]" id="mediaSelectionCover" value="" />
+                  <input type="hidden" name="media_selection[content]" id="mediaSelectionContent" value="" />
+                </div>
+
+                <div id="autoFields" style="display: none">
+                  <div class="form-group">
+                    <label for="imgSourceSel">Image Source</label>
+                    <select id="imgSourceSel" class="form-control form-control-lg">
+                      <option value="" selected>Select source…</option>
+                      <option value="pexels">Pexels.com</option>
+                      <option value="unsplash">Unsplash.com</option>
+                      <!--<option value="shutterstock">Shutterstock.com</option>-->
+                      <option value="pixabay">Pixabay.com</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="searchModeSel">Search Image With</label>
+                    <select id="searchModeSel" class="form-control form-control-lg">
+                      <option value="keyword">Keyword</option>
+                      <!-- <option value="prompt">Free-form Command</option> -->
+                    </select>
+
+                    <div id="kwPreviewBar" class="kw-preview-bar" style="display: none" aria-live="polite">
+                      <div class="kw-preview-title">
+                        <i class="entypo-search"></i> Using these keywords:
+                        <span id="kwPreviewCount">0</span>
+                      </div>
+                      <div id="kwPreviewChips" class="kw-preview-chips"></div>
+                      <button id="kwPreviewToggle" type="button" class="btn btn-link btn-xs" style="display: none">
+                        Show all
+                      </button>
+                    </div>
+                  </div>
+
+                  <div id="freeFormGroup" class="form-group mt-3" style="display: none">
+                    <label for="freeFormInput" class="mb-1">Free-form Command</label>
+                    <div class="input-group">
+                      <input type="text" id="freeFormInput" class="form-control form-control-lg"
+                        placeholder="e.g. “sunset over mountains”" />
+                      <span class="input-group-btn">
+                        <button id="freeFormSearchBtn" type="button" class="btn btn-purple">
+                          <i class="entypo-search"></i>
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group" id="keywordSearchGroup" style="display: none; margin-top: 15px">
+                    <button id="runKeywordSearchBtn" type="button" class="btn btn-primary">
+                      <i class="entypo-search"></i> Search Using
+                      <span id="kwSearchBtnCount">0</span> Keywords
+                    </button>
+                    <p class="help-block">
+                      This will search for images for each keyword individually
+                      and show all results combined.
+                    </p>
+                  </div>
+                </div>
+
+                <div id="mediaUploadBox" style="display: none">
+                  <div id="matchImagesPanel" style="display: none">
+                    <div class="mi-header mb-3">
+                      <h3 style="margin: 0">Match images to your content</h3>
+                      <div>
+                        <button id="miShuffle" class="btn btn-primary btn-sm">
+                          ↻ Shuffle
+                        </button>
+                        <button id="miAuto" class="btn btn-primary btn-sm">
+                          ⚡ Auto-Match
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="mi-wrapper">
+                      <div class="mi-left">
+                        <div class="mi-search">
+                          <i class="entypo-search"></i>
+                          <input id="miSearchInput" type="text" placeholder="Search" />
+                          <button id="miClearSearch" type="button" class="mi-clear">
+                            &times;
+                          </button>
+                        </div>
+                        <div id="miContentList"></div>
+                        <div id="miPager" class="text-center mt-2" style="display: none">
+                          <button id="miPrev" class="btn btn-ghost btn-sm mr-1">
+                            ← Previous
+                          </button>
+                          <button id="miNext" class="btn btn-ghost btn-sm">
+                            Next →
+                          </button>
+                        </div>
+                      </div>
+                      <div class="mi-right">
+                        <h3 class="form-header" style="font-size: 1.35rem; margin: 0 0 12px">
+                          <i class="entypo-picture" style="font-size: 1.4em"></i>
+                          Image Pool
+                        </h3>
+
+                        <div id="mediaDropzone" class="dropzone-box" style="border: 2px dashed #c5c0ce; padding: 40px">
+                          <span class="entypo-upload" style="font-size: 36px"></span><br />
+                          <strong>Drag &amp; drop files here</strong><br /><em>or</em><br />
+                          <button id="mediaBrowseBtn" type="button" class="btn btn-purple mt-1">
+                            Browse Files
+                          </button>
+                          <input id="mediaFileInput" type="file" multiple accept="image/*,video/mp4"
+                            class="sr-only-file" />
+                          <p class="text-muted mt-2" style="font-size: 13px">
+                            Supports JPG, PNG, GIF, MP4 (max 25 MB)
+                          </p>
+                        </div>
+                        <div class="text-right mb-2">
+                          <button type="button" id="addMoreImagesBtn" class="btn btn-secondary btn-sm">
+                            Add More Images
+                          </button>
+                        </div>
+
+                        <div class="mi-grid thumb-grid" id="miPool"></div>
+                        <div id="mediaGallery" style="display: none"></div>
+                      </div>
+                    </div>
+
+                    <hr class="my-4" />
+                  </div>
+                </div>
+
+                <div class="form-actions wizard-actions">
+                  <button type="button" class="btn btn-pill btn-back prev-step">
+                    Back
+                  </button>
+                  <button type="button" class="btn btn-pill btn-next next-step">
+                    Next → Set Schedule
+                  </button>
+                </div>
+              </div>
+              <!-- /STEP-4 -->
+
+              <!-- STEP 5 — SCHEDULE -->
+              <div class="wizard-step" data-step="5">
+                <h2 class="form-header">
+                  <i class="entypo-calendar"></i> Set Schedule
+                </h2>
+
+                <!-- Satır 1: First date & Frequency -->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="scheduleDate">First Publish Date &amp; Time</label>
+                      <input type="text" class="form-control form-control-lg" id="scheduleDate"
+                        placeholder="YYYY-MM-DD HH:mm" />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="frequencySelect">Frequency (Triggers)</label>
+                      <select id="frequencySelect" class="form-control form-control-lg">
+                        <option value="minutes">Minutes</option>
+                        <option value="hours">Hours</option>
+                        <option value="days">Days</option>
+                        <option value="weeks">Weeks</option>
+                        <option value="months">Months</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Satır 2: Frequency value & End condition -->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group" id="freqValueGroup" style="display: none">
+                      <label id="freqValueLabel" for="frequencyValue">Minutes Between Triggers</label>
+                      <input type="number" class="form-control form-control-lg" id="frequencyValue" min="1"
+                        placeholder="Enter time interval..." />
+                    </div>
+                  </div>
+                  <!-- Satır 3: End condition value (dinamik) -->
+                  <div class="col-md-6">
+                    {% comment %} <div class="form-group">
+                      <label for="endConditionSelect">End condition</label>
+                      <select id="endConditionSelect" class="form-control form-control-lg">
+                        <option value="never" selected>Never</option>
+                        <option value="after">After N runs</option>
+                        <option value="until">Until date</option>
+                      </select>
+                    </div> {% endcomment %}
+                  </div>
+                </div>
+
+                <!-- Satır 3: End condition value (dinamik) -->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group" id="endConditionWrap" style="display: none">
+                      <label id="endConditionLabel" for="endConditionValue">N runs</label>
+                      <input id="endConditionValue" class="form-control form-control-lg" type="number" min="1"
+                        placeholder="Enter N (e.g., 10)" />
+                    </div>
+                  </div>
+                </div> -->
+
+                <!-- Row 4: Randomness & Lock Exact Time -->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="randomnessPercent">Randomness (%)</label>
+                      <input type="number" id="randomnessPercent" class="form-control form-control-lg" value="20"
+                        min="1" max="100">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="randomnessLock">Lock Exact Time?</label>
+                      <select id="randomnessLock" class="form-control form-control-lg">
+                        <option value="no" selected>Allow randomness</option>
+                        <option value="yes">Keep exact time</option>
+                      </select>
+                      <small class="text-muted">"Allow randomness" → 1–100. "Keep exact time" → always 0
+                        (locked).</small>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Cadence Warning Modal -->
+                <div class="modal-overlay" id="cadenceModal" role="alertdialog" aria-modal="true"
+                  aria-labelledby="cadenceModalTitle" aria-describedby="cadenceModalDesc" style="display:none">
+                  <div class="modal-card">
+                    <div class="modal-head">
+                      <div class="modal-icon"><i class="entypo-attention"></i></div>
+                      <div class="modal-title-block">
+                        <h2 class="modal-title" id="cadenceModalTitle">High-frequency posting warning</h2>
+                        <div class="modal-desc" id="cadenceModalDesc">
+                          You're scheduling posts more often than every 12 hours. This pattern can look unnatural for
+                          smaller accounts.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-body">
+                      <ul>
+                        <li><strong>Small / new accounts:</strong> ~1 post every 24–48h looks like healthy growth.</li>
+                        <li><strong>Mid-size accounts:</strong> ~1 post every 6–12h can be OK if quality stays high.
+                        </li>
+                        <li><strong>News / large accounts:</strong> 1 post every 1–2h is normal.</li>
+                      </ul>
+                      <p style="margin-top:12px;">
+                        If you're not a high-volume news account, consider slowing down a bit so it feels organic and
+                        sustainable.
+                      </p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="modal-close-btn" id="cadenceModalClose">Got it</button>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="form-actions wizard-actions">
+                  <button type="button" class="btn btn-pill btn-back prev-step">
+                    Back
+                  </button>
+                  <button type="button" class="btn btn-pill btn-next next-step">
+                    Next → Output
+                  </button>
+                </div>
+              </div>
+
+              <!-- STEP 6 — OUTPUT -->
+              <div class="wizard-step" data-step="6">
+                <h2 class="form-header">
+                  <i class="entypo-check"></i> Output Preview
+                </h2>
+                <p class="text-muted">
+                  Review your selections before queuing your campaign.
+                </p>
+                <div class="panel panel-default">
+                  <div class="panel-body" id="outputPreview">
+                    <em>Please complete previous steps to generate preview.</em>
+                  </div>
+                </div>
+
+                <div class="form-actions wizard-actions" style="flex-wrap: wrap; justify-content: space-between">
+                  <button type="button" class="btn btn-pill btn-back prev-step">
+                    Back
+                  </button>
+
+                  <!-- Container for the action buttons -->
+                  <div class="d-flex" style="gap: 10px">
+                    <!-- Removed the surrounding <form> tags -->
+                    <button type="button" class="btn btn-pill" id="saveDraftBtn">
+                      <i class="entypo-doc-text"></i> Save as Draft
+                    </button>
+
+                    <button type="button" class="btn btn-pill btn-next" id="saveQueueBtn">
+                      <i class="entypo-upload-cloud"></i> Save &amp; Queue
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /wizard-content -->
+
+            <!-- Sticky Summary Card -->
+            <aside id="summaryCol" class="summary-col col-lg-3 d-none d-lg-block">
+              <div class="summary-card">
+                <h4>Summary</h4>
+                <p class="text-muted mb-2">Campaign Basics</p>
+                <ul class="mb-3">
+                  <li>
+                    <strong>Campaign Name:&nbsp;</strong><span id="sumCampaignName">-</span>
+                  </li>
+                  <li>
+                    <strong>System Prompt:&nbsp;</strong><span id="sumSystemPrompt">-</span>
+                  </li>
+                  <li>
+                    <strong>User Prompt:&nbsp;</strong><span id="sumPrompt">-</span>
+                  </li>
+                  <li>
+                    <strong>Keywords:&nbsp;</strong><span id="sumKeywords">-</span>
+                  </li>
+                  <li>
+                    <strong>Content&nbsp;Settings:&nbsp;</strong><span id="sumContent">-</span>
+                  </li>
+                  <li>
+                    <strong>Media:&nbsp;</strong><span id="sumMedia">-</span>
+                  </li>
+                  <li>
+                    <strong>Schedule:&nbsp;</strong><span id="sumSchedule">-</span>
+                  </li>
+                </ul>
+                <hr class="my-3" />
+                <p id="sumStepText" class="text-muted mb-1">Step 1 / 6 ✓</p>
+              </div>
+            </aside>
+          </div>
+          <!-- /row -->
+
+          <div id="promptTableBox" data-list-url="{% url 'campaignhub:list_prompt_templates' %}?type=SOCIAL"
+            data-save-url="{% url 'campaignhub:save_prompt_template' %}"
+            data-update-url-template="{% url 'campaignhub:update_prompt_template' '00000000-0000-0000-0000-000000000000' %}"
+            data-delete-url-template="{% url 'campaignhub:delete_prompt_template' '00000000-0000-0000-0000-000000000000' %}">
+          </div>
+        </div>
+        <!-- /container -->
+      </div>
+      <!-- /tab-pane -->
+    </div>
+    <!-- /tab-content -->
+
+    <footer class="main">
+      © 2025 <strong>Publisha</strong> Admin Panel – customized “Create
+      Campaign” wizard
+    </footer>
+  </div>
+  <!-- /main-content -->
+</div>
+<!-- /page-container -->
+
+<script src="{% static "/assets/js/social/create-campaign/03-content-settings/temperature-adjust.js" %}" defer></script>
+<script src="{% static "/assets/js/social/create-campaign/06-output/submit.js" %}" defer></script>
+
+<!-- keywords table -->
+<script src="{% static "/assets/js/social/create-campaign/02-keywords/keyword-table.js" %}" defer></script>
+
+<!-- ▼ Yeni Sosyal Platformlar JS -->
+<script src="{% static "/assets/js/social/create-campaign/03-content-settings/social-platforms.js" %}" defer></script>
+<!-- ▲ -->
+
+<script>
+  jQuery(function ($) {
+    $('#channelTabs a[data-tab="social"]').tab("show");
+  });
+</script>
+
+{% endblock content %}

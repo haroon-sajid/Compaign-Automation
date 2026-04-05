@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="ac:route" content="/seed-keyword-generator">
+  <base href="/">
+  <meta charset="UTF-8">
+  <title>Seed Keyword Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Inter & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      color-scheme: light;
+
+      --bg: #F6F7FB;
+      --panel: #FFFFFF;
+      --panel-ghost: #F7F7FF;
+      --text: #1F2437;
+      --text-dim: #48506A;
+      --text-muted: #7B8197;
+
+      --brand: #6E56F7;
+      --brand-700: #5B48EE;
+      --brand-800: #4E36E2;
+      --accent: #8A7BFF;
+
+      --border: #E6E7F4;
+      --border-strong: #CFCFF4;
+      --divider: #EEF0F7;
+
+      --ctl-ring: rgba(124, 108, 255, .35);
+      --shadow-sm: 0 4px 14px rgba(31, 36, 55, .06);
+      --shadow-md: 0 16px 40px rgba(31, 36, 55, .12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Plus Jakarta Sans", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: rgba(148, 163, 184, 0.9);
+      border-radius: 999px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .shell {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px 16px 24px;
+    }
+
+    @media (min-width: 640px) {
+      .shell {
+        padding: 24px 20px 32px;
+      }
+    }
+
+    .card {
+      background: var(--panel);
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card-header {
+      padding: 18px 20px 10px;
+      border-bottom: 1px solid var(--divider);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .card-header-title {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: .02em;
+      color: #262B44;
+    }
+
+    .btn {
+      appearance: none;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      font-weight: 700;
+      font-size: 13px;
+      padding: 0.55rem 1.15rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      cursor: pointer;
+      background: linear-gradient(180deg, #FFFFFF, #F4F6FB);
+      color: var(--text);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, .7);
+      transition: transform .09s ease-out, box-shadow .18s ease-out, border-color .18s ease-out, background .18s ease-out;
+    }
+
+    .btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+      border-color: #D9DEEA;
+      background: linear-gradient(180deg, #FFFFFF, #EEF1F9);
+    }
+
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .btn-primary-soft {
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(180deg, var(--brand), var(--brand-800));
+      color: #fff;
+      box-shadow: 0 14px 32px rgba(108, 86, 249, 0.35);
+    }
+
+    .btn-primary-soft:hover:not(:disabled) {
+      filter: brightness(1.03);
+      box-shadow: 0 18px 40px rgba(108, 86, 249, 0.45);
+      transform: translateY(-1px);
+    }
+
+    .field-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-dim);
+    }
+
+    .field-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .field-input,
+    .field-select {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--border-strong);
+      background: #FAFAFF;
+      padding: 0.55rem 0.75rem;
+      font-size: 13px;
+      color: var(--text);
+      outline: none;
+      transition: border .15s ease, box-shadow .15s ease, background .2s ease;
+    }
+
+    .field-select {
+      padding-right: 2.25rem;
+    }
+
+    .field-input:focus,
+    .field-select:focus {
+      border-color: var(--accent);
+      background: #FFFFFF;
+      box-shadow: 0 0 0 3px var(--ctl-ring);
+    }
+
+    /* narrower version for Number of results */
+    .field-input-narrow {
+      width: min(260px, 100%);
+    }
+
+    .segment-group {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      background: var(--panel-ghost);
+      padding: 3px;
+      border: 1px solid var(--border);
+    }
+
+    .segment-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      border-radius: 999px;
+      padding: 0.25rem 0.9rem;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: background .16s ease, box-shadow .18s ease, color .16s ease, transform .07s ease;
+    }
+
+    .segment-pill-active {
+      background: #FFFFFF;
+      color: #262B44;
+      box-shadow: 0 6px 16px rgba(31, 36, 55, .14);
+      transform: translateY(-0.5px);
+    }
+
+    .segment-pill input[type="radio"] {
+      width: 13px;
+      height: 13px;
+      border-radius: 999px;
+      border: 1px solid #CBD5F5;
+      accent-color: var(--brand);
+    }
+
+    .results-list {
+      max-height: 16rem;
+      overflow: auto;
+      border-radius: 12px;
+      border: 1px solid #E7E9FB;
+      background: #F7F7FF;
+      padding: 10px 10px;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #34D399;
+      flex-shrink: 0;
+    }
+
+    .input-error {
+      box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.35) !important;
+      border-color: #F97373 !important;
+      background: #FFF5F5 !important;
+    }
+
+    /* Help bubble */
+    .help {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      font: 700 11px/1 "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: #EFEEFF;
+      color: #402DE2;
+      border: 1px solid #E3E1FF;
+      cursor: help;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="min-h-screen flex flex-col">
+    <main class="flex-1">
+      <div class="shell">
+        <!-- MAIN CARD -->
+        <section class="card">
+          <!-- Header -->
+          <header class="card-header">
+            <h1 class="card-header-title">
+              Seed Keyword Generator
+            </h1>
+          </header>
+
+          <!-- Content -->
+          <div class="px-4 sm:px-6 lg:px-7 py-5 space-y-7">
+            <!-- Form -->
+            <form id="generatorForm" class="space-y-6" onsubmit="return false;">
+              <!-- Seed -->
+              <div class="space-y-2">
+                <label for="seedInput" class="field-label flex items-center gap-1.5">
+                  Seed keyword
+                  <span class="text-rose-500">*</span>
+                </label>
+                <input id="seedInput" type="text" class="field-input" placeholder="Example: food, travel, coffee, ai tools">
+                <p class="field-hint">
+                  This word will be the base for all generated keywords / topics.
+                </p>
+              </div>
+
+              <!-- Mode selector -->
+              <div class="space-y-2">
+                <p class="field-label">
+                  Generation mode
+                </p>
+                <div class="segment-group text-xs font-medium">
+                  <label id="modeAutoLabel" class="segment-pill segment-pill-active bg-white shadow-sm text-slate-800">
+                    <input id="modeAuto" type="radio" name="generationMode" value="auto" checked>
+                    <span>Auto Generate</span>
+                  </label>
+                  <label id="modeManualLabel" class="segment-pill text-slate-600">
+                    <input id="modeManual" type="radio" name="generationMode" value="manual">
+                    <span>Manual Generate</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Number of results (always outside advanced settings) -->
+              <div id="countBlock" class="space-y-1.5 hidden">
+                <label for="countInput" class="field-label flex items-center gap-1.5">
+                  Number of results
+                  <span class="help" title="Controls how many keywords to create in one go. You can generate up to 50,000 items.">?</span>
+                </label>
+                <input id="countInput" type="number" min="1" max="50000" value="" class="field-input field-input-narrow bg-white">
+              </div>
+
+              <!-- Advanced toggle -->
+              <div class="pt-1 flex items-center justify-between">
+                <button id="advancedToggle" type="button" class="inline-flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-full border border-[rgba(110,86,247,0.25)] bg-[rgba(110,86,247,0.06)] hover:bg-[rgba(110,86,247,0.12)] text-[var(--brand-800)]">
+                  <span id="advancedChevron" class="inline-block transition-transform translate-y-px">▾</span>
+                  <span id="advancedToggleLabel">Show advanced settings</span>
+                </button>
+              </div>
+
+              <!-- Advanced settings (hidden by default) -->
+              <div id="advancedSettings" class="space-y-4 hidden">
+                <!-- Basic settings (style + variation) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div class="space-y-1.5">
+                    <label for="styleSelect" class="field-label flex items-center gap-1.5">
+                      Keyword style
+                      <span class="help" title="Decides how long the keywords will be. Short = 1–2 words, Phrase = 2–4 words, Long-tail = longer search sentences.">?</span>
+                    </label>
+                    <select id="styleSelect" class="field-select bg-white">
+                      <option value="short">Short keywords (1–2 words)</option>
+                      <option value="phrase">Keyword phrases (2–4 words)</option>
+                      <option value="longtail">Long-tail topics (4–8 words)</option>
+                      <option value="all" selected>All styles mixed</option>
+                    </select>
+                  </div>
+
+                  <div class="space-y-1.5">
+                    <label for="variationLevel" class="field-label flex items-center gap-1.5">
+                      Variation level
+                      <span class="help" title="Controls how similar or different the ideas are from each other. Low = very similar, High = much more diverse.">?</span>
+                    </label>
+                    <select id="variationLevel" class="field-select bg-white">
+                      <option value="low">Low (more similar)</option>
+                      <option value="medium">Medium</option>
+                      <option value="high">High (more diverse)</option>
+                      <option value="all" selected>All levels mixed</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Rules -->
+                <div class="border border-[var(--border)] rounded-2xl bg-[rgba(247,247,255,0.75)] px-3.5 py-3.5 space-y-3">
+                  <p class="field-label">
+                    Rules &amp; pattern
+                  </p>
+
+                  <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-[11px]">
+                    <!-- Uniqueness -->
+                    <div class="space-y-2">
+                      <p class="font-medium text-[var(--text-dim)] flex items-center gap-1.5">
+                        Uniqueness
+                        <span class="help" title="When enabled, the tool avoids repeating the same keyword. You get a cleaner list without near-duplicates.">?</span>
+                      </p>
+                      <label class="flex items-center gap-2 cursor-pointer select-none">
+                        <input id="uniqueCheckbox" type="checkbox" class="h-3.5 w-3.5 rounded border-slate-300 text-indigo-600" checked>
+                        <span>Force all results to be unique</span>
+                      </label>
+                    </div>
+
+                    <!-- Seed usage -->
+                    <div class="space-y-2">
+                      <p class="font-medium text-[var(--text-dim)] flex items-center gap-1.5">
+                        Seed usage
+                        <span class="help" title="When enabled, every generated keyword will contain your base word (seed). Turn it off if you also want related ideas that do not always include the exact word.">?</span>
+                      </p>
+                      <label class="flex items-center gap-2 cursor-pointer select-none">
+                        <input id="mustContainCheckbox" type="checkbox" class="h-3.5 w-3.5 rounded border-slate-300 text-indigo-600">
+                        <span>Each item must contain the seed word</span>
+                      </label>
+                    </div>
+
+                    <!-- Phrase pattern -->
+                    <div class="space-y-2">
+                      <p class="font-medium text-[var(--text-dim)] flex items-center gap-1.5">
+                        Phrase pattern
+                        <span class="help" title="When enabled, most phrases will start with your seed word. For example: ‘food ideas for beginners’ or ‘food tips 2025’.">?</span>
+                      </p>
+                      <label class="flex items-center gap-2 cursor-pointer select-none">
+                        <input id="startWithSeedCheckbox" type="checkbox" class="h-3.5 w-3.5 rounded border-slate-300 text-indigo-600">
+                        <span>Phrase group: first word is seed</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Generate button + status -->
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div></div>
+                <div id="generateBtnWrapper" class="flex items-center gap-2">
+                  <button id="generateBtn" type="button" class="btn-primary-soft inline-flex items-center justify-center gap-2 px-4 py-2 text-xs sm:text-sm font-semibold">
+                    <span id="generateSpinner" class="hidden h-4 w-4 border-2 border-white/60 border-t-transparent rounded-full animate-spin"></span>
+                    <span id="generateBtnLabel">Manual Generate</span>
+                  </button>
+                </div>
+              </div>
+
+              <p id="statusText" class="text-[11px] flex items-center gap-1 text-[var(--text-muted)] hidden">
+                <span class="status-dot"></span>
+                <span id="statusTextLabel">Ready · Enter a seed and click Generate.</span>
+              </p>
+            </form>
+
+            <!-- Results -->
+            <section id="resultsSection" class="hidden border-t border-[var(--divider)] pt-5 mt-1 space-y-4">
+              <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                <div>
+                  <h2 class="text-sm font-semibold text-[#272C48]">
+                    Generated results
+                  </h2>
+                  <p class="text-[11px] text-[var(--text-muted)] mt-1">
+                    Local preview only – you can copy everything below and use it in your campaign.
+                  </p>
+                </div>
+                <div class="flex flex-wrap items-center gap-2 text-[11px]">
+                  <span id="resultCount" class="text-[var(--text-muted)]">0 results</span>
+                  <button id="copyBtn" type="button" class="btn text-[11px] px-3 py-1.5 rounded-2xl !border-[var(--border)] !bg-[#F5F5FF] hover:!bg-white disabled:opacity-40 disabled:cursor-not-allowed" disabled>
+                    Copy all
+                  </button>
+                </div>
+              </div>
+
+              <!-- List -->
+              <ol id="resultList" class="results-list text-xs text-[var(--text-dim)]"></ol>
+            </section>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+
+      const MAX_TOTAL = 50000;
+
+      const state = {
+        items: [],
+        mode: "auto"
+      };
+
+      // DOM
+      const seedInput = document.getElementById("seedInput");
+      const countInput = document.getElementById("countInput");
+      const styleSelect = document.getElementById("styleSelect");
+      const variationLevel = document.getElementById("variationLevel");
+      const uniqueCheckbox = document.getElementById("uniqueCheckbox");
+      const mustContainCheckbox = document.getElementById("mustContainCheckbox");
+      const startWithSeedCheckbox = document.getElementById("startWithSeedCheckbox");
+
+      const modeAuto = document.getElementById("modeAuto");
+      const modeManual = document.getElementById("modeManual");
+      const modeAutoLabel = document.getElementById("modeAutoLabel");
+      const modeManualLabel = document.getElementById("modeManualLabel");
+      const countBlock = document.getElementById("countBlock");
+
+      const advancedToggle = document.getElementById("advancedToggle");
+      const advancedToggleLabel = document.getElementById("advancedToggleLabel");
+      const advancedChevron = document.getElementById("advancedChevron");
+      const advancedSettings = document.getElementById("advancedSettings");
+
+      const generateBtnWrapper = document.getElementById("generateBtnWrapper");
+      const generateBtn = document.getElementById("generateBtn");
+      const generateBtnLabel = document.getElementById("generateBtnLabel");
+      const generateSpinner = document.getElementById("generateSpinner");
+      const statusText = document.getElementById("statusText");
+      const statusTextLabel = document.getElementById("statusTextLabel");
+
+      const resultsSection = document.getElementById("resultsSection");
+      const resultList = document.getElementById("resultList");
+      const resultCount = document.getElementById("resultCount");
+      const copyBtn = document.getElementById("copyBtn");
+
+      let advancedOpen = false;
+
+      // Helpers
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      function normalizeSeed(raw) {
+        return raw.trim().replace(/\s+/g, " ");
+      }
+
+      function randomPick(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+      }
+
+      function buildSeedVariant(seed, variationLevelValue) {
+        const lower = seed.toLowerCase();
+        const variants = [lower];
+
+        if (lower.endsWith("y")) {
+          variants.push(lower.slice(0, -1) + "ies");
+        } else if (!lower.endsWith("s")) {
+          variants.push(lower + "s");
+        }
+
+        variants.push("best " + lower);
+        variants.push("top " + lower);
+        variants.push(lower + " ideas");
+        variants.push(lower + " tips");
+
+        if (variationLevelValue === "high") {
+          variants.push(lower + " content");
+          variants.push(lower + " trends");
+          variants.push("beginner " + lower);
+          variants.push("advanced " + lower);
+        }
+
+        return randomPick(variants);
+      }
+
+      function createPhrase(config) {
+        const seed = config.seed;
+        const seedLower = seed.toLowerCase();
+
+        const styleEffective = config.style === "all"
+          ? randomPick(["short", "phrase", "longtail"])
+          : config.style;
+
+        const variationEffective = config.variationLevel === "all"
+          ? randomPick(["low", "medium", "high"])
+          : config.variationLevel;
+
+        const startWithSeed = config.startWithSeed;
+        const mustContainSeed = config.mustContainSeed;
+
+        let base = seedLower;
+        if (variationEffective !== "low") {
+          if (Math.random() < (variationEffective === "high" ? 0.7 : 0.4)) {
+            base = buildSeedVariant(seedLower, variationEffective);
+          }
+        }
+
+        const ends = [
+          "ideas",
+          "tips",
+          "guide",
+          "strategies",
+          "trends",
+          "examples",
+          "for beginners",
+          "for advanced users",
+          "for small businesses",
+          "in 2025",
+          "step by step",
+          "for daily life",
+          "checklist",
+          "tutorial"
+        ];
+
+        const longTailSuffixes = [
+          "for beginners",
+          "for advanced users",
+          "for small teams",
+          "for small businesses",
+          "on a budget",
+          "for everyday use",
+          "in 2025",
+          "step by step",
+          "for complete beginners",
+          "for experts"
+        ];
+
+        let phrase = "";
+
+        if (styleEffective === "short") {
+          if (startWithSeed) {
+            if (Math.random() < 0.4) {
+              phrase = seedLower;
+            } else {
+              phrase = seedLower + " " + randomPick(["ideas", "tips", "guide", "basics", "101"]);
+            }
+          } else {
+            const patterns = [
+              seedLower,
+              base,
+              "best " + seedLower,
+              "easy " + seedLower,
+              seedLower + " ideas",
+              seedLower + " tips",
+              "top " + seedLower,
+              "simple " + seedLower
+            ];
+            phrase = randomPick(patterns);
+          }
+        } else if (styleEffective === "phrase") {
+          if (startWithSeed) {
+            const tail = randomPick(ends);
+            phrase = seedLower + " " + tail;
+          } else {
+            const patterns = [
+              "best " + seedLower + " ideas",
+              "easy " + seedLower + " tips",
+              seedLower + " guide for beginners",
+              "top " + seedLower + " strategies",
+              "how to start with " + seedLower,
+              "beginner " + seedLower + " guide"
+            ];
+            phrase = randomPick(patterns);
+          }
+        } else {
+          if (startWithSeed) {
+            const suffix = randomPick(longTailSuffixes);
+            phrase = seedLower + " ideas " + suffix;
+          } else {
+            const patterns = [
+              "how to use " + seedLower + " " + randomPick(longTailSuffixes),
+              "complete guide to " + seedLower + " " + randomPick(longTailSuffixes),
+              "practical " + seedLower + " tips " + randomPick(longTailSuffixes),
+              "step by step " + seedLower + " tutorial " + randomPick(["for 2025", "for beginners", "for small teams"]),
+              "common mistakes with " + seedLower + " and how to fix them"
+            ];
+            phrase = randomPick(patterns);
+          }
+        }
+
+        phrase = phrase.trim();
+
+        if (mustContainSeed && !phrase.toLowerCase().includes(seedLower)) {
+          phrase = seedLower + " " + phrase;
+        }
+
+        phrase = phrase.charAt(0).toUpperCase() + phrase.slice(1);
+
+        return phrase;
+      }
+
+      function generateLocal(config, existingNormalizedSet) {
+        const results = [];
+        const seen = new Set();
+        const maxAttempts = config.count * 15;
+        let attempts = 0;
+
+        while (results.length < config.count && attempts < maxAttempts) {
+          attempts++;
+          const phrase = createPhrase(config);
+          if (!phrase) continue;
+
+          const normalized = phrase.toLowerCase();
+
+          if (config.unique) {
+            if (seen.has(normalized)) continue;
+            if (existingNormalizedSet && existingNormalizedSet.has(normalized)) continue;
+          }
+
+          seen.add(normalized);
+          if (existingNormalizedSet) existingNormalizedSet.add(normalized);
+          results.push(phrase);
+        }
+
+        return results;
+      }
+
+      function renderResults(items) {
+        state.items = items || [];
+        const list = state.items;
+
+        resultsSection.classList.remove("hidden");
+        resultList.innerHTML = "";
+
+        if (!list.length) {
+          resultList.innerHTML =
+            '<li class="text-[11px] text-[var(--text-muted)]">No results. Adjust your settings and try again.</li>';
+          resultCount.textContent = "0 results";
+          copyBtn.disabled = true;
+          return;
+        }
+
+        list.forEach(function (item, index) {
+          const li = document.createElement("li");
+          li.innerHTML =
+            '<span class="inline-flex gap-2">' +
+            '<span class="text-[var(--text-muted)] w-5 text-right">' + (index + 1) + '.</span>' +
+            '<span class="text-[var(--text-dim)]">' + escapeHtml(item) + "</span>" +
+            "</span>";
+          resultList.appendChild(li);
+        });
+
+        resultCount.textContent = list.length + " result" + (list.length > 1 ? "s" : "");
+        copyBtn.disabled = false;
+      }
+
+      // Copy
+      copyBtn.addEventListener("click", function () {
+        if (!state.items.length) return;
+
+        const text = state.items.join("\n");
+        if (!navigator.clipboard || !navigator.clipboard.writeText) {
+          alert("Clipboard API is not available in this browser.");
+          return;
+        }
+
+        navigator.clipboard.writeText(text).then(function () {
+          const original = copyBtn.textContent;
+          copyBtn.textContent = "Copied!";
+          setTimeout(function () {
+            copyBtn.textContent = original;
+          }, 1200);
+        }).catch(function () {
+          alert("Could not copy to clipboard.");
+        });
+      });
+
+      // Advanced settings toggle
+      function setAdvanced(open) {
+        advancedOpen = open;
+        if (open) {
+          advancedSettings.classList.remove("hidden");
+          advancedChevron.style.transform = "rotate(180deg)";
+          advancedToggleLabel.textContent = "Hide advanced settings";
+        } else {
+          advancedSettings.classList.add("hidden");
+          advancedChevron.style.transform = "rotate(0deg)";
+          advancedToggleLabel.textContent = "Show advanced settings";
+        }
+      }
+
+      advancedToggle.addEventListener("click", function () {
+        setAdvanced(!advancedOpen);
+      });
+
+      // Mode switching
+      function updateMode(newMode) {
+        state.mode = newMode;
+
+        if (newMode === "auto") {
+          modeAutoLabel.classList.add("segment-pill-active", "bg-white", "shadow-sm", "text-slate-800");
+          modeManualLabel.classList.remove("segment-pill-active", "bg-white", "shadow-sm", "text-slate-800");
+          modeManualLabel.classList.add("text-slate-600");
+
+          generateBtnWrapper.classList.add("hidden");
+          statusText.classList.add("hidden");
+          countBlock.classList.add("hidden");
+        } else {
+          modeManualLabel.classList.add("segment-pill-active", "bg-white", "shadow-sm", "text-slate-800");
+          modeAutoLabel.classList.remove("segment-pill-active", "bg-white", "shadow-sm", "text-slate-800");
+          modeAutoLabel.classList.add("text-slate-600");
+
+          generateBtnWrapper.classList.remove("hidden");
+          statusText.classList.remove("hidden");
+          countBlock.classList.remove("hidden");
+
+          statusTextLabel.textContent = "Ready · Enter a seed and click Generate.";
+          statusText.classList.remove("text-rose-600", "text-emerald-700");
+          statusText.classList.add("text-[var(--text-muted)]");
+          generateBtnLabel.textContent = "Manual Generate";
+          // advancedOpen state is preserved between Auto / Manual
+        }
+      }
+
+      modeAuto.addEventListener("change", function () {
+        if (modeAuto.checked) updateMode("auto");
+      });
+
+      modeManual.addEventListener("change", function () {
+        if (modeManual.checked) updateMode("manual");
+      });
+
+      // Initial state: auto mode on load, advanced hidden
+      setAdvanced(false);
+      updateMode("auto");
+
+      // Generate click (Manual mode)
+      generateBtn.addEventListener("click", function () {
+        const rawSeed = seedInput.value || "";
+        const seed = normalizeSeed(rawSeed);
+        const mode = state.mode;
+
+        if (!seed) {
+          seedInput.focus();
+          seedInput.classList.add("input-error");
+          setTimeout(function () {
+            seedInput.classList.remove("input-error");
+          }, 900);
+          statusTextLabel.textContent = "Please enter a seed keyword (e.g. food, travel, coffee).";
+          statusText.classList.remove("text-[var(--text-muted)]");
+          statusText.classList.add("text-rose-600");
+          return;
+        }
+
+        let requested = null;
+
+        // Validation for Number of results in Manual mode
+        if (mode === "manual") {
+          const rawCount = (countInput.value || "").trim();
+
+          if (!rawCount) {
+            countInput.focus();
+            countInput.classList.add("input-error");
+            setTimeout(function () {
+              countInput.classList.remove("input-error");
+            }, 900);
+            statusTextLabel.textContent = "Please enter how many results you want to generate (e.g. 500 or 1000).";
+            statusText.classList.remove("text-[var(--text-muted)]");
+            statusText.classList.add("text-rose-600");
+            return;
+          }
+
+          requested = parseInt(rawCount, 10);
+
+          if (isNaN(requested) || requested <= 0) {
+            countInput.focus();
+            countInput.classList.add("input-error");
+            setTimeout(function () {
+              countInput.classList.remove("input-error");
+            }, 900);
+            statusTextLabel.textContent = "Number of results must be a positive number (at least 1).";
+            statusText.classList.remove("text-[var(--text-muted)]");
+            statusText.classList.add("text-rose-600");
+            return;
+          }
+
+          if (requested > MAX_TOTAL) {
+            countInput.focus();
+            countInput.classList.add("input-error");
+            setTimeout(function () {
+              countInput.classList.remove("input-error");
+            }, 900);
+            statusTextLabel.textContent = "Number of results cannot be higher than 50,000.";
+            statusText.classList.remove("text-[var(--text-muted)]");
+            statusText.classList.add("text-rose-600");
+            return;
+          }
+        }
+
+        const currentTotal = state.items.length;
+        let desiredCount = 0;
+
+        if (mode === "auto") {
+          let c = parseInt(countInput.value, 10);
+          if (isNaN(c) || c <= 0) c = 1;
+          if (c > MAX_TOTAL) c = MAX_TOTAL;
+          desiredCount = c;
+        } else {
+          if (currentTotal >= MAX_TOTAL) {
+            statusTextLabel.textContent = "You already have 50,000 items. Manual Generate cannot add more.";
+            statusText.classList.remove("text-[var(--text-muted)]");
+            statusText.classList.add("text-rose-600");
+            return;
+          }
+          const remaining = MAX_TOTAL - currentTotal;
+          if (requested > remaining) {
+            requested = remaining;
+          }
+          desiredCount = requested;
+        }
+
+        const config = {
+          seed: seed,
+          count: desiredCount,
+          style: styleSelect.value || "all",
+          variationLevel: variationLevel.value || "all",
+          unique: !!uniqueCheckbox.checked,
+          mustContainSeed: !!mustContainCheckbox.checked,
+          startWithSeed: !!startWithSeedCheckbox.checked
+        };
+
+        generateBtn.disabled = true;
+        generateSpinner.classList.remove("hidden");
+        statusTextLabel.textContent = "Generating keywords / topics…";
+        statusText.classList.remove("text-rose-600");
+        statusText.classList.add("text-[var(--text-dim)]");
+
+        setTimeout(function () {
+          let items = [];
+
+          if (mode === "auto") {
+            const generated = generateLocal(config, null);
+            items = generated;
+          } else {
+            const existingNormalized = new Set(
+              state.items.map(function (x) { return x.toLowerCase(); })
+            );
+            const generated = generateLocal(config, existingNormalized);
+            items = state.items.concat(generated);
+          }
+
+          if (items.length > MAX_TOTAL) {
+            items = items.slice(0, MAX_TOTAL);
+          }
+
+          renderResults(items);
+
+          statusTextLabel.textContent = "Generation complete.";
+          statusText.classList.remove("text-[var(--text-dim)]");
+          statusText.classList.add("text-emerald-700");
+
+          generateBtn.disabled = false;
+          generateSpinner.classList.add("hidden");
+
+          setTimeout(function () {
+            statusTextLabel.textContent = "Ready · Adjust settings and generate again if needed.";
+            statusText.classList.remove("text-emerald-700");
+            statusText.classList.add("text-[var(--text-muted)]");
+          }, 2000);
+        }, 150);
+      });
+
+      // Initial UI
+      resultsSection.classList.add("hidden");
+      uniqueCheckbox.checked = true;
+      mustContainCheckbox.checked = false;
+    })();
+  </script>
+</body>
+
+</html>

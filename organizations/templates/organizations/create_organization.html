@@ -1,0 +1,20 @@
+
+
+<!-- dashboard/templates/dashboard/user_dashboard.html -->
+{% extends "user_layout.html" %} {% load static %} {% block content %}
+
+
+<div class="container mt-4">
+  <h2>Create a New Organization</h2>
+  <p>Create a new team or workspace to manage separately.</p>
+  <form method="post">
+    {% csrf_token %} {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Create Organization</button>
+  </form>
+</div>
+
+  <footer class="main">
+    © 2025 <strong>Publisha</strong> Admin Panel – Dashboard
+  </footer>
+</div>
+{% endblock content %} 

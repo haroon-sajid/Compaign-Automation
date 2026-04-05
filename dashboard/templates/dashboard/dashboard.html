@@ -1,0 +1,762 @@
+<!-- dashboard/templates/dashboard/user_dashboard.html -->
+{% extends "user_layout.html" %} {% load static %} {% block content %}
+<style>
+  /* Responsive Dashboard - Mobile First */
+  @media (max-width: 767px) {
+    .panel-body {
+        overflow-x: auto; /* allow horizontal scroll if table is wider */
+    }
+    #upcomingTable,
+    #recentTable {
+        min-width: 600px; /* ensure table has a minimum width */
+    }
+    .dataTables_wrapper{
+      border: none !important;
+    }
+}
+  @media (max-width: 767px) {
+
+    /* Breadcrumb */
+    .breadcrumb.bc-3 {
+      padding: 8px 10px;
+      font-size: 13px;
+    }
+
+    /* Page Title */
+    .page-title h1 {
+      font-size: 22px;
+    }
+
+    .page-title .note {
+      font-size: 13px;
+      display: block;
+      margin-top: 4px;
+    }
+
+    /* Toolbar (date filters + chips) */
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .toolbar .input-group {
+      flex: 1 1 140px;
+      min-width: 140px;
+    }
+
+    .toolbar .btn,
+    .toolbar .chip {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+
+    /* KPI Cards - stack on mobile */
+    .kpi-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .kpi {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      min-height: 60px;
+    }
+
+    .kpi .kicon {
+      margin-right: 12px;
+      font-size: 24px;
+    }
+
+    .kpi .value {
+      font-size: 20px;
+    }
+
+    .kpi .label {
+      font-size: 13px;
+    }
+
+    .kpi .sub {
+      font-size: 11px;
+    }
+
+    /* Grid layouts */
+    .grid-2,
+    .grid-1-1 {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card {
+      width: 100% !important;
+    }
+
+    .card .card-title {
+      font-size: 16px;
+      padding: 10px 15px 8px;
+    }
+
+    .chart-box {
+      height: 200px !important;
+    }
+
+    /* Tables */
+    #upcomingTable,
+    #recentTable {
+      font-size: 12px;
+    }
+
+    #upcomingTable th,
+    #recentTable th {
+      padding: 6px 8px;
+    }
+
+    #upcomingTable td,
+    #recentTable td {
+      padding: 6px 8px;
+    }
+
+    /* Footer */
+    footer.main {
+      text-align: center;
+      font-size: 13px;
+    }
+  }
+
+  /* Small tablets (768px – 991px) */
+  @media (min-width: 768px) and (max-width: 991px) {
+    .kpi-wrap {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .grid-2,
+    .grid-1-1 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .chart-box {
+      height: 240px !important;
+    }
+  }
+
+  /* Default (Desktop) – no changes needed */
+  @media (min-width: 992px) {
+    .kpi-wrap {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .grid-1-1 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .chart-box {
+      height: 280px !important;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 991px) {
+    .kpi-wrap {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .grid-2,
+    .grid-1-1 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .chart-box {
+      height: 240px !important;
+    }
+  }
+
+  /* 1024px narrow desktop (e.g., iPad Pro landscape, small laptops) */
+  @media (min-width: 992px) and (max-width: 1024px) {
+    .kpi-wrap {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .grid-1-1 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .chart-box {
+      height: 260px !important;
+    }
+
+    /* Optional: slightly reduce KPI value font for fit */
+    .kpi .value {
+      font-size: 24px;
+    }
+  }
+
+  /* Default Desktop (1025px and up) */
+  @media (min-width: 1025px) {
+    .kpi-wrap {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .grid-1-1 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .chart-box {
+      height: 280px !important;
+    }
+  }
+
+  /* Status Pills (for tables) */
+  .badge-pill {
+    display: inline-block;
+    padding: .25em .6em;
+    font-size: 78%;
+    font-weight: 600;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 10rem;
+  }
+
+  .bg-pub { background-color: rgba(126, 217, 87, 0.9); color: #ffffff; }/* Published - Green */
+  .bg-sch { background-color: #ffa24b; } /* Scheduled - Orange */
+  .bg-drf { background-color: rgba(176, 190, 197, 0.9); color: #ffffff; } /* Draft - Grayish Blue */
+  .bg-fail { background-color: #ff6b6b; } /* Failed - Red */
+          .kicon.lightyellow {
+            background: linear-gradient(145deg, #ff9e37, #ff9532)
+        }
+        .kicon.purpleblue{
+            background: rgba(124, 131, 253, 0.9);
+        }
+        .kicon.softblue{ background-color: rgba(108, 166, 255, 0.9); }
+        .kicon.ngreen{ background-color: rgba(126, 217, 87, 0.9); color: #ffffff; }
+        .kicon.orange{ background-color: rgba(126, 169, 77, 0.9); color: #ffffff; }
+        .kicon.grayblue{ background-color: rgba(176, 190, 197, 0.9); color: #ffffff; }
+        .kicon.softred{ background-color: rgba(255, 107, 107, 0.9); color: #ffffff; }
+</style>
+
+<!-- Breadcrumb -->
+<ol class="breadcrumb bc-3">
+  <li>
+    <a href="{% url 'dashboard:dashboard' %}"><i class="fa-home"></i>Home</a>
+  </li>
+  <li class="active"><strong>Dashboard</strong></li>
+</ol>
+
+<!-- Başlık -->
+<div class="page-title">
+  <h1>Dashboard</h1>
+  <span class="note">Snapshot of campaigns, posts and upcoming schedule.</span>
+</div>
+
+{% if pending_invitations %}
+<div class="alert alert-info">
+  <h4>You Have Pending Invitation!</h4>
+  <ul class="list-unstyled">
+    {% for inv in pending_invitations %}
+    <li class="mb-2" style="display: flex; align-items: center; justify-content: space-between;">
+      <span>
+        <strong>{{ inv.invited_by.username }}</strong> has invited you to join the
+        <strong>"{{ inv.organization.name }}"</strong> team.
+      </span>
+      
+      <!-- Action Buttons -->
+      <div style="white-space: nowrap;">
+        <a href="{% url 'organizations:accept_invitation' inv.id %}" class="btn btn-success btn-sm">Accept</a>
+        
+        <form action="{% url 'organizations:decline_invitation' inv.id %}" method="POST" style="display: inline-block; margin-left: 8px;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-sm">Decline</button>
+        </form>
+      </div>
+
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+
+<!-- Tarih aralığı (Dashboard filtresi) -->
+<div class="toolbar">
+  <div class="input-group">
+    <span class="input-group-addon"><i class="entypo-calendar"></i></span>
+    <input id="dateFrom" class="form-control" placeholder="From (yyyy-mm-dd)" />
+  </div>
+  <div class="input-group">
+    <span class="input-group-addon"><i class="entypo-calendar"></i></span>
+    <input id="dateTo" class="form-control" placeholder="To (yyyy-mm-dd)" />
+  </div>
+  <button id="applyFilters" class="btn btn-purple"style="background-color:#5b35f2 ! important; color:#fff; border-color:#5b35f2 ! important; transition: transform 0.25s ease, background-color 0.2s ease;"
+    onmouseover="this.style.transform='scale(1.06)'; this.style.backgroundColor='#5b35f2 ! important';"
+    onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#5b35f2 ! important';">
+    <i class="entypo-check"></i> Apply
+  </button>
+  <button id="resetFilters" class="btn btn-ghost">Reset</button>
+
+  <span style="margin-left: 8px"></span>
+  <button class="chip" data-range="7">Last 7d</button>
+  <button class="chip active" data-range="30">Last 30d</button>
+  <button class="chip" data-range="90">Last 90d</button>
+  <button class="chip" data-range="all">All time</button>
+</div>
+
+<!-- KPI Cards -->
+<div class="kpi-wrap">
+  <div class="kpi">
+    <div class="kicon purpleblue"><i class="entypo-paper-plane"></i></div>
+    <div>
+      <div class="label" style= >Total Campaigns</div>
+      <div class="value" id="kpiCampaigns">0</div>
+      {% comment %} <div class="sub" id="kpiCampaignsSub">— active</div> {% endcomment %}
+    </div>
+  </div>
+  <div class="kpi">
+    <div class="kicon softblue"><i class="entypo-doc-text"></i></div>
+    <div>
+      <div class="label">Posts (range)</div>
+      <div class="value" id="kpiPostsRange">0</div>
+      <div class="sub" id="kpiPostsRangeSub">— /day avg</div>
+    </div>
+  </div>
+  <div class="kpi">
+    <div class="kicon ngreen"><i class="entypo-check"></i></div>
+    <div>
+      <div class="label">Published (7d)</div>
+      <div class="value" id="kpiPublished7">0</div>
+      <div class="sub">last 7 days</div>
+    </div>
+  </div>
+  <div class="kpi">
+    <div class="kicon orange"><i class="entypo-clock"></i></div>
+    <div>
+      <div class="label">Next 24h (scheduled)</div>
+      <div class="value" id="kpiNext24">0</div>
+      <div class="sub">in queue</div>
+    </div>
+  </div>
+  <div class="kpi">
+    <div class="kicon grayblue"><i class="entypo-archive"></i></div>
+    <div>
+      <div class="label">Drafts</div>
+      <div class="value" id="kpiDrafts">0</div>
+      <div class="sub">current</div>
+    </div>
+  </div>
+  <div class="kpi">
+    <div class="kicon softred"><i class="entypo-cancel"></i></div>
+    <div>
+      <div class="label">Failed (7d)</div>
+      <div class="value" id="kpiFailed7">0</div>
+      <div class="sub">last 7 days</div>
+    </div>
+  </div>
+</div>
+
+<!-- Charts + Upcoming -->
+<div class="grid-2">
+  <div class="card">
+    <h3 class="card-title" id="titleLine">Posts over last 30 days</h3>
+    <div class="chart-box"><canvas id="lineRange"></canvas></div>
+  </div>
+  <div class="card">
+    <!-- MODIFIED: Changed heading -->
+    <h3 class="card-title">Status Mix</h3>
+    <div class="chart-box"><canvas id="donutRange"></canvas></div>
+  </div>
+</div>
+
+<div class="grid-1-1" style="margin-top: 16px">
+  <div class="card">
+    <h3 class="card-title">Upcoming (next 7 days)</h3>
+    <div class="panel-body" style="padding: 0">
+      <table id="upcomingTable" class="display" style="width: 100%">
+        <thead>
+          <tr>
+            <th>When</th>
+            <th>Title</th>
+            <th>Channel</th>
+            <th>Campaign</th>
+            <th>Owner</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- js -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card">
+    <h3 class="card-title">Recent Activity (range)</h3>
+    <div class="panel-body" style="padding: 0">
+      <table id="recentTable" class="display" style="width: 100%">
+        <thead>
+          <tr>
+            <th>Status</th>
+            <th>Title</th>
+            <th>Channel</th>
+            <th>Campaign</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- js -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<footer class="main">
+  © 2025 <strong>Publisha</strong> Admin Panel – Dashboard
+</footer>
+</div>
+{% endblock content %}
+
+<!-- JavaScript plugins for this page -->
+{% block scripts %}
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="{% static 'assets/js/custom-sidebar.js' %}"></script>
+
+<script>
+ 
+  // The all_posts_json variable comes directly from our DashboardView context
+  const ALL_POSTS_DATA = {{ all_posts_json| safe }};
+
+  (function () {
+    'use strict';
+
+    /* ---------- Date picker ---------- */
+    window.addEventListener('load', function () {
+      if (window.flatpickr) {
+        flatpickr("#dateFrom", { dateFormat: "Y-m-d" });
+        flatpickr("#dateTo", { dateFormat: "Y-m-d" });
+      }
+    });
+          const params = new URLSearchParams(window.location.search);
+        const statusMsg = params.get('status_msg');
+
+        if (statusMsg === 'viewer') {
+            // Create the alert element
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-info'; // Use standard alert classes
+            alertDiv.textContent = 'Your status is viewer.';
+
+            // Find the element to insert the message after (the breadcrumb)
+            const breadcrumb = document.querySelector('.breadcrumb.bc-3');
+            if (breadcrumb) {
+                // Insert the alert right after the breadcrumb element
+                breadcrumb.insertAdjacentElement('afterend', alertDiv);
+            }
+
+            // Clean the URL by removing the query parameter, so the message
+            // doesn't reappear if the user refreshes the page.
+            const newUrl = window.location.pathname;
+            window.history.replaceState({}, document.title, newUrl);
+        }
+
+    /* ---------- Helpers ---------- */
+    const fmtDateTime = (iso) => { if (!iso) return '—'; const d = new Date(iso); if (isNaN(d)) return '—'; return d.toLocaleString(); };
+    const fmtDate = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    const dayStart = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    const addDays = (d, n) => new Date(d.getTime() + n * 86400e3);
+    const normStatus = s => s === 'queued' ? 'scheduled' : (s || '').toLowerCase();
+
+
+    function loadPosts() {
+      // No longer loads from localStorage. It returns the global variable.
+      return ALL_POSTS_DATA;
+    }
+
+    function dateFor(p) {
+      const st = normStatus(p.status);
+      // Published, scheduled, or failed posts should be charted by their publish date
+      if (st === 'published' || st === 'failed' || st === 'scheduled') {
+        return new Date(p.publishAt || p.createdAt);
+      }
+      // Drafts are charted by when they were created
+      return new Date(p.createdAt);
+    }
+
+    function between(d, a, b) { return d >= a && d <= b; }
+
+    /* ---------- Filters (dashboard) ---------- */
+    let filter = { from: new Date(Date.now() - 30 * 86400e3), to: new Date() };
+    $('#dateFrom').val(fmtDate(filter.from));
+    $('#dateTo').val(fmtDate(filter.to));
+
+    $('.chip').on('click', function () {
+      $('.chip').removeClass('active'); $(this).addClass('active');
+      const v = $(this).data('range');
+      if (v === 'all') { filter.from = new Date(2000, 0, 1); filter.to = new Date(); }
+      else { const d = parseInt(v, 10); filter.from = new Date(Date.now() - d * 86400e3); filter.to = new Date(); }
+      $('#dateFrom').val(fmtDate(filter.from)); $('#dateTo').val(fmtDate(filter.to));
+      render();
+    });
+    $('#applyFilters').on('click', function () {
+      const f = $('#dateFrom').val(), t = $('#dateTo').val();
+      if (f) filter.from = new Date(f + "T00:00:00");
+      if (t) filter.to = new Date(t + "T23:59:59");
+      $('.chip').removeClass('active'); // custom range
+      render();
+    });
+    $('#resetFilters').on('click', function () {
+      filter = { from: new Date(Date.now() - 30 * 86400e3), to: new Date() };
+      $('#dateFrom').val(fmtDate(filter.from)); $('#dateTo').val(fmtDate(filter.to));
+      $('.chip').removeClass('active'); $('.chip[data-range="30"]').addClass('active');
+      render();
+    });
+
+    /* ---------- Charts plugins ---------- */
+    let pluginsRegistered = false;
+    function registerPlugins() {
+      if (pluginsRegistered || typeof Chart === 'undefined') return;
+      Chart.defaults.font.family = 'Inter, system-ui, -apple-system, Segoe UI, Arial, sans-serif';
+      Chart.defaults.color = '#5a5873';
+      Chart.defaults.elements.point.radius = 0;
+
+      const Shadow = { id: 'shadow', beforeDatasetsDraw(ch, a, o) { const { ctx } = ch; ctx.save(); ctx.shadowColor = (o && o.color) || 'rgba(0,0,0,.16)'; ctx.shadowBlur = (o && o.blur) || 18; ctx.shadowOffsetY = (o && o.offsetY) || 8 }, afterDatasetsDraw(ch) { ch.ctx.restore() } };
+      const CenterText = { id: 'centerText', afterDraw(ch, a, o) { if (ch.config.type !== 'doughnut') return; const text = typeof o?.formatter === 'function' ? o.formatter(ch) : (o?.text || ''); if (!text) return; const { ctx, chartArea: { left, right, top, bottom } } = ch; ctx.save(); ctx.font = `700 ${o.fontSize || 18}px Inter`; ctx.fillStyle = o.color || '#2f2858'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(text, (left + right) / 2, (top + bottom) / 2); ctx.restore(); } };
+      Chart.register(Shadow, CenterText);
+      pluginsRegistered = true;
+    }
+    function vGrad(chart, c1, c2) { const { ctx, chartArea } = chart; if (!chartArea) return c1; const g = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom); g.addColorStop(0, c1); g.addColorStop(1, c2); return g; }
+    function movingAvg(arr, win = 7) { const out = []; for (let i = 0; i < arr.length; i++) { const s = Math.max(0, i - win + 1); const seg = arr.slice(s, i + 1); out.push(seg.reduce((a, b) => a + b, 0) / seg.length); } return out; }
+
+    /* ---------- UI / Metrics ---------- */
+    let lineRange, donutRange, upDT, recentDT;
+    let tries = 0;
+
+    // MODIFIED: This function now calculates a separate dataset for the Status Mix chart.
+    function computeMetrics(all) {
+      const now = new Date();
+      const d7 = new Date(now.getTime() - 7 * 86400e3);
+      const n24 = new Date(now.getTime() + 24 * 3600e3);
+
+      const postsRange = all.filter(p => between(dateFor(p), filter.from, filter.to));
+      const published7 = all.filter(p => normStatus(p.status) === 'published' && between(dateFor(p), d7, now));
+      const failed7 = all.filter(p => normStatus(p.status) === 'failed' && between(dateFor(p), d7, now));
+      const next24 = all.filter(p => normStatus(p.status) === 'scheduled' && between(new Date(p.publishAt), now, n24));
+      const drafts = all.filter(p => normStatus(p.status) === 'draft');
+      const campaigns = new Set(all.map(p => p.campaign || '—'));
+      const activeCampaigns = campaigns.size; // Simple approximation for now
+
+      // The Status Mix chart should include all posts from the selected date range,
+      // PLUS all currently scheduled posts (regardless of their publish date).
+      const allScheduledPosts = all.filter(p => normStatus(p.status) === 'scheduled');
+
+      // Use a Map to efficiently combine and de-duplicate these two sets of posts.
+      const statusMixMap = new Map();
+      postsRange.forEach(post => statusMixMap.set(post.id, post));
+      allScheduledPosts.forEach(post => statusMixMap.set(post.id, post)); // This will add/overwrite with scheduled posts
+      const postsForStatusMix = Array.from(statusMixMap.values());
+      // --- END NEW LOGIC FOR STATUS MIX ---
+
+      return { postsRange, postsForStatusMix, published7, failed7, next24, drafts, totalCampaigns: campaigns.size, activeCampaigns, now };
+    }
+
+    function seriesByDate(data, start, end) {
+      const map = new Map();
+      data.forEach(p => { const d = dayStart(dateFor(p)); const k = fmtDate(d); map.set(k, (map.get(k) || 0) + 1); });
+      const labels = [], values = [];
+      for (let d = dayStart(new Date(start)); d <= end; d = addDays(d, 1)) { const k = fmtDate(d); labels.push(k); values.push(map.get(k) || 0); }
+      return { labels, values };
+    }
+    function statusBreakdown(data) {
+      const order = ['published', 'scheduled', 'draft', 'failed'];
+      const map = { published: 0, scheduled: 0, draft: 0, failed: 0 };
+      data.forEach(p => {
+        const status = normStatus(p.status);
+        if (map.hasOwnProperty(status)) {
+            map[status]++;
+        }
+      });
+      return { labels: order.map(k => k[0].toUpperCase() + k.slice(1)), values: order.map(k => map[k]) };
+    }
+
+    function ensureTables() {
+      if (!upDT) {
+        upDT = $('#upcomingTable').DataTable({
+          data: [], columns: [
+            { data: 'when' },
+            { data: 'title' },
+            { data: 'channel' },
+            { data: 'campaign' },
+            { data: 'owner' }
+          ], order: [[0, 'asc']], pageLength: 6, autoWidth: false, dom: 'tip'
+        });
+      }
+      if (!recentDT) {
+        recentDT = $('#recentTable').DataTable({
+          data: [], columns: [
+            { data: 'statusHtml' },
+            { data: 'title' },
+            { data: 'channel' },
+            { data: 'campaign' },
+            { data: 'date' }
+          ], order: [[4, 'desc']], pageLength: 8, autoWidth: false, dom: 'tip'
+        });
+      }
+    }
+
+    function statusPill(st) {
+      const s = normStatus(st);
+      if (s === 'published') return '<span class="badge-pill bg-pub">Published</span>';
+      if (s === 'scheduled') return '<span class="badge-pill bg-sch">Scheduled</span>';
+      if (s === 'draft') return '<span class="badge-pill bg-drf">Draft</span>';
+      return '<span class="badge-pill bg-fail">Failed</span>';
+    }
+
+    // MODIFIED: This function now uses the correct data source for each chart.
+    function renderCharts(metrics) {
+      // The line chart uses data strictly from the selected date range.
+      const s = seriesByDate(metrics.postsRange, filter.from, filter.to);
+      
+      // The donut chart uses our new combined dataset.
+      const st = statusBreakdown(metrics.postsForStatusMix);
+
+      document.getElementById('titleLine').textContent =
+        `Posts over ${fmtDate(filter.from)} → ${fmtDate(filter.to)}`;
+
+      registerPlugins();
+
+      const lineCfg = {
+        type: 'line',
+        data: {
+          labels: s.labels, datasets: [
+            {
+              label: 'Posts', data: s.values, fill: true, tension: .35, borderWidth: 2.5,
+              borderColor: '#5b35f2', backgroundColor: (c) => vGrad(c.chart, 'rgba(91,53,242,.45)', 'rgba(91,53,242,.05)')
+            },
+            { label: '7d MA', data: movingAvg(s.values, 7), fill: false, tension: .35, borderDash: [6, 4], borderWidth: 2, borderColor: '#2dc5a1' }
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, shadow: {} },
+          scales: { x: { grid: { display: false } }, y: { grid: { color: 'rgba(0,0,0,.06)', drawBorder: false }, ticks: { precision: 0 } } }
+        }
+      };
+      if (!lineRange) { lineRange = new Chart(document.getElementById('lineRange'), lineCfg); }
+      else { lineRange.data.labels = s.labels; lineRange.data.datasets[0].data = s.values; lineRange.data.datasets[1].data = movingAvg(s.values, 7); lineRange.update(); }
+
+      const donutCfg = {
+        type: 'doughnut',
+        data: { labels: st.labels, datasets: [{ data: st.values, backgroundColor: ['rgba(126, 217, 87, 0.9)', '#ffa24b', '#8095a8', '#ff6b6b'], borderColor: '#fff', borderWidth: 2 }] },
+        options: {
+          responsive: true, maintainAspectRatio: false, cutout: '62%', rotation: -90,
+          plugins: { legend: { position: 'bottom' }, centerText: { formatter: (ch) => { const d = ch.data.datasets[0].data; return d.reduce((a, b) => a + b, 0) + ' posts' }, fontSize: 18 } }
+        }
+      };
+      if (!donutRange) { donutRange = new Chart(document.getElementById('donutRange'), donutCfg); }
+      else { donutRange.data.labels = st.labels; donutRange.data.datasets[0].data = st.values; donutRange.update(); }
+    }
+
+    const sidebar = document.getElementById('sidebar-menu');
+    const activeDropdown = document.querySelector("#main-menu li.has-sub.active > ul");
+    if (activeDropdown && !sidebar.classList.contains('collapsed')) {
+      activeDropdown.style.display = "block"; // ensure visible only if not collapsed
+    }
+
+    function render() {
+      const all = loadPosts();
+      const m = computeMetrics(all);
+
+      // KPIs
+      $('#kpiCampaigns').text(m.totalCampaigns);
+      //$('#kpiCampaignsSub').text(`${m.activeCampaigns} active`);
+
+      const dayCount = Math.max(1, Math.ceil((dayStart(filter.to) - dayStart(filter.from)) / 86400e3) + 1);
+      $('#kpiPostsRange').text(m.postsRange.length);
+      $('#kpiPostsRangeSub').text(`${(m.postsRange.length / dayCount).toFixed(1)}/day avg`);
+
+      $('#kpiPublished7').text(m.published7.length);
+      $('#kpiNext24').text(m.next24.length);
+      $('#kpiDrafts').text(m.drafts.length);
+      $('#kpiFailed7').text(m.failed7.length);
+
+      // Charts
+      if (typeof Chart === 'undefined') {
+        if (tries < 40) { tries++; return setTimeout(render, 100); }
+      } else {
+        renderCharts(m);
+      }
+
+      // Tables
+      ensureTables();
+      const now = new Date(), next7 = addDays(now, 7);
+
+      const upcoming = all
+        .filter(p => normStatus(p.status) === 'scheduled')
+        .map(p => ({ ...p, d: new Date(p.publishAt) }))
+        .filter(x => between(x.d, now, next7))
+        .sort((a, b) => a.d - b.d)
+        .slice(0, 12)
+        .map(x => ({ when: fmtDateTime(x.d.toISOString()), title: x.title, channel: x.channel, campaign: x.campaign || '—', owner: x.owner || '—' }));
+      upDT.clear().rows.add(upcoming).draw(false);
+
+      const recent = m.postsRange
+        .map(p => ({ p, d: dateFor(p) }))
+        .sort((a, b) => b.d - a.d)
+        .slice(0, 20)
+        .map(x => ({
+          statusHtml: statusPill(x.p.status),
+          title: x.p.title,
+          channel: x.p.channel,
+          campaign: x.p.campaign || '—',
+          date: fmtDateTime(x.d.toISOString())
+        }));
+      recentDT.clear().rows.add(recent).draw(false);
+    }
+
+
+
+    // Initial render
+    render();
+  })();
+</script>
+{% endblock scripts %}

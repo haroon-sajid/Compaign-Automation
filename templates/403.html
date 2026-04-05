@@ -1,0 +1,639 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="ac:route" content="/search">
+    <base href="/">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Access Denied • Publisha</title>
+
+    <!-- Contemporary typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300..800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static "/assets/css/font-icons/entypo/css/entypo.css" %}" />
+
+    <style>
+        :root {
+            /* If your global theme already defines these, those will override these fallbacks */
+            --g1: #3f2f85;
+            --g2: #2b2551;
+            --ink: #ecebff;
+            --divider: rgba(255, 255, 255, .14);
+            --border: #a99bf7;
+            --bg: #f6f6ff;
+            --surface: #ffffff;
+            --text: #171425;
+            --muted: #5c5970;
+
+            --ring: 0 0 0 6px rgba(169, 155, 247, .22);
+            --shadow-sm: 0 6px 18px rgba(23, 20, 38, .08);
+            --shadow-md: 0 18px 48px rgba(23, 20, 38, .12);
+            --shadow-lg: 0 26px 70px rgba(23, 20, 38, .18);
+
+            --danger: #ff5a6a;
+            --danger-700: #d13a48;
+
+            --radius: 18px;
+            --r-pill: 999px;
+            --ease: cubic-bezier(.2, .7, .2, 1);
+            --pad: clamp(16px, 2.4vw, 28px);
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            margin: 0;
+            font-family: Manrope, ui-sans-serif, system-ui, Segoe UI, Arial, sans-serif;
+            font-weight: 500;
+            color: var(--text);
+            background:
+                radial-gradient(1200px 600px at 100% -10%, rgba(169, 155, 247, .18), transparent 60%),
+                radial-gradient(900px 500px at 0% 100%, rgba(63, 47, 133, .10), transparent 60%),
+                var(--bg);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        /* Brand bar — EXACTLY matches theme's sidebar gradient & tokens */
+        .brandbar {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            /* use theme sheen + gradient if available, otherwise fallback */
+            background:
+                var(--sheen, linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, 0) 32%)),
+                linear-gradient(180deg, var(--g1, #3f2f85), var(--g2, #2b2551));
+            color: var(--ink, #ecebff);
+            padding: 14px var(--pad);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            border-bottom: 1px solid var(--divider, rgba(255, 255, 255, .14));
+        }
+
+        .brandbar img {
+            height: 28px;
+            width: auto;
+            display: block
+        }
+
+        .brandbar .spacer {
+            flex: 1
+        }
+
+        .brandbar .badge {
+            background: rgba(255, 255, 255, .10);
+            border: 1px solid rgba(255, 255, 255, .24);
+            color: #fff;
+            padding: 7px 12px;
+            border-radius: 12px;
+            font: 800 12px/1 Manrope, sans-serif;
+            letter-spacing: .2px;
+        }
+
+        /* Layout */
+        .wrap {
+            min-height: calc(100vh - 56px);
+            display: grid;
+            place-items: center;
+            padding: var(--pad);
+        }
+
+        .card {
+            width: min(980px, 100%);
+            background: var(--surface);
+            border: 1px solid rgba(23, 20, 38, .06);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            overflow: clip;
+            position: relative;
+            isolation: isolate;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(600px 220px at 10% -10%, rgba(169, 155, 247, .16), transparent 40%),
+                radial-gradient(600px 240px at 110% 110%, rgba(63, 47, 133, .12), transparent 40%);
+            pointer-events: none;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 148px 1fr;
+            gap: clamp(18px, 3vw, 26px);
+            padding: clamp(20px, 3.2vw, 32px);
+            align-items: center;
+            border-bottom: 1px dashed rgba(23, 20, 38, .10);
+        }
+
+        @media (max-width:760px) {
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center
+            }
+        }
+
+        .lock {
+            width: 148px;
+            height: 148px;
+            border-radius: 20px;
+            background:
+                radial-gradient(110px 110px at 70% 30%, rgba(169, 155, 247, .35), transparent 60%),
+                linear-gradient(135deg, var(--g1, #3f2f85), var(--g2, #2b2551));
+            display: grid;
+            place-items: center;
+            color: #fff;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .25), var(--shadow-sm);
+        }
+
+        .lock i {
+            font-size: 56px
+        }
+
+        .title {
+            font-family: "Plus Jakarta Sans", Manrope, sans-serif;
+            font-weight: 800;
+            font-size: clamp(24px, 3.4vw, 36px);
+            line-height: 1.1;
+            margin: 0 0 10px;
+            letter-spacing: .1px;
+            background: linear-gradient(90deg, #1f1842, var(--g1) 45%, #8a7cf5 95%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .subtitle {
+            margin: 0;
+            color: var(--muted);
+            font-size: clamp(14px, 1.6vw, 16px);
+            line-height: 1.55;
+        }
+
+        .info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            padding: 22px clamp(18px, 2.8vw, 26px);
+        }
+
+        @media (max-width:760px) {
+            .info {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .panel {
+            border: 1px solid rgba(23, 20, 38, .08);
+            border-radius: 16px;
+            padding: 16px 16px;
+            background: linear-gradient(180deg, #fff, #fbfaff);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .panel h3 {
+            margin: 0 0 8px;
+            font: 700 14px/1.2 "Plus Jakarta Sans", Manrope, sans-serif;
+            letter-spacing: .2px;
+            color: #241c46;
+        }
+
+        .panel p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px
+        }
+
+        .chip {
+            border: 1px solid rgba(23, 20, 38, .10);
+            padding: 7px 12px;
+            border-radius: var(--r-pill);
+            font: 800 12px/1 Manrope, sans-serif;
+            background: #fff;
+        }
+
+        /* Actions with modern hover (zoom-in) */
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 20px clamp(18px, 2.8vw, 26px) 26px;
+            border-top: 1px solid rgba(23, 20, 38, .08);
+            align-items: center; /* Vertically align items */
+        }
+
+        .btn {
+            appearance: none;
+            border: 1px solid rgba(23, 20, 38, .10);
+            background: #fff;
+            color: #251f45;
+            padding: 13px 18px;
+            border-radius: 14px;
+            font: 800 13px/1.1 "Plus Jakarta Sans", Manrope, sans-serif;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            letter-spacing: .2px;
+            will-change: transform, box-shadow, background-position, color;
+            transition:
+                transform .22s var(--ease),
+                box-shadow .22s var(--ease),
+                background .28s var(--ease),
+                color .22s var(--ease),
+                border-color .22s var(--ease);
+        }
+        
+        /* Style for the new role dropdown */
+        .role-select {
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%235c5970' class='bi bi-chevron-down' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 16px;
+            padding-right: 40px; /* Make space for the arrow */
+        }
+
+        .btn i {
+            font-size: 16px;
+            transition: transform .22s var(--ease), color .22s var(--ease);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px) scale(1.035);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn:hover i {
+            transform: translateX(1px);
+        }
+
+        .btn:active {
+            transform: translateY(0) scale(1.01)
+        }
+
+        .btn[disabled] {
+            opacity: .55;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none
+        }
+
+        .btn.primary {
+            color: #fff;
+            border-color: transparent;
+            background: linear-gradient(135deg, var(--g1), var(--g2));
+            background-size: 160% 160%;
+            background-position: 0% 50%;
+            transition: background-position .5s var(--ease), transform .22s var(--ease), box-shadow .22s var(--ease);
+        }
+
+        .btn.primary:hover {
+            background-position: 100% 50%;
+        }
+
+        .btn.ghost {
+            background: #fff
+        }
+
+        .btn.warn {
+            border-color: rgba(255, 176, 32, .45);
+            color: #8a5a00;
+            background: #fff8eb
+        }
+
+        /* Danger: Sign Out */
+        .btn.danger {
+            border-color: rgba(255, 90, 106, .35);
+            color: #a2232e;
+            background: #fff;
+        }
+
+        .btn.danger:hover {
+            border-color: transparent;
+            background: linear-gradient(135deg, var(--danger), var(--danger-700));
+            color: #fff;
+        }
+
+        .btn.danger:hover i {
+            color: #fff
+        }
+
+        .foot {
+            padding: 14px clamp(18px, 2.8vw, 26px);
+            background: #fcfbff;
+            border-top: 1px dashed rgba(23, 20, 38, .10);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            font: 600 12.5px/1.4 Manrope, sans-serif;
+            color: var(--muted);
+        }
+
+        .foot a {
+            color: #2f2b52;
+            text-underline-offset: 3px;
+            font-weight: 800;
+        }
+
+        .role-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: var(--r-pill);
+            font: 800 12px/1 "Plus Jakarta Sans", Manrope, sans-serif;
+            border: 1px solid rgba(23, 20, 38, .10);
+            background: #fff;
+        }
+
+        .role-pill .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%
+        }
+
+        .role-viewer .dot {
+            background: #b5b2ff
+        }
+
+        .role-editor .dot {
+            background: #82e3a8
+        }
+
+        .role-admin .dot {
+            background: #ffd37d
+        }
+
+        .live {
+            position: absolute;
+            left: -9999px;
+            top: auto;
+            width: 1px;
+            height: 1px;
+            overflow: hidden
+        }
+
+        .btn:focus-visible {
+            outline: none;
+            box-shadow: var(--ring);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .btn,
+            .btn i {
+                transition: none
+            }
+
+            .btn:hover {
+                transform: none;
+                box-shadow: var(--shadow-md)
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Brand bar -->
+    <header class="brandbar" role="banner">
+        <a href="/" aria-label="Publisha">
+            <img src="{% static "/assets/images/publisha-logo-dashboard.png" %}" alt="Publisha" onerror="this.src='/static/assets/images/publisha-logo-dashboard.png'">
+        </a>
+        <span class="spacer"></span>
+        <span class="badge"><i class="entypo-lock" aria-hidden="true"></i> Secure Area</span>
+    </header>
+
+    <main class="wrap" role="main">
+        <!-- Use the active_organization from the request context to set the team name -->
+        <section class="card" aria-labelledby="denyTitle" aria-describedby="denyDesc" 
+                 data-role="{{ request.active_organization_member.role|lower|default:'viewer' }}" 
+                 data-team="{{ request.active_organization.name|default:'Default Team' }}">
+            <div class="hero">
+                <div class="lock" aria-hidden="true"><i class="entypo-block"></i></div>
+                <div>
+                    <h1 id="denyTitle" class="title">Access Denied</h1>
+                    <p id="denyDesc" class="subtitle">
+                        You don’t have permission to view this page. Ensure you’re in the correct team
+                        and your role (<strong>Viewer / Editor / Admin</strong>) grants access.
+                    </p>
+                </div>
+            </div>
+
+            <div class="info">
+                <div class="panel">
+                    <h3><i class="entypo-info-circled"></i> Why am I seeing this?</h3>
+                    <p>
+                        • Your role in the invited team may not allow this page.<br />
+                        • You might be in a different team or your session is outdated.<br />
+                        • The page may be restricted to admins or resource owners.
+                    </p>
+                    <div class="chips" aria-label="Role examples">
+                        <span class="chip">Viewer: Read</span>
+                        <span class="chip">Editor: Create / Edit</span>
+                        <span class="chip">Admin: Full Control</span>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <h3><i class="entypo-users"></i> Current team & role</h3>
+                    <!-- Also update the display text to be dynamic -->
+                    <p id="teamRoleText">
+                        Team: <strong>{{ request.active_organization.name|default:'Unknown' }}</strong> • 
+                        Role: <strong>{{ request.active_organization_member.get_role_display|default:'Unknown' }}</strong>
+                    </p>
+                    <div class="chips" id="rolePills" style="margin-top:10px">
+                        <span class="role-pill role-viewer"><span class="dot"></span> Viewer</span>
+                        <span class="role-pill role-editor" aria-hidden="true" hidden><span class="dot"></span> Editor</span>
+                        <span class="role-pill role-admin" aria-hidden="true" hidden><span class="dot"></span> Admin</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions" role="group" aria-label="Actions">
+                <a class="btn primary" href="{% url 'dashboard:dashboard' %}"><i class="entypo-gauge"></i> Go to Dashboard</a>
+                
+                <select id="roleRequestSelect" class="btn role-select">
+                    <option value="Editor">Request as Editor</option>
+                    <option value="Admin">Request as Admin</option>
+                </select>
+                <button class="btn" id="requestBtn" type="button"><i class="entypo-paper-plane"></i> Send Request</button>
+
+               <a class="btn ghost" id="accountSettingsBtn" href="{% url 'organizations:organization_settings' %}"><i class="entypo-cog"></i> Account Settings</a>
+                <button class="btn warn" id="backBtn" type="button"><i class="entypo-left-open"></i> Go Back</button>
+                <form method="post" action="{% url 'logout' %}" style="display: inline">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-link p-0 m-0 align-baseline danger">
+    Log Out <i class="entypo-logout right"></i>
+  </button>
+</form>
+                
+            </div>
+
+            <div class="foot">
+                <span>Need help? <a href="mailto:info@publisha.io">info@publisha.io</a></span>
+                <span id="footStatus">Status: <strong>Idle</strong></span>
+            </div>
+
+            <div id="live" class="live" aria-live="polite"></div>
+        </section>
+    </main>
+
+    <script>
+    // Hydrate role/team from URL or keep defaults
+    (function hydrateFromURL(){
+      const params = new URLSearchParams(location.search);
+      const team = params.get('team');
+      const role = (params.get('role') || '').toLowerCase(); // viewer|editor|admin
+
+      const root = document.querySelector('section.card');
+      if(team) root.dataset.team = team;
+      if(role) root.dataset.role = role;
+
+      const t = root.dataset.team || 'Default Team';
+      const r = (root.dataset.role || 'viewer').replace(/^\w/, c => c.toUpperCase());
+
+      document.getElementById('teamRoleText').innerHTML =
+        `Team: <strong>${t}</strong> • Role: <strong>${r}</strong>`;
+
+      // The 'viewer' pill was missing from this object, causing a script-halting error.
+      const pills = {
+        viewer: document.querySelector('.role-viewer'), 
+        editor: document.querySelector('.role-editor'),
+        admin:  document.querySelector('.role-admin')
+      };
+
+      Object.values(pills).forEach(el => { el.hidden = true; el.setAttribute('aria-hidden','true'); });
+      
+      const currentRole = root.dataset.role || 'viewer';
+      if (pills[currentRole]) {
+          pills[currentRole].hidden = false;
+          pills[currentRole].setAttribute('aria-hidden','false');
+      }
+    })();
+
+    // Request Access (This code will now run because the error above is fixed)
+    (function accessRequest(){
+      const btn  = document.getElementById('requestBtn');
+      const roleSelect = document.getElementById('roleRequestSelect');
+      const foot = document.getElementById('footStatus');
+      const live = document.getElementById('live');
+      const card = document.querySelector('.card');
+
+      // Function to get CSRF token from cookies
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+      }
+      const csrftoken = getCookie('csrftoken');
+
+      async function send(){
+        const requestedRole = roleSelect.value;
+
+        btn.disabled = true;
+        roleSelect.disabled = true;
+        btn.style.opacity = .75;
+        foot.innerHTML = 'Status: <strong>Sending…</strong>';
+        live.textContent = 'Submitting access request';
+
+        try{
+          const response = await fetch("{% url 'organizations:api_request_access' %}", {
+            method:'POST',
+            headers:{
+              'Content-Type':'application/json',
+              'X-CSRFToken': csrftoken // Django requires a CSRF token
+            },
+            body: JSON.stringify({
+              path: location.pathname,
+              team: card.dataset.team,
+              requestedRole: requestedRole
+            })
+          });
+
+          if(!response.ok) {
+              const errorData = await response.json();
+              throw new Error(errorData.message || 'Request failed');
+          }
+
+          foot.innerHTML = 'Status: <strong style="color:#0f6b3b">Request received</strong>';
+          live.textContent = `Your request for the ${requestedRole} role has been received. An admin will review it.`;
+          btn.innerHTML = '<i class="entypo-check"></i> Request Sent';
+          btn.classList.add('ghost');
+
+        }catch(e){
+          foot.innerHTML = `Status: <strong style="color:#b30027">Error: ${e.message}</strong>`;
+          live.textContent = 'Could not submit the request. Please try again later.';
+          btn.disabled = false;
+          roleSelect.disabled = false;
+          btn.style.opacity = 1;
+          alert(`Something went wrong: ${e.message}. Please try again later.`);
+        }
+      }
+      btn.addEventListener('click', send);
+    })();
+
+    // Back button + Esc shortcut
+    document.getElementById('backBtn').addEventListener('click', function(){
+      if (window.history.length > 1) history.back();
+      else window.location.href = '/index.html';
+    });
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape') document.getElementById('backBtn').click();
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+  // Select the button and the card that holds the role data
+  const accountSettingsBtn = document.getElementById('accountSettingsBtn');
+  const card = document.querySelector('.card');
+
+  if (accountSettingsBtn && card) {
+    accountSettingsBtn.addEventListener('click', function(event) {
+      // Get the user's role from the data-role attribute
+      const userRole = card.dataset.role;
+
+      // Check if the user is a viewer
+      if (userRole === 'viewer') {
+        // Prevent the link from navigating to the original href
+        event.preventDefault();
+
+        // Get the dashboard URL from the other button's href for robustness
+        const dashboardUrl = document.querySelector("a.btn.primary[href*='dashboard']").href;
+        
+        // Redirect to the dashboard with a query parameter to show the message
+        window.location.href = dashboardUrl + '?status_msg=viewer';
+      }
+      // If the role is not 'viewer', the link will work as normal.
+    });
+  }
+});
+    </script>
+</body>
+
+</html>

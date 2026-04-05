@@ -1,0 +1,347 @@
+{% extends "_base.html" %} {% load static %} {% block content %}
+
+<meta charset="UTF-8" />
+<meta name="description" content="html template" />
+<meta name="keywords" content="HTML, CSS, JavaScript" />
+<meta name="author" content="Asad" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>AI Doodle - AI Artificial Tntelligence & AI Technology Startups</title>
+
+<link rel="icon" href="{% static 'assets/images/favicon.png' %}" />
+<link rel="apple-touch-icon" href="{% static 'assets/images/favicon.png' %}" />
+<link rel="stylesheet" href="{% static 'assets/css/all.min.css' %}" />
+<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="{% static 'assets/css/swiper-bundle.min.css' %}" />
+<link rel="stylesheet" href="{% static 'assets/css/meanmenu.css' %}" />
+<link rel="stylesheet" href="{% static 'assets/css/magnific-popup.css' %}" />
+<link rel="stylesheet" href="{% static 'assets/css/nice-select.css' %}" />
+<link rel="stylesheet" href="{% static 'assets/css/backtotop.css' %}" />
+<link rel="stylesheet" href="{% static 'assets/css/main.css' %}" />
+
+<!-- Cursor start -->
+<div class="rts-cursor cursor-outer" data-default="yes" data-link="yes" data-slider="no">
+  <span class="fn-cursor"></span>
+</div>
+<div class="rts-cursor cursor-inner" data-default="yes" data-link="yes" data-slider="no">
+  <span class="fn-cursor">
+    <span class="fn-left"></span>
+    <span class="fn-right"></span>
+  </span>
+</div>
+<!-- Cursor end -->
+
+<!-- modal-search-start -->
+<div class="modal fade" id="search-modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <a href="javascript:void(0)" type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">×</span>
+  </a>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form>
+        <input type="text" placeholder="Search here..." />
+        <button>
+          <i class="fa fa-search"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- modal-search-end -->
+
+<!-- back to top start -->
+<div class="progress-wrap">
+  <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+    <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+  </svg>
+</div>
+<!-- back to top end -->
+
+<!-- sidebar-information-area-start -->
+<div class="sidebar-info side-info">
+  <div class="sidebar-logo-wrapper mb-25">
+    <div class="row align-items-center">
+      <div class="col-xl-6 col-8">
+        <div class="sidebar-logo">
+          <a href="/"><img src="{% static 'assets/images/logo/logo-w.png' %}" alt="logo-img" /></a>
+        </div>
+      </div>
+      <div class="col-xl-6 col-4">
+        <div class="sidebar-close-wrapper text-end">
+          <button class="sidebar-close side-info-close">
+            <i class="fal fa-times"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sidebar-menu-wrapper fix">
+    <div class="mobile-menu"></div>
+  </div>
+</div>
+<div class="offcanvas-overlay"></div>
+<!-- sidebar-information-area-end -->
+
+<div class="has-smooth" id="has_smooth"></div>
+
+<div id="smooth-wrapper">
+  <div id="smooth-content">
+    <div class="body-wrapper">
+      <main>
+        <!-- breadcrumb area start -->
+        <section class="breadcrumb-area bg-default" style="
+            background-image: url('{% static 'assets/images/breadcrumb/breadcrumb-bg.jpg' %}');
+            margin-top: 7%;
+          ">
+          <div class="container">
+            <div class="row">
+              <div class="col-12">
+                <div class="breadcrumb-content text-center">
+                  <h2 class="breadcrumb-title tp_has_text_reveal_anim">
+                    Our Blog
+                  </h2>
+                  <div class="breadcrumb-list tp_fade_left">
+                    <a href="/"><i class="fa-light fa-house"></i>Home</a>
+                    <span>Our Blog</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="breadcrumb-shape">
+            <img src="{% static 'assets/images/breadcrumb/shape-1.png' %}" alt="" class="breadcrumb-shape-1"
+              data-speed="0.9" />
+            <img src="{% static " assets/images/breadcrumb/shape-2.png" %}" alt="" class="breadcrumb-shape-2"
+              data-speed="0.8" />
+            <img src="{% static 'assets/images/breadcrumb/shape-3.png' %}" alt="" class="breadcrumb-shape-3"
+              data-speed="0.9" />
+            <img src="{% static 'assets/images/breadcrumb/circle.png' %}" alt="" class="breadcrumb-shape-4" />
+          </div>
+        </section>
+        <!-- breadcrumb area end -->
+
+        <!-- blog area start -->
+        <section class="h2_blog-area pt-105 pb-140 bg-white">
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-xl-6">
+                <div class="h2_section-area text-center mb-50">
+                  <span class="h2_section-subtitle">Our Blog</span>
+                  <h2 class="h2_section-title mb-0">Our Latest News</h2>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xl-4 col-md-6 tp_fade_left" data-fade-from="left">
+                <div class="h2_blog-item mb-35">
+                  <div class="h2_blog-img w_img mb-25">
+                    {% if media_url|slice:'-4:' in '.mp4,.webm,.ogg' %}
+                    <video class="w-100" controls>
+                      <source src="{{ media_url }}" type="video/{{ media_url|slice:'-3:' }}">
+                    </video>
+                    {% else %}
+                    <a href="{% url 'public:blog-details' %}"><img src="{{ media_url }}" alt="Image Not Found" /></a>
+                    {% endif %}
+                  </div>
+                  <div class="h2_blog-content">
+                    <div class="h2_blog-content-meta">
+                      <span><a href="#">Creative</a></span>
+                      <span><i class="fa-light fa-calendar-days"></i>April 18,
+                        2024</span>
+                    </div>
+                    <h4 class="h2_blog-content-title">
+                      <a href="{% url 'public:blog-details' %}">How to choose the right line an app development?</a>
+                    </h4>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-4 col-md-6 tp_fade_left" data-fade-from="left" data-delay=".4">
+                <div class="h2_blog-item mb-35">
+                  <div class="h2_blog-img w_img mb-25">
+                    <a href="{% url 'public:blog-details' %}"><img src="{% static 'assets/images/blog/home2/2.png' %}"
+                        alt="Image Not Found" /></a>
+                  </div>
+                  <div class="h2_blog-content">
+                    <div class="h2_blog-content-meta">
+                      <span><a href="#">Ai</a></span>
+                      <span><i class="fa-light fa-calendar-days"></i>June 18,
+                        2024</span>
+                    </div>
+                    <h4 class="h2_blog-content-title">
+                      <a href="{% url 'public:blog-details' %}">AI Content Creation Tools: 7 Tools to Supercharge
+                        Pro.</a>
+                    </h4>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-4 col-md-6 tp_fade_left" data-fade-from="left" data-delay=".6">
+                <div class="h2_blog-item mb-35">
+                  <div class="h2_blog-img w_img mb-25">
+                    <a href="{% url 'public:blog-details' %}"><img src="{% static 'assets/images/blog/home2/3.png' %}"
+                        alt="Image Not Found" /></a>
+                  </div>
+                  <div class="h2_blog-content">
+                    <div class="h2_blog-content-meta">
+                      <span><a href="#">Animation</a></span>
+                      <span><i class="fa-light fa-calendar-days"></i>April 18,
+                        2024</span>
+                    </div>
+                    <h4 class="h2_blog-content-title">
+                      <a href="{% url 'public:blog-details' %}">Innovative Developments in AI Chatbot Technologies</a>
+                    </h4>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-4 col-md-6 tp_fade_left" data-fade-from="left" data-delay=".8">
+                <div class="h2_blog-item mb-35">
+                  <div class="h2_blog-img w_img mb-25">
+                    <a href="blog-details.html"><img src="{% static 'assets/images/blog/home2/4.png' %}"
+                        alt="Image Not Found" /></a>
+                  </div>
+                  <div class="h2_blog-content">
+                    <div class="h2_blog-content-meta">
+                      <span><a href="#">Creative</a></span>
+                      <span><i class="fa-light fa-calendar-days"></i>April 18,
+                        2024</span>
+                    </div>
+                    <h4 class="h2_blog-content-title">
+                      <a href="{% url 'public:blog-details' %}">How to choose the right line an app development?</a>
+                    </h4>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-4 col-md-6 tp_fade_left" data-fade-from="left" data-delay="1">
+                <div class="h2_blog-item mb-35">
+                  <div class="h2_blog-img w_img mb-25">
+                    <a href="{% url 'public:blog-details' %}"><img src="{% static 'assets/images/blog/home2/5.png' %}"
+                        alt="Image Not Found" /></a>
+                  </div>
+                  <div class="h2_blog-content">
+                    <div class="h2_blog-content-meta">
+                      <span><a href="#">Ai</a></span>
+                      <span><i class="fa-light fa-calendar-days"></i>June 18,
+                        2024</span>
+                    </div>
+                    <h4 class="h2_blog-content-title">
+                      <a href="{% url 'public:blog-details' %}">AI Content Creation Tools: 7 Tools to Supercharge
+                        Pro.</a>
+                    </h4>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-4 col-md-6 tp_fade_left" data-fade-from="left" data-delay="1.2">
+                <div class="h2_blog-item mb-35">
+                  <div class="h2_blog-img w_img mb-25">
+                    <a href="{% url 'public:blog-details' %}"><img src="{% static 'assets/images/blog/home2/6.png' %}"
+                        alt="Image Not Found" /></a>
+                  </div>
+                  <div class="h2_blog-content">
+                    <div class="h2_blog-content-meta">
+                      <span><a href="#">Animation</a></span>
+                      <span><i class="fa-light fa-calendar-days"></i>April 18,
+                        2024</span>
+                    </div>
+                    <h4 class="h2_blog-content-title">
+                      <a href="{% url 'public:blog-details' %}">Innovative Developments in AI Chatbot Technologies</a>
+                    </h4>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-4 col-md-6 tp_fade_left" data-fade-from="left" data-delay="1.4">
+                <div class="h2_blog-item mb-35">
+                  <div class="h2_blog-img w_img mb-25">
+                    <a href="{% url 'public:blog-details' %}"><img src="{% static 'assets/images/blog/home2/7.png' %}"
+                        alt="Image Not Found" /></a>
+                  </div>
+                  <div class="h2_blog-content">
+                    <div class="h2_blog-content-meta">
+                      <span><a href="#">Creative</a></span>
+                      <span><i class="fa-light fa-calendar-days"></i>April 18,
+                        2024</span>
+                    </div>
+                    <h4 class="h2_blog-content-title">
+                      <a href="{% url 'public:blog-details' %}">How to choose the right line an app development?</a>
+                    </h4>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-4 col-md-6 tp_fade_left" data-fade-from="left" data-delay="1.6">
+                <div class="h2_blog-item mb-35">
+                  <div class="h2_blog-img w_img mb-25">
+                    <a href="{% url 'public:blog-details' %}"><img src="{% static 'assets/images/blog/home2/8.png' %}"
+                        alt="Image Not Found" /></a>
+                  </div>
+                  <div class="h2_blog-content">
+                    <div class="h2_blog-content-meta">
+                      <span><a href="#">Ai</a></span>
+                      <span><i class="fa-light fa-calendar-days"></i>June 18,
+                        2024</span>
+                    </div>
+                    <h4 class="h2_blog-content-title">
+                      <a href="{% url 'public:blog-details' %}">AI Content Creation Tools: 7 Tools to Supercharge
+                        Pro.</a>
+                    </h4>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-4 col-md-6 tp_fade_left" data-fade-from="left" data-delay="1.8">
+                <div class="h2_blog-item mb-35">
+                  <div class="h2_blog-img w_img mb-25">
+                    <a href="{% url 'public:blog-details' %}"><img src="{% static 'assets/images/blog/home2/9.png' %}"
+                        alt="Image Not Found" /></a>
+                  </div>
+                  <div class="h2_blog-content">
+                    <div class="h2_blog-content-meta">
+                      <span><a href="#">Animation</a></span>
+                      <span><i class="fa-light fa-calendar-days"></i>April 18,
+                        2024</span>
+                    </div>
+                    <h4 class="h2_blog-content-title">
+                      <a href="{% url 'public:blog-details' %}">Innovative Developments in AI Chatbot Technologies</a>
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="pagination-area pt-30 d-flex justify-content-center tp_fade_bottom">
+                  <span><i class="fa-light fa-arrow-left"></i></span>
+                  <ul>
+                    <li><a href="#" class="active">01</a></li>
+                    <li><a href="#">02</a></li>
+                    <li><a href="#">03</a></li>
+                  </ul>
+                  <span><i class="fa-light fa-arrow-right"></i></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- blog area end -->
+      </main>
+
+      <!-- footer area start -->
+
+      <!-- footer area end -->
+    </div>
+  </div>
+</div>
+
+<!-- jQuery Js -->
+<script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'assets/js/swiper-bundle.min.js' %}"></script>
+<script src="{% static 'assets/js/meanmenu.min.js' %}"></script>
+<script src="{% static 'assets/js/gsap.min.js' %}"></script>
+<script src="{% static 'assets/js/ScrollSmoother.min.js' %}"></script>
+<script src="{% static 'assets/js/ScrollTrigger.min.js' %}"></script>
+<script src="{% static 'assets/js/TweenMax.min.js' %}"></script>
+<script src="{% static 'assets/js/SplitText.min.js' %}"></script>
+<script src="{% static 'assets/js/chroma.min.js' %}"></script>
+<script src="{% static 'assets/js/magnific-popup.min.js' %}"></script>
+<script src="{% static 'assets/js/nice-select.min.js' %}"></script>
+<script src="{% static 'assets/js/backtotop.js' %}"></script>
+<script src="{% static 'assets/js/main.js' %}"></script>
+
+{% endblock content %}

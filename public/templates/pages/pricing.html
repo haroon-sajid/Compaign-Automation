@@ -1,0 +1,775 @@
+{% extends "_base.html" %} {% load static %} {% block content %}
+<title>AI Doodle - AI Artificial Tntelligence & AI Technology Startups</title>
+
+<link rel="icon" href="{% static 'assets/images/favicon.png' %}" />
+<link rel="apple-touch-icon" href="{% static 'assets/images/favicon.png' %}" />
+<link rel="stylesheet" href="{% static 'assets/css/all.min.css' %}" />
+<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="{% static 'assets/css/swiper-bundle.min.css' %}" />
+<link rel="stylesheet" href="{% static 'assets/css/meanmenu.css' %}" />
+<link rel="stylesheet" href="{% static 'assets/css/magnific-popup.css' %}" />
+<link rel="stylesheet" href="{% static 'assets/css/nice-select.css' %}" />
+<link rel="stylesheet" href="{% static 'assets/css/backtotop.css' %}" />
+<link rel="stylesheet" href="{% static 'assets/css/main.css' %}" />
+<style>
+  .price-item-amount {
+    text-align: center;
+  }
+
+  .price-item {
+    height: 96%;
+    display: flex;
+    flex-direction: column;
+  }
+  .price-item-head {
+    flex-grow: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 3. Push the button to the bottom of the head section */
+  .price-item-btn {
+    margin-top: auto;
+  }
+
+  .price-inline {
+    display: inline-flex;
+    align-items: baseline; /* keeps text and label aligned */
+    gap: 6px;
+    position: relative;
+  }
+
+  .price-item-amount-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #14213d;
+    margin: 0;
+    display: inline;
+  }
+
+  .amount-offer {
+    background-color: #28a745;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 4px;
+    display: inline-block;
+    line-height: 1;
+    position: relative;
+    top: -4px; /* lifts the tag slightly above price */
+  }
+</style>
+
+<!-- Cursor start -->
+<div
+  class="rts-cursor cursor-outer"
+  data-default="yes"
+  data-link="yes"
+  data-slider="no"
+>
+  <span class="fn-cursor"></span>
+</div>
+<div
+  class="rts-cursor cursor-inner"
+  data-default="yes"
+  data-link="yes"
+  data-slider="no"
+>
+  <span class="fn-cursor">
+    <span class="fn-left"></span>
+    <span class="fn-right"></span>
+  </span>
+</div>
+<!-- Cursor end -->
+
+<!-- back to top start -->
+<div class="progress-wrap">
+  <svg
+    class="progress-circle svg-content"
+    width="100%"
+    height="100%"
+    viewBox="-1 -1 102 102"
+  >
+    <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+  </svg>
+</div>
+<!-- back to top end -->
+
+<!-- modal-search-start -->
+<div
+  class="modal fade"
+  id="search-modal"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
+  <a
+    href="javascript:void(0)"
+    type="button"
+    class="close"
+    data-bs-dismiss="modal"
+    aria-label="Close"
+  >
+    <span aria-hidden="true">×</span>
+  </a>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form>
+        <input type="text" placeholder="Search here..." />
+        <button>
+          <i class="fa fa-search"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- modal-search-end -->
+
+<div class="has-smooth" id="has_smooth"></div>
+
+<div id="smooth-wrapper">
+  <div id="smooth-content">
+    <div class="body-wrapper">
+      <main style="margin-top: 7%">
+        <!-- breadcrumb area start -->
+        <section
+          class="breadcrumb-area bg-default"
+          style="
+            background-image: url('{% static 'assets/images/breadcrumb/breadcrumb-bg.jpg' %}');
+          "
+        >
+          <div class="container">
+            <div class="row">
+              <div class="col-12">
+                <div class="breadcrumb-content text-center">
+                  <h2 class="breadcrumb-title tp_has_text_reveal_anim">
+                    Pricing
+                  </h2>
+                  <div class="breadcrumb-list tp_fade_left">
+                    <a href="/"><i class="fa-light fa-house"></i>Home</a>
+                    <span>Pricing</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="breadcrumb-shape">
+            <img
+              src="{% static 'assets/images/breadcrumb/shape-1.png' %}"
+              alt=""
+              class="breadcrumb-shape-1"
+              data-speed="0.9"
+            />
+            <img
+              src="{% static 'assets/images/breadcrumb/shape-2.png' %}"
+              alt=""
+              class="breadcrumb-shape-2"
+              data-speed="0.8"
+            />
+            <img
+              src="{% static 'assets/images/breadcrumb/shape-3.png' %}"
+              alt=""
+              class="breadcrumb-shape-3"
+              data-speed="0.9"
+            />
+            <img
+              src="{% static 'assets/images/breadcrumb/circle.png' %}"
+              alt=""
+              class="breadcrumb-shape-4"
+            />
+          </div>
+        </section>
+        <!-- breadcrumb area end -->
+
+        <!-- price area start -->
+        <section class="price-area price-tab pt-140 pb-140">
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-xxl-6 col-xl-7 col-lg-9 col-md-10">
+                <div class="section-area text-center mb-45">
+                  <span class="section-subtitle tp_fade_left"
+                    >Pricing Plan</span
+                  >
+                  <h2
+                    class="section-title tp_title_slideup mb-0 section-title tp_title_slideup-big"
+                  >
+                    Personalized Pricing Plans Suited to You.
+                  </h2>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="price-switch-wrapper">
+                  <label class="toggler toggler--is-active" id="filt-monthly"
+                    >Pay Monthly</label
+                  >
+                  <div class="toggle">
+                    <input type="checkbox" id="switcher" class="tp-check" />
+                    <b class="switch"></b>
+                  </div>
+                  <label class="toggler yearly-pack" id="filt-yearly"
+                    >Pay Yearly<span class="amount-offer">Save 15%</span></label
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="wrapper-full">
+              <!-- THIS IS THE CORRECTED LINE -->
+              <div class="row align-items-stretch justify-content-center">
+                <!-- Free Trial Card (No price change) -->
+                <div class="col-xl-4 tp_fade_left" data-fade-from="left">
+                  <div class="price-item price-item-1">
+                    <div class="price-item-head">
+                      <h5 class="price-item-title">Free Trial</h5>
+                      <h2 class="price-item-amount-title">Free</h2>
+                      <p>No Need For Credit Card</p>
+                      <a class="price-item-btn" href="/accounts/signup/"
+                        >Choose Plan<i class="fa-light fa-angle-right"></i
+                      ></a>
+                    </div>
+                    <ul class="price-item-list">
+                      <li>1 user</li>
+                      <li>1 active campaign</li>
+                      <li>1 output (post) / lifetime</li>
+                      <li>1 integration</li>
+                      <li>Email support (3 days)</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- Starter Plan Card -->
+                <div
+                  class="col-xl-4 tp_fade_left"
+                  data-fade-from="left"
+                  data-delay=".8"
+                >
+                  <div class="price-item">
+                    <div class="price-item-head">
+                      <h5 class="price-item-title">Starter Plan</h5>
+                      <div class="price-item-amount">
+                        <del>€59</del>
+                        <div class="price-inline">
+                          <h2
+                            class="price-item-amount-title price-value"
+                            data-monthly-price="29"
+                            data-annual-price="24.65"
+                          >
+                            €29<span>.00</span>
+                          </h2>
+                          <span
+                            class="amount-offer price-total-discount"
+                            style="display: none"
+                            >58.2%</span
+                          >
+                        </div>
+                      </div>
+                      <p class="price-period">/Month</p>
+                      <span
+                        class="price-item-offer price-saving"
+                        style="display: none"
+                        >SAVE €4.35 / mo</span
+                      >
+                      <a class="price-item-btn" href="/accounts/signup/"
+                        >Choose Plan<i class="fa-light fa-angle-right"></i
+                      ></a>
+                    </div>
+                    <ul class="price-item-list">
+                      <li>1-2 user</li>
+                      <li>3 active campaigns</li>
+                      <li>50 outputs/month</li>
+                      <li>1 integrations</li>
+                      <li>Email support (48h)</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- Pro Plan Card -->
+                <div
+                  class="col-xl-4 tp_fade_left"
+                  data-fade-from="left"
+                  data-delay="1.1"
+                >
+                  <div class="price-item active">
+                    <div class="price-item-option">
+                      <span>Best Choice</span>
+                    </div>
+                    <div class="price-item-head">
+                      <h5 class="price-item-title">Pro Plan</h5>
+                      <div class="price-item-amount">
+                        <del>€179</del>
+                        <div class="price-inline">
+                          <h2
+                            class="price-item-amount-title price-value"
+                            data-monthly-price="79"
+                            data-annual-price="67.15"
+                          >
+                            €79<span>.00</span>
+                          </h2>
+                          <span
+                            class="amount-offer price-total-discount"
+                            style="display: none"
+                            >62.5%</span
+                          >
+                        </div>
+                      </div>
+                      <p class="price-period">/Month</p>
+                      <span
+                        class="price-item-offer price-saving"
+                        style="display: none"
+                        >SAVE €11.85 / mo</span
+                      >
+                      <a class="price-item-btn" href="/accounts/signup/"
+                        >Choose Plan<i class="fa-light fa-angle-right"></i
+                      ></a>
+                    </div>
+                    <ul class="price-item-list">
+                      <li>5 users</li>
+                      <li>10 active campaigns</li>
+                      <li>200 outputs/month</li>
+                      <li>5 integrations</li>
+                      <li>Priority queue</li>
+                      <li>Basic analytics</li>
+                      <li>Email + chat support (24h)</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- Business Plan Card -->
+                <div
+                  class="col-xl-4 tp_fade_left"
+                  data-fade-from="left"
+                  data-delay="1.3"
+                >
+                  <div class="price-item">
+                    <div class="price-item-head">
+                      <h5 class="price-item-title">Business Plan</h5>
+                      <div class="price-item-amount">
+                        <del>€499</del>
+                        <div class="price-inline">
+                          <h2
+                            class="price-item-amount-title price-value"
+                            data-monthly-price="199"
+                            data-annual-price="169.15"
+                          >
+                            €199<span>.00</span>
+                          </h2>
+                          <span
+                            class="amount-offer price-total-discount"
+                            style="display: none"
+                            >66.1%</span
+                          >
+                        </div>
+                      </div>
+                      <p class="price-period">/Month</p>
+                      <span
+                        class="price-item-offer price-saving"
+                        style="display: none"
+                        >SAVE €29.85 / mo</span
+                      >
+                      <a class="price-item-btn" href="/accounts/signup/"
+                        >Choose Plan<i class="fa-light fa-angle-right"></i
+                      ></a>
+                    </div>
+                    <ul class="price-item-list">
+                      <li>10 users</li>
+                      <li>Unlimited campaigns (fair use)</li>
+                      <li>800 outputs/month</li>
+                      <li>All integrations + API access</li>
+                      <li>Account manager, 12h resp.</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- Enterprise Plan Card -->
+                <div
+                  class="col-xl-4 tp_fade_left"
+                  data-fade-from="left"
+                  data-delay="1.5"
+                >
+                  <div class="price-item">
+                    <div class="price-item-head">
+                      <h5 class="price-item-title">Enterprise Plan</h5>
+                      <div class="price-item-amount">
+                        <del>€1499</del>
+                        <div class="price-inline">
+                          <h2
+                            class="price-item-amount-title price-value"
+                            data-monthly-price="499"
+                            data-annual-price="424.15"
+                          >
+                            €499<span>.00</span>
+                          </h2>
+                          <span
+                            class="amount-offer price-total-discount"
+                            style="display: none"
+                            >71.7%</span
+                          >
+                        </div>
+                      </div>
+                      <p class="price-period">/Month</p>
+                      <span
+                        class="price-item-offer price-saving"
+                        style="display: none"
+                        >SAVE €74.85 / mo</span
+                      >
+                      <a class="price-item-btn" href="{% url 'public:contact' %}"
+                        >Contact Sales<i class="fa-light fa-angle-right"></i
+                      ></a>
+                    </div>
+                    <ul class="price-item-list">
+                      <li>Unlimited users, custom SLA</li>
+                      <li>Dedicated workers / isolated Redis queue</li>
+                      <li>Security/compliance & custom integrations</li>
+                      <li>Contract pricing</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- price area end -->
+
+        <!-- faq area start -->
+        <section class="h3_faq-area pt-135 pb-110 inner_bg">
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-xl-7">
+                <div class="inner_section-area mb-50 text-center">
+                  <span class="inner_section-subtitle tp_subtitle_anim"
+                    >Question & Answerer</span
+                  >
+                  <h2 class="inner_section-title tp_title_slideup mb-0">
+                    We answer your questions
+                  </h2>
+                </div>
+              </div>
+            </div>
+            <div class="h3_faq-wrap">
+              <div class="h3_faq-content">
+                <div class="accordion" id="Expp">
+                  <div class="row">
+                    <div class="col-xl-6 tp_fade_left" data-fade-from="bottom">
+                      <div class="accordion-item mb-30">
+                        <h2 class="accordion-header" id="headingOne">
+                          <button
+                            class="accordion-button"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseOne"
+                            aria-expanded="true"
+                            aria-controls="collapseOne"
+                          >
+                            Can Publisha generate content from just a keyword or
+                            topic?
+                          </button>
+                        </h2>
+                        <div
+                          id="collapseOne"
+                          class="accordion-collapse collapse show"
+                          aria-labelledby="headingOne"
+                          data-bs-parent="#Expp"
+                        >
+                          <div class="accordion-body">
+                            <p>
+                              Yes. Publisha allows you to enter a single keyword
+                              or a full sentence, and the AI will generate a
+                              complete article or social media post based on it.
+                              You can then customize the tone, structure, and
+                              length to fit your needs.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="accordion-item mb-30">
+                        <h2 class="accordion-header" id="headingTwo">
+                          <button
+                            class="accordion-button collapsed"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseTwo"
+                            aria-expanded="false"
+                            aria-controls="collapseTwo"
+                          >
+                            Can I customize the tone and style of the generated
+                            content?
+                          </button>
+                        </h2>
+                        <div
+                          id="collapseTwo"
+                          class="accordion-collapse collapse"
+                          aria-labelledby="headingTwo"
+                          data-bs-parent="#Expp"
+                        >
+                          <div class="accordion-body">
+                            <p>
+                              Absolutely. During the content settings step, you
+                              can select from multiple tone of voice options
+                              (e.g., professional, friendly, persuasive, formal)
+                              and adjust the word count, tags, categories, and
+                              SEO plugins. This ensures every piece of content
+                              matches your brand voice.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="accordion-item mb-30">
+                        <h2 class="accordion-header" id="headingThree">
+                          <button
+                            class="accordion-button collapsed"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseThree"
+                            aria-expanded="false"
+                            aria-controls="collapseThree"
+                          >
+                            Can Publisha automatically find and add images to my
+                            content?
+                          </button>
+                        </h2>
+                        <div
+                          id="collapseThree"
+                          class="accordion-collapse collapse"
+                          aria-labelledby="headingThree"
+                          data-bs-parent="#Expp"
+                        >
+                          <div class="accordion-body">
+                            <p>
+                              Yes. Publisha includes a Media step where you can
+                              either manually upload your visuals or use auto
+                              image search, which finds relevant images for your
+                              topic automatically.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="col-xl-6 tp_fade_left"
+                      data-fade-from="bottom"
+                      data-delay=".8"
+                    >
+                      <div class="accordion-item mb-30">
+                        <h2 class="accordion-header" id="headingFour">
+                          <button
+                            class="accordion-button collapsed"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseFour"
+                            aria-expanded="false"
+                            aria-controls="collapseFour"
+                          >
+                            How does the scheduling feature work?
+                          </button>
+                        </h2>
+                        <div
+                          id="collapseFour"
+                          class="accordion-collapse collapse"
+                          aria-labelledby="headingFour"
+                          data-bs-parent="#Expp"
+                        >
+                          <div class="accordion-body">
+                            <p>
+                              Publisha has a built-in smart scheduler that lets
+                              you set the first publish date, choose the
+                              frequency (e.g., minutes, hours, days), and define
+                              end conditions. Once set, your content is
+                              published automatically to selected platforms
+                              without manual posting.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="accordion-item mb-30">
+                        <h2 class="accordion-header" id="headingFive">
+                          <button
+                            class="accordion-button collapsed"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseFive"
+                            aria-expanded="false"
+                            aria-controls="collapseFive"
+                          >
+                            Which platforms can I publish to with Publisha?
+                          </button>
+                        </h2>
+                        <div
+                          id="collapseFive"
+                          class="accordion-collapse collapse"
+                          aria-labelledby="headingFive"
+                          data-bs-parent="#Expp"
+                        >
+                          <div class="accordion-body">
+                            <p>
+                              Publisha supports publishing to multiple social
+                              platforms including LinkedIn, X (Twitter),
+                              Facebook, Instagram, Threads, as well as your own
+                              blog. You can manage all your content from a
+                              single dashboard.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="accordion-item mb-30">
+                        <h2 class="accordion-header" id="headingSix">
+                          <button
+                            class="accordion-button collapsed"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseSix"
+                            aria-expanded="false"
+                            aria-controls="collapseSix"
+                          >
+                            Is Publisha suitable for both individuals and teams?
+                          </button>
+                        </h2>
+                        <div
+                          id="collapseSix"
+                          class="accordion-collapse collapse"
+                          aria-labelledby="headingSix"
+                          data-bs-parent="#Expp"
+                        >
+                          <div class="accordion-body">
+                            <p>
+                              Yes. Publisha is designed for solo creators,
+                              marketing teams, agencies, and small businesses.
+                              Individuals can create and schedule content
+                              quickly, while teams can manage multiple campaigns
+                              collaboratively.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="accordion-item mb-30">
+                        <h2 class="accordion-header" id="headingSeven">
+                          <button
+                            class="accordion-button collapsed"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseSeven"
+                            aria-expanded="false"
+                            aria-controls="collapseSeven"
+                          >
+                            Do I need any technical skills to use Publisha?
+                          </button>
+                        </h2>
+                        <div
+                          id="collapseSeven"
+                          class="accordion-collapse collapse"
+                          aria-labelledby="headingSeven"
+                          data-bs-parent="#Expp"
+                        >
+                          <div class="accordion-body">
+                            <p>
+                              No. Publisha is built with a simple, step-by-step
+                              campaign builder. If you can type a topic, you can
+                              generate content. No coding or complex
+                              configuration is required — the platform handles
+                              the heavy lifting for you.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- faq area end -->
+
+        <!-- testimonial area start -->
+        <section class="h2_testimonial-area pb-95 pt-135">
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-12">
+                <div class="inner_section-area text-center"></div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12"></div>
+            </div>
+          </div>
+        </section>
+        <!-- testimonial area end -->
+
+        <!-- brand area start -->
+        <!-- brand area end -->
+      </main>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Select all the elements we need to interact with
+    const switcher = document.getElementById("switcher");
+    const monthlyLabel = document.getElementById("filt-monthly");
+    const yearlyLabel = document.getElementById("filt-yearly");
+
+    // Select all elements that will change price or text
+    const priceElements = document.querySelectorAll(".price-value");
+    const periodElements = document.querySelectorAll(".price-period");
+    const savingElements = document.querySelectorAll(".price-saving");
+    const discountElements = document.querySelectorAll(".price-total-discount");
+
+    // Add an event listener for when the toggle is clicked
+    switcher.addEventListener("change", function () {
+      const isYearly = this.checked; // true if yearly is selected, false if monthly
+
+      // 1. Update the labels' active state
+      monthlyLabel.classList.toggle("toggler--is-active", !isYearly);
+      yearlyLabel.classList.toggle("toggler--is-active", isYearly);
+
+      // 2. Update the price values on each card
+      priceElements.forEach((priceEl) => {
+        // Get the monthly and annual prices from the data attributes
+        const monthlyPrice = priceEl.getAttribute("data-monthly-price");
+        const annualPrice = priceEl.getAttribute("data-annual-price");
+
+        // Choose which price to display
+        const priceToShow = isYearly ? annualPrice : monthlyPrice;
+
+        // Format the price to have two decimal places for consistency
+        const [whole, decimal] = parseFloat(priceToShow).toFixed(2).split(".");
+
+        // Update the HTML with the new price
+        priceEl.innerHTML = `€${whole}<span>.${decimal}</span>`;
+      });
+
+      // 3. Update the billing period text (e.g., "/Month")
+      periodElements.forEach((periodEl) => {
+        periodEl.textContent = isYearly ? "/Month (billed annually)" : "/Month";
+      });
+
+      // 4. Show or hide the savings and discount elements
+      savingElements.forEach((savingEl) => {
+        savingEl.style.display = isYearly ? "block" : "none";
+      });
+
+      discountElements.forEach((discountEl) => {
+        discountEl.style.display = isYearly ? "inline-block" : "none";
+      });
+    });
+  });
+</script>
+
+<!-- jQuery Js -->
+<script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'assets/js/swiper-bundle.min.js' %}"></script>
+<script src="{% static 'assets/js/meanmenu.min.js' %}"></script>
+<script src="{% static 'assets/js/gsap.min.js' %}"></script>
+<script src="{% static 'assets/js/ScrollSmoother.min.js' %}"></script>
+<script src="{% static 'assets/js/ScrollTrigger.min.js' %}"></script>
+<script src="{% static 'assets/js/TweenMax.min.js' %}"></script>
+<script src="{% static 'assets/js/SplitText.min.js' %}"></script>
+<script src="{% static 'assets/js/chroma.min.js' %}"></script>
+<script src="{% static 'assets/js/magnific-popup.min.js' %}"></script>
+<script src="{% static 'assets/js/nice-select.min.js' %}"></script>
+<script src="{% static 'assets/js/backtotop.js' %}"></script>
+<script src="{% static 'assets/js/main.js' %}"></script>
+{% endblock content %}

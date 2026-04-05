@@ -1,0 +1,67 @@
+<!-- templates/user_layout.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta name="ac:route" content="/dashboard" />
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Publisha – Dashboard" />
+    <link rel="icon" href="{% static 'assets/images/favicon.ico' %}" />
+    <title>Dashboard</title>
+
+    <!-- Core CSS -->
+    <link
+      rel="stylesheet"
+      href="{% static 'assets/css/font-icons/entypo/css/entypo.css' %}"
+    />
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/neon-core.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/neon-theme.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/neon-forms.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"
+    />
+    <link rel="stylesheet" href="{% static 'assets/css/custom.css' %}" />
+
+    <!-- Charts / Date picker -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"
+      defer
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr" defer></script>
+
+    <!-- =================== ADD THIS LINE =================== -->
+    <link
+      rel="stylesheet"
+      href="{% static 'assets/css/user_dashboard.css' %}"
+    />
+    <!-- ======================================================= -->
+
+    <!-- Empty block for any tiny, one-off page overrides -->
+    {% block styles %}{% endblock styles %}
+  </head>
+
+  <body class="page-body">
+    <div class="page-container">
+      {% include 'partials/_user_sidebar.html' %}
+      <div class="main-content">
+        {% include 'partials/_user_header.html' %}
+        <hr />
+        {% block content %}{% endblock content %}
+      </div>
+    </div>
+    <!-- ... JS scripts ... -->
+    {% block scripts %}{% endblock scripts %}
+  </body>
+</html>
